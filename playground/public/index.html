@@ -3,10 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <title>Hello World!</title>
+  <style>
+
+    button#print-content {
+      background: #F44336;
+      color:  #fff;
+      border: 4px solid #B71C1C;
+      padding:  10px 20px;
+      border-radius:  50px;
+      font-size:  17px;
+      letter-spacing: 1px;
+      font-weight:  bold;
+      cursor:  pointer;
+      outline: none;
+    }
+
+    button#print-content:hover {
+      box-shadow: 1px 1px 2px 0px black;
+    }
+
+    h2 {
+      font-weight:  normal;
+      font-size: 17px;
+      color: rebeccapurple;
+    }
+
+  </style>
 </head>
 <body style="margin: 0;text-align: center;font-family: 'Trebuchet MS';padding: 25px 0;">
   
-  <h1>Hello, World!</h1>
-  
+  <div id="wrapper">
+    <h1 onclick="alert('Whoooah! I actually never knew this modal is native. Much like I\'d expect from Electron...');">Hello, World!</h1>
+
+    <button id="print-content">Say Hello!</button>
+  </div>
+
+  <script>
+    var h2 = document.createElement('h2')
+    var wrapper = document.getElementById('wrapper')
+    
+    var printContent = function(e) {
+      h2.textContent = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod quisquam reprehenderit consequuntur, ducimus vero nemo consectetur neque? Impedit, inventore at nam, repellendus vel soluta, tempora commodi fugiat officia minima nesciunt."
+
+      wrapper.appendChild(h2)
+    }
+    
+    document.getElementById('print-content').addEventListener('click', printContent)
+
+  </script>
+
 </body>
 </html>
