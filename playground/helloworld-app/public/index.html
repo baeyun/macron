@@ -45,12 +45,9 @@
 
   <script>
     document.getElementById("read").onclick = function() {
-      pywebview.api.copy_file({
-        from: "C:/Users/bukharim96/Desktop/hello.txt",
-        to: "C:/Users/bukharim96/Desktop/hello2.txt"
-      })
+      pywebview.api.is_file(document.getElementById("out").value)
       // .then(function(data) {
-      //   document.getElementById("out").value = data.replace(/\\n/gi, "\u23ce");
+      //   alert(data)
       // })
     }
   </script>
