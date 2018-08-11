@@ -102,3 +102,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Macron debug file (example apps)
+newtron-debug.log
