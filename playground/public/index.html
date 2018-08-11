@@ -2,54 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hello World!</title>
-  <style>
-
-    button#print-content {
-      background: #F44336;
-      color:  #fff;
-      border: 4px solid #B71C1C;
-      padding:  10px 20px;
-      border-radius:  50px;
-      font-size:  17px;
-      letter-spacing: 1px;
-      font-weight:  bold;
-      cursor:  pointer;
-      outline: none;
-    }
-
-    button#print-content:hover {
-      box-shadow: 1px 1px 2px 0px black;
-    }
-
-    h2 {
-      font-weight:  normal;
-      font-size: 17px;
-      color: rebeccapurple;
-    }
-
-  </style>
 </head>
-<body style="margin: 0;text-align: center;font-family: 'Trebuchet MS';padding: 25px 0;">
-  
-  <div id="wrapper">
-    <h1 onclick="alert('Whoooah! I actually never knew this modal is native. Much like I\'d expect from Electron...');">Hello, World!</h1>
-
-    <button id="print-content">Say Hello!</button>
+<body>
+  <h1>Hello World</h1>
+  <div id="root">
+    <button id="print">Print to console</button>
+    <button id="open-file">Open File</button>
+    <button id="create-window">Create new window</button>
+    <button id="close-window">Close window</button>
+    <button id="quit">Quit</button>
   </div>
 
   <script>
-    var h2 = document.createElement('h2')
-    var wrapper = document.getElementById('wrapper')
-    
-    var printContent = function(e) {
-      h2.textContent = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod quisquam reprehenderit consequuntur, ducimus vero nemo consectetur neque? Impedit, inventore at nam, repellendus vel soluta, tempora commodi fugiat officia minima nesciunt."
+    document.getElementById("print").onclick = function() {
+      pywebview.api.log({toLog: JSON.stringify(pywebview)});
+    }
 
-      wrapper.appendChild(h2)
+    document.getElementById("create-window").onclick = function() {
+      window.appUID = pywebview.api.createWindow({
+        title: "JavaScriptWindow",
+        url: "",
+        minWidth: 300,
+        minHeight: 300,
+        userSelect: true
+      });
+      pywebview.api.log({toLog: "\nYou created a window!"});
+    }
+
+    document.getElementById("close-window").onclick = function() {
+      pywebview.api.closeWindow();
+    }
+
+    document.getElementById("open-file").onclick = function() {
+      pywebview.api.openFileDialog();
     }
     
-    document.getElementById('print-content').addEventListener('click', printContent)
-
+    document.getElementById("quit").onclick = function() {
+      pywebview.api.quitApplication('master');
+    }
   </script>
 
 </body>

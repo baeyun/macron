@@ -1,12 +1,12 @@
 const { exec } = require('child_process')
-const { existsSync, writeFileSync, readFileSync } = require('fs')
+const {
+  existsSync,
+  writeFileSync,
+  readFileSync,
+  watchFile
+} = require('fs')
 
 const appConfigPath = process.cwd() + '\\playground\\'
-
-// if (!existsSync(appConfigPath + "newtron.config.json")) {
-//   console.log("NEWTRON ERR: Application must include a newtron.config.json config file.")
-//   process.kill()
-// }
 
 const createConfigJSON = (name, configSrc) => {
   name && writeFileSync(name, JSON.stringify(require(configSrc)))
@@ -19,13 +19,26 @@ if (!existsSync(appConfigPath + "newtron.config.js")) {
   createConfigJSON(appConfigPath + "newtron.config.json", appConfigPath + "newtron.config.js")
 }
 
-exec(`python ./src/newtron-core.py ${appConfigPath}`, (error, stdout, stderr) => {
-  if (error) {
-    console.error(`NEWTRON ERR: ${error}`)
+const { spawn } = require('child_process')
+const newtronCoreInit = spawn('python', ['./src/__init__.py', appConfigPath])
 
-    return
-  }
+const logfilePath = appConfigPath + 'newtron-debug.log'
 
-  console.log(stdout)
-  console.log(stderr)
-})
+if (existsSync(logfilePath))
+  watchFile(logfilePath, { interval: 500 }, (curr, prev) => {
+    let from = curr.size - prev.size
+
+    process.stdout.write(readFileSync(logfilePath).toString().substr(-from))
+  })
+
+// newtronCoreInit.stdout.on('data', function (data) {
+//   console.log(data.toString());
+// });
+
+// newtronCoreInit.stderr.on('data', function (data) {
+//   console.log(data.toString());
+// });
+
+// newtronCoreInit.on('exit', function (code) {
+//   console.log('Exited with code ' + code.toString());
+// });
