@@ -12,9 +12,25 @@
     <button id="create-window">Create new window</button>
     <button id="close-window">Close window</button>
     <button id="quit">Quit</button>
+
+    <div style="background-color: burlywood">
+      <input type="text" id="filename">
+      <textarea id="file-contents"></textarea>
+      <button id="save">Save</button>
+    </div>
   </div>
 
   <script>
+    var filePath = document.getElementById("filename")
+    var fileContents = document.getElementById("file-contents")
+
+    document.getElementById("save").onclick = function() {
+      pywebview.api.create_file({
+        filePath: filePath,
+        content: fileContents,
+      });
+    }
+
     document.getElementById("print").onclick = function() {
       pywebview.api.log({toLog: JSON.stringify(pywebview)});
     }

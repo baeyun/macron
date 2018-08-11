@@ -27,6 +27,9 @@ class NewtronCoreAPI:
   def open_file_dialog(self, params):
     return self.fs.open_file_dialog()
   
+  def create_file(self, params):
+    self.create_file(params)
+  
   # Window API
   def create_window(self, config):
     self.window = Window().create(config)

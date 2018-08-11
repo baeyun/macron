@@ -27,4 +27,13 @@ class FileSystem:
     )
 
     return files
-    
+  
+  def create_file(self, params):
+    file_path = ''.join(params["filePath"])
+    file_contents = ''.join(params["content"])
+
+    if file_path and file_contents:
+      f = open(file_path, 'w+')
+      f.write(file_contents)
+      self.sync_file_updates(f)
+      f.close()
