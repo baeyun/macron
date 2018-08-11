@@ -1,5 +1,5 @@
 {
-  "name": "newtron",
+  "name": "macron",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
@@ -9,12 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bukharim96/newtron.git"
+    "url": "git+https://github.com/bukharim96/macron.git"
   },
   "author": "@bukharim96 @undefinedbuddy",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bukharim96/newtron/issues"
+    "url": "https://github.com/bukharim96/macron/issues"
   },
-  "homepage": "https://github.com/bukharim96/newtron#readme"
+  "homepage": "https://github.com/bukharim96/macron#readme"
 }
