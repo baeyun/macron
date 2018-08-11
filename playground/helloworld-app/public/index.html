@@ -29,69 +29,24 @@
       border: none;
       border-radius: 5px;
     }
+    body {
+      background: #333;
+      color: #ddd;
+    }
   </style>
 </head>
 <body>
-  <h1>Hello World</h1>
+  <h1>Some selfish app</h1>
   <div id="root">
-    <button id="print">Print to console</button>
-    <button id="clear">Clear console</button>
-    <button id="open-file">Open File</button>
-    <button id="create-window">Create new window</button>
-    <button id="close-window">Close window</button>
-    <button id="quit">Quit</button>
-
-    <div style="background-color: burlywood">
-      <input type="text" id="filename" placeholder="Enter file name" value="config.js">
-      <textarea id="file-contents" placeholder="Enter file contents"></textarea>
-      <button id="save">Save</button>
-    </div>
+    <button id="read">Read file</button>
+    <textarea style="width: 100%; height: 90vh;font-family: 'Monaco', monospace;" id="out"></textarea>
   </div>
 
   <script>
-    document.getElementById("save").onclick = function() {
-      pywebview.api.write_file({
-        filePath: "C:/Users/bukharim96/Desktop/config.js",
-        content:
-          "const { app } = require('macron');\n" +
-          "app.on('ready', (nativeEvent) => app.Windows.instantiate('Hello, World!'))"
-      });
-    }
-
-    document.getElementById("print").onclick = function() {
-      pywebview.api.log({toLog: JSON.stringify(pywebview)});
-    }
-
-    document.getElementById("clear").onclick = function() {
-      pywebview.api.clear();
-    }
-
-    document.getElementById("create-window").onclick = function() {
-      window.appUID = pywebview.api.create_window({
-        title: "JavaScriptWindow",
-        url: "",
-        minWidth: 300,
-        minHeight: 300,
-        userSelect: true
-      });
-    }
-
-    document.getElementById("close-window").onclick = function() {
-      pywebview.api.close_window();
-    }
-
-    document.getElementById("open-file").onclick = function() {
-      var f = pywebview.api.open_file_dialog({
-        dialogType: "OPEN_FILE",
-        allowMultipleFiles: true,
-        fileTypes: ['JavaScript Files (*.js;*.hc)', 'All files (*.*)']
-      });
-
-      alert(JSON.stringify(pywebview.api))
-    }
-    
-    document.getElementById("quit").onclick = function() {
-      pywebview.api.quit_application();
+    document.getElementById("read").onclick = function() {
+      pywebview.api.read_file("C:/Users/bukharim96/Downloads/Compressed/react-redux-albums-master/src/redux/modules/users.js").then(function(data) {
+        document.getElementById("out").value = data.replace(/\\n/gi, "\u23ce");
+      })
     }
   </script>
 
