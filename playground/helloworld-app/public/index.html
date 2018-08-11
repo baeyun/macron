@@ -45,10 +45,7 @@
 
   <script>
     document.getElementById("read").onclick = function() {
-      pywebview.api.append_file({
-        path: "C:/Users/bukharim96/Desktop/hello.txt",
-        content: document.getElementById("out").value
-      })
+      pywebview.api.clear_file("C:/Users/bukharim96/Desktop/hello.txt")
       // .then(function(data) {
       //   document.getElementById("out").value = data.replace(/\\n/gi, "\u23ce");
       // })
