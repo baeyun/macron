@@ -14,26 +14,38 @@ class FileSystem:
   def sync_file_updates(self, file_stream):
     file_stream.flush()
     fsync(file_stream.fileno())
+
+  def inject_js(self, params):
+    script = ''.join(params["script"]) or ""
+    uid = ''.join(params["uid"]) or "master"
+
+    webview.evaluate_js(script=script, uid="master")
   
-  def open_file_dialog(self):
+  def open_file_dialog(self, params):
     file_types = (
-      'Image Files (*.bmp;*.jpg;*.gif)',
+      'JavaScript Files (*.js;*.hc)',
       'All files (*.*)'
     )
-    files = webview.create_file_dialog(
-      webview.OPEN_DIALOG,
-      allow_multiple=True,
-      file_types=file_types
+
+    dt = params["dialogType"]
+
+    file_stream = webview.create_file_dialog(
+      webview.OPEN_DIALOG if dt == "OPEN_FILE" else webview.SAVE_DIALOG if dt == "SAVE_FILE" else webview.FOLDER_DIALOG if dt == "OPEN_FOLDER" else None,
+      allow_multiple=params["allowMultipleFiles"],
+      file_types=params["fileTypes"]
     )
 
-    return files
+    return {
+      "message": file_stream
+    }
   
-  def create_file(self, params):
+  def write_file(self, params):
     file_path = ''.join(params["filePath"])
     file_contents = ''.join(params["content"])
 
-    if file_path and file_contents:
-      f = open(file_path, 'w+')
-      f.write(file_contents)
-      self.sync_file_updates(f)
-      f.close()
+    f = open(file_path, "x")
+    f.write(file_contents)
+    self.sync_file_updates(f)
+    f.close()
+
+    return f

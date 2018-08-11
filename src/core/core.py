@@ -25,14 +25,21 @@ class NewtronCoreAPI:
   
   # File API
   def open_file_dialog(self, params):
-    return self.fs.open_file_dialog()
+    return self.fs.open_file_dialog(params)
   
-  def create_file(self, params):
-    self.create_file(params)
+  def write_file(self, params):
+    self.fs.write_file(params)
+  
+  # def inject_js(self, params):
+  #   self.fs.inject_js(params)
   
   # Window API
   def create_window(self, config):
     self.window = Window().create(config)
+
+    # self.fs.inject_js({
+    #   "script": "alert('Hello. I am a modal from Python!')"
+    # })
   
   def close_window(self, params):
     self.window.close()

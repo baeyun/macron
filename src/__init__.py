@@ -20,21 +20,23 @@ def main(args):
     app_config["name"],
     app_root_path + app_html_path,
     js_api=NewtronCoreAPI(app_root_path), # Set access for logfile
-    min_size=(500,1000),
+    width=500,
+    height=800,
     text_select=True,
     debug=True
   )
 
-  # try:
-  #   if webview.webview_ready():
-  #     webview.evaluate_js(
-  #       uid = master_uid,
-  #       script = """
-  #         alert('Hello');
-  #       """
-  #     )
-  # except Exception as exception:
-  #   print(exception)
+  try:
+    if webview.webview_ready():
+      webview.evaluate_js(
+        uid = master_uid,
+        script = """
+          document.body.style.backgroundColor = '#222';
+          document.body.style.color = '#fff';
+        """
+      )
+  except Exception as exception:
+    print(exception)
 
   return 0
 

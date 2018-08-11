@@ -2,6 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <style>
+    * {
+        font-family:  "Trebuchet MS", sans-serif;
+    }
+    input, textarea {
+      border: 2px solid #1565C0;
+      background: #C5E1A5;
+      padding:  10px 20px;
+      border-radius: 5px;
+      font-size: 20px;
+    }
+    div > * {
+      display:  block;
+      margin: 20px auto;
+    }
+
+    textarea {
+      width:  25%;
+      height:  150px;
+    }
+
+    button {
+      background: #BBDEFB;
+      padding:  10px 20px;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 <body>
   <h1>Hello World</h1>
@@ -14,20 +42,19 @@
     <button id="quit">Quit</button>
 
     <div style="background-color: burlywood">
-      <input type="text" id="filename">
-      <textarea id="file-contents"></textarea>
+      <input type="text" id="filename" placeholder="Enter file name" value="config.js">
+      <textarea id="file-contents" placeholder="Enter file contents"></textarea>
       <button id="save">Save</button>
     </div>
   </div>
 
   <script>
-    var filePath = document.getElementById("filename")
-    var fileContents = document.getElementById("file-contents")
-
     document.getElementById("save").onclick = function() {
       pywebview.api.create_file({
-        filePath: filePath,
-        content: fileContents,
+        filePath: "C:/Users/bukharim96/Desktop/config.js",
+        content:
+          "const { app } = require('macron');\n" +
+          "app.on('ready', (nativeEvent) => app.Windows.instantiate('Hello, World!'))"
       });
     }
 
@@ -54,7 +81,13 @@
     }
 
     document.getElementById("open-file").onclick = function() {
-      pywebview.api.open_file_dialog();
+      var f = pywebview.api.open_file_dialog({
+        dialogType: "OPEN_FILE",
+        allowMultipleFiles: true,
+        fileTypes: ['JavaScript Files (*.js;*.hc)', 'All files (*.*)']
+      });
+
+      alert(JSON.stringify(pywebview.api))
     }
     
     document.getElementById("quit").onclick = function() {

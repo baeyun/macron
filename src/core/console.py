@@ -1,6 +1,3 @@
-import os
-import sys
-import chalk
 import webview
 from pathlib import Path
 
