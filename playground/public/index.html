@@ -7,6 +7,7 @@
   <h1>Hello World</h1>
   <div id="root">
     <button id="print">Print to console</button>
+    <button id="clear">Clear console</button>
     <button id="open-file">Open File</button>
     <button id="create-window">Create new window</button>
     <button id="close-window">Close window</button>
@@ -18,27 +19,30 @@
       pywebview.api.log({toLog: JSON.stringify(pywebview)});
     }
 
+    document.getElementById("clear").onclick = function() {
+      pywebview.api.clear();
+    }
+
     document.getElementById("create-window").onclick = function() {
-      window.appUID = pywebview.api.createWindow({
+      window.appUID = pywebview.api.create_window({
         title: "JavaScriptWindow",
         url: "",
         minWidth: 300,
         minHeight: 300,
         userSelect: true
       });
-      pywebview.api.log({toLog: "\nYou created a window!"});
     }
 
     document.getElementById("close-window").onclick = function() {
-      pywebview.api.closeWindow();
+      pywebview.api.close_window();
     }
 
     document.getElementById("open-file").onclick = function() {
-      pywebview.api.openFileDialog();
+      pywebview.api.open_file_dialog();
     }
     
     document.getElementById("quit").onclick = function() {
-      pywebview.api.quitApplication('master');
+      pywebview.api.quit_application();
     }
   </script>
 
