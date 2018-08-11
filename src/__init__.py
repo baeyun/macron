@@ -5,21 +5,23 @@ import webview
 import chalk
 import threading
 
-sys.path.append("./src/core")
+# Get current dir
+dirname = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(dirname, 'core'))
 
-from core import NewtronCoreAPI
+from core import MacronCoreAPI
 
 def main(args):
-  app_root_path = args[1]
-  app_config = loads(open(app_root_path + "newtron.config.json", 'r').read())
-  # app_uri = app_config["src"]["uri"]
+  app_config = loads(loads(args[1]))
+  # Windows compliant path
+  app_root_path = app_config["appRootPath"].replace("//", "\u005c")
   app_html_path = app_config["src"]["html"]
-  
-  # webview.create_window(app_config["name"], app_root_path + app_config["src"])
+  # app_dev_uri = app_config["src"]["uri"]
+
   master_uid = webview.create_window(
     app_config["name"],
     app_root_path + app_html_path,
-    js_api=NewtronCoreAPI(app_root_path), # Set access for logfile
+    js_api=MacronCoreAPI(app_root_path), # Set access for logfile
     width=500,
     height=800,
     text_select=True,

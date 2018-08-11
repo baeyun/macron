@@ -8,7 +8,15 @@ from console import Console
 from fs import FileSystem
 from window import Window
 
-class NewtronCoreAPI:
+# from console.console import Console
+# from fs.fs import FileSystem
+# from window.window import Window
+
+# import fs as FileSystem
+# import console as Console
+# import window as Window
+
+class MacronCoreAPI:
   def __init__(self, app_root_path):
     self.console = Console(app_root_path)
     self.fs = FileSystem()
