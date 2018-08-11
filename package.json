@@ -7,6 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./scripts/start.js"
   },
+  "bin": {
+    "macron": "./scripts/cli.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bukharim96/macron.git"
