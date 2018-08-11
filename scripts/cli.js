@@ -36,7 +36,7 @@ switch(args[0]) {
    */
   case 'start':
     const macronRootDir = normalize(__dirname + '/../')
-    const appRootPath = cwd
+    const appRootPath = normalize(cwd)
     const appConfigFilePath = appRootPath + 'macron.config.js'
     const logfilePath = appRootPath + 'macron-debug.log'
 
@@ -49,13 +49,13 @@ switch(args[0]) {
     appConfig.appRootPath = appRootPath // required
 
     // console.log(`python ${macronRootDir}src/__init__.py "${JSON.stringify(appConfig).replace(/"/g, '\\"')}"`)
-    
+
     const startProcess = spawn(
       'python',
       [
         macronRootDir + 'src/__init__.py',
         // validate appConfig for cli usage
-        `"${JSON.stringify(appConfig).replace(/"/g, '\\"')}"`
+        `"${JSON.stringify(appConfig).replace(/\\/g, '/').replace(/"/g, '\\"')}"`
       ]
     )
 
