@@ -19,7 +19,7 @@ from window import Window
 class MacronCoreAPI:
   def __init__(self, app_root_path):
     self.console = Console(app_root_path)
-    self.fs = FileSystem()
+    self.fs = FileSystem(console=self.console)
     self.window = None
   
   """ Core Native APIs """
@@ -38,9 +38,48 @@ class MacronCoreAPI:
   def write_file(self, params):
     self.fs.write_file(params)
   
-  # def inject_js(self, params):
-  #   self.fs.inject_js(params)
+  def read_file(self, params):
+    return self.fs.read_file(params)
   
+  def append_file(self, params):
+    return self.fs.append_file(params)
+  
+  def clear_file(self, params):
+    return self.fs.clear(params)
+  
+  def copy_file(self, params):
+    return self.fs.copy_file(params)
+  
+  def is_file(self, params):
+    return self.fs.is_file(params)
+  
+  def is_directory(self, params):
+    return self.fs.is_dir(params)
+  
+  def mkdir(self, params):
+    return self.fs.mkdir(params)
+  
+  def chdir(self, params):
+    return self.fs.chdir(params)
+  
+  def realpath(self, params):
+    return self.fs.realpath(params)
+  
+  def rename_file(self, params):
+    return self.fs.rename(params)
+  
+  def unlink(self, params):
+    return self.fs.unlink(params)
+  
+  def rmdir(self, params):
+    return self.fs.rmdir(params)
+  
+  def rmdir_empty(self, params):
+    return self.fs.rmdir_empty(params)
+  
+  def read_dir(self, params):
+    return self.fs.read_dir(params)
+
   # Window API
   def create_window(self, config):
     self.window = Window().create(config)

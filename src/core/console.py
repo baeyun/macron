@@ -7,7 +7,7 @@ class Console:
   def __init__(self, app_root_path):
     # Create logfile
     self.logfile_stream = self.init_logfile(app_root_path)
-    self.fs = FileSystem()
+    self.fs = FileSystem(console=self)
 
   def init_logfile(self, app_root_path):
     logfile_path = Path(app_root_path + "newtron-debug.log")
