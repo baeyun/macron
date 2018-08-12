@@ -39,18 +39,15 @@
   <h1>Some selfish app</h1>
   <div id="root">
     <button id="read">Actions</button>
-    <!-- <textarea style="width: 100%; height: 90vh;font-family: 'Monaco', monospace;" id="out"></textarea> -->
+    <textarea style="width: 100%; height: 90vh;font-family: 'Monaco', monospace;" id="out"></textarea>
     <input type="text" id="out">
   </div>
 
   <script>
     document.getElementById("read").onclick = function() {
-      pywebview.api.rename({
-        old: "C:/Users/bukharim96/Desktop/happy.txt",
-        new: "C:/Users/bukharim96/Desktop/" + document.getElementById("out").value
-      })
+      pywebview.api.read_dir("C:/Users/bukharim96/Desktop/Projects/guppy")
       // .then(function(data) {
-      //   alert(data)
+      //   document.getElementById("out").value = data
       // })
     }
   </script>
