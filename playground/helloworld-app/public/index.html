@@ -45,6 +45,15 @@
 
   <script>
     document.getElementById("read").onclick = function() {
+      pywebview.api.create_window({
+        title: "Some Weird Window",
+        url: "https://github.com/bukharim96/macron/",
+        width: 960,
+        height: 500,
+        debug: true,
+        backgroundColor: "#333",
+        confirmQuit: true
+      })
       // pywebview.api.create_server({
       //   ip: "localhost",
       //   port: 3000
