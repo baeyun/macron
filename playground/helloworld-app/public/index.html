@@ -45,7 +45,10 @@
 
   <script>
     document.getElementById("read").onclick = function() {
-      pywebview.api.chdir(document.getElementById("out").value)
+      pywebview.api.rename({
+        old: "C:/Users/bukharim96/Desktop/happy.txt",
+        new: "C:/Users/bukharim96/Desktop/" + document.getElementById("out").value
+      })
       // .then(function(data) {
       //   alert(data)
       // })
