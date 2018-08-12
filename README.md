@@ -2,4 +2,4 @@
   <img src="https://raw.githubusercontent.com/bukharim96/macron/master/resources/macron-logo.png">
 </p>
 
-# Macron
+<h1 align="center">Macron</h1>
