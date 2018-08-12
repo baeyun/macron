@@ -1,10 +1,9 @@
 import os
 import sys
-import chalk
+import fnmatch
 import webview
 from pathlib import Path
 from shutil import copyfile, rmtree
-import os
 
 class FileSystem:
   def __init__(self, console):
@@ -21,7 +20,7 @@ class FileSystem:
   def inject_js(self, params):
     script = ''.join(params["script"]) or ""
     uid = ''.join(params["uid"]) or "master"
-    
+
     webview.evaluate_js(script=script, uid="master")
   
   # @todo refactor naming
@@ -149,7 +148,20 @@ class FileSystem:
       os.rmdir(path)
     return
   
+  # @todo enhance accessability
   def read_dir(self, path):
     if self.is_dir(path):
       return os.listdir(path)
     return
+  
+  # @note unlike read_dir it returns a list with absolute
+  # paths of files and dirs with Path(path)
+  def read_dir_glob(self, params):
+    ff = []
+
+    if self.is_dir(''.join(params["path"])):
+      for f in self.read_dir(''.join(params["path"])):
+        if fnmatch.fnmatch(f, ''.join(params["pattern"])):
+          ff.append(f)
+
+    return ff

@@ -79,6 +79,9 @@ class MacronCoreAPI:
   
   def read_dir(self, params):
     return self.fs.read_dir(params)
+  
+  def read_dir_glob(self, params):
+    return self.fs.read_dir_glob(params)
 
   # Window API
   def create_window(self, config):
