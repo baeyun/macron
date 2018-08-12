@@ -45,13 +45,14 @@
 
   <script>
     document.getElementById("read").onclick = function() {
-      pywebview.api.read_dir_glob({
-        path: "C:/Users/bukharim96/Desktop/Projects/guppy/",
-        pattern: "*.md"
-      })
-      .then(function(data) {
-        document.getElementById("out").value = data;
-      })
+      // pywebview.api.create_server({
+      //   ip: "localhost",
+      //   port: 3000
+      // })
+      // .then(function(data) {
+      //   pywebview.api.log("data.toString()")
+      //   // document.getElementById("out").value = data;
+      // })
     }
   </script>
 
