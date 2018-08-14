@@ -39,10 +39,9 @@ module.exports = function() {
   process.stdout.write(
     [
       '\n    ',
-      chalk.cyan('Macron Platform-Specific Dependencies.\n'),
-      chalk.grey('    All missing dependencies must be installed before proceeding.\n\n'),
+      chalk.red('Macron requires the following dependencies:\n\n'),
       dependencyStatus.join('\n'),
-      '\n\n'
+      '\n\n\n'
     ].join('')
   )
 }
