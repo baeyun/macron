@@ -2,8 +2,9 @@ const chalk = require('chalk')
 const { mkdirSync } = require('fs')
 
 module.exports = function(cwd, appName) {
-  if (!appName)
-    throw new Error("MACRON ERR: init requires a valid app name.")
+  if (!appName) {
+    process.stdout.write(chalk.red("\n    MACRON ERR: init command requires a valid app name.\n\n"))
+  }
 
   try {
     mkdirSync(cwd + appName)

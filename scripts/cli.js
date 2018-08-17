@@ -3,7 +3,7 @@
 // prompts required build tools
 // require('./dependencyChecks')()
 
-const meow = require('meow');
+// const meow = require('meow');
 const { normalize } = require('path')
 const { spawn } = require('child_process')
 const {
