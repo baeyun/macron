@@ -28,6 +28,7 @@ switch(args[0]) {
    * macron generate-icons
    */
   case 'generate-icons':
+    require('./generate-icons')(cwd)
     break
 
   /**
