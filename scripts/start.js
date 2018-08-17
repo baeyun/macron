@@ -8,9 +8,8 @@ const {
 
 module.exports = function(cwd) {
   const macronRootDir = normalize(__dirname + '/../')
-  const appRootPath = normalize(cwd)
-  const appConfigFilePath = appRootPath + 'macron.config.js'
-  const logfilePath = appRootPath + 'macron-debug.log'
+  const appConfigFilePath = cwd + 'macron.config.js'
+  const logfilePath = cwd + 'macron-debug.log'
 
   // console.log(macronRootDir + 'src/__init__.py')
   
@@ -18,7 +17,7 @@ module.exports = function(cwd) {
     throw new Error('MACRON ERR: Application must include a macron.config.js config file.')
 
   const appConfig = require(appConfigFilePath)
-  appConfig.appRootPath = appRootPath // required
+  appConfig.appRootPath = cwd // required
 
   // console.log(`python ${macronRootDir}src/__init__.py "${JSON.stringify(appConfig).replace(/"/g, '\\"')}"`)
 

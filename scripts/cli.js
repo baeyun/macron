@@ -4,9 +4,9 @@
 // require('./dependencyChecks')()
 
 // const meow = require('meow');
-const { normalize } = require('path')
+const { sep: pathSeperator } = require('path')
 
-const cwd = normalize(process.cwd() + '/')
+const cwd = process.cwd() + pathSeperator
 const [,, ...args] = process.argv
 
 switch(args[0]) {
@@ -14,7 +14,7 @@ switch(args[0]) {
    * macron init example-app
    */
   case 'init':
-    require('./init')(cwd, args[1])
+    require('./init')(cwd, args[1] || null)
     break
   
   /**

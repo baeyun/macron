@@ -1,18 +1,81 @@
+const {
+  basename,
+  sep: pathSeperator
+} = require('path')
+const {
+  mkdirSync,
+  existsSync,
+  writeFileSync
+} = require('fs')
 const chalk = require('chalk')
-const { mkdirSync } = require('fs')
+
+/**
+ * @todo:
+ *     - add .gitignore file
+ *     - add .npmignore file
+ *     - add package.json file
+ *     - add app.bundle.js file
+ */
 
 module.exports = function(cwd, appName) {
-  if (!appName) {
-    process.stdout.write(chalk.red("\n    MACRON ERR: init command requires a valid app name.\n\n"))
+  if (appName) {
+    cwd = cwd + appName + pathSeperator
+
+    try {
+      mkdirSync(cwd)
+    } catch (err) {
+      if (err.code !== 'EEXIST') throw err
+    }
+  } else {
+    appName = basename(cwd)
   }
 
-  try {
-    mkdirSync(cwd + appName)
+  const appConfigFilePath = cwd + 'macron.config.js'
+  const indexHTMLFilePath = cwd + 'public/index.html'
+  const gitIgnoreFilePath = cwd + '.gitignore'
+  // const npmIgnoreFilePath = cwd + '.npmignore' // @todo - necessary?
+  const packageJsonFilePath = cwd + 'package.json'
 
+  // Macron configuration file
+  if (existsSync(appConfigFilePath)) {
     process.stdout.write(
-      `\n    ${appName + chalk.green(' created successfully.')}\n    ${chalk.yellow('Run: cd '+appName)}\n\n`
+      chalk.yellow('\n    This project is already a macron app.')
+      + chalk.cyan('\n    Run: macron start\n\n')
     )
-  } catch (err) {
-    if (err.code !== 'EEXIST') throw err
+    process.exit(0)
   }
+  
+  writeFileSync(
+    appConfigFilePath,
+    require('./temps/macron-config')(appName)
+  )
+
+  // App root HTML file
+  if (!existsSync(cwd + 'public')) {
+    mkdirSync(cwd + 'public')
+    
+    if (!existsSync(indexHTMLFilePath))
+      writeFileSync(
+        indexHTMLFilePath,
+        require('./temps/index-html')
+      )
+  }
+  
+  // package.json file
+  if (!existsSync(packageJsonFilePath))
+  writeFileSync(
+    packageJsonFilePath,
+    require('./temps/package-json')(appName)
+  )
+
+  // gitignore file
+  if (!existsSync(gitIgnoreFilePath))
+    writeFileSync(
+      gitIgnoreFilePath,
+      require('./temps/gitignore')
+    )
+
+  process.stdout.write(
+    `\n    ${appName + chalk.green(' created successfully.')}\n    ${chalk.cyan('Run: cd '+appName)}\n\n`
+  )
 }
