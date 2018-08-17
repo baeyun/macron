@@ -21,7 +21,7 @@ switch(args[0]) {
    * macron start
    */
   case 'start':
-    require('./start')(cwd)    
+    require('./start')(cwd)
     break
 
   /**
@@ -34,6 +34,7 @@ switch(args[0]) {
    * macron build
    */
   case 'build':
+    require('./build')(cwd)
     break
 }
 
