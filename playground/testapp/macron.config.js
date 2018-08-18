@@ -1,10 +1,10 @@
 /**
-* Macron Configuration File
-*/
+ * Macron Configuration File
+ */
 
 module.exports = {
-  name: 'Hello World App | ש',
-  devServerURI: 'https://mail.google.com',
+  name: 'testapp',
+  devServerURI: 'http://localhost:3000/',
   sourcePath: './public/index.html',
   // nativeScriptsPath: './native',
   // logoPath: './src/img/logo.png',

@@ -1,6 +1,7 @@
 import sys
 import os
 from json import loads
+# import .webviews.winforms as webview
 import webview
 import chalk
 import threading
@@ -15,12 +16,13 @@ def main(args):
   app_config = loads(loads(args[1]))
   # Windows compliant path
   app_root_path = app_config["appRootPath"].replace("//", "\u005c")
-  app_html_path = app_config["src"]["html"]
-  # app_dev_uri = app_config["src"]["uri"]
+  app_html_path = app_config["sourcePath"]
+  # app_dev_uri = app_config["devServerURI"]
 
   master_uid = webview.create_window(
     app_config["name"],
     app_root_path + app_html_path,
+    # app_dev_uri,
     js_api=MacronCoreAPI(app_root_path), # Set access for logfile
     width=500,
     height=800,
@@ -28,20 +30,20 @@ def main(args):
     debug=True
   )
 
-  try:
-    if webview.webview_ready():
-      webview.evaluate_js(
-        uid = master_uid,
-        script = """
-          document.body.style.backgroundColor = '#222';
-          document.body.style.color = '#fff';
-        """
-      )
-  except Exception as exception:
-    print(exception)
+  # try:
+  #   if webview.webview_ready():
+  #     webview.evaluate_js(
+  #       uid = master_uid,
+  #       script = """
+  #         document.body.style.backgroundColor = '#222';
+  #         document.body.style.color = '#fff';
+  #       """
+  #     )
+  # except Exception as exception:
+  #   print(exception)
 
-  return 0
+  # return 0
 
 if __name__ == "__main__":
-  t = threading.Thread(target=main(args = sys.argv))
+  t = threading.Thread(target=main(args=sys.argv))
   t.start()

@@ -7,6 +7,7 @@ import threading
 from console import Console
 from fs import FileSystem
 from window import Window
+from process import Process
 # from http_client import HttpClient
 
 # from console.console import Console
@@ -22,6 +23,7 @@ class MacronCoreAPI:
     self.console = Console(app_root_path)
     self.fs = FileSystem(console=self.console)
     self.window = None
+    self.process = Process()
     # self.http_client = HttpClient(console=self.console)
   
   """ Core Native APIs """
@@ -99,6 +101,11 @@ class MacronCoreAPI:
   def quit_application(self, params):
     self.console.close_stream()
     self.window.quit()
+  
+  # Process API
+
+  def execute(self, params):
+    return self.process.execute(params)
   
   # HTTP Client API
   # def create_server(self, params):

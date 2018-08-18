@@ -25,22 +25,23 @@ class FileSystem:
   
   # @todo refactor naming
   def open_file_dialog(self, params):
-    file_types = (
-      'JavaScript Files (*.js;*.hc)',
-      'All files (*.*)'
-    )
+    return
+    # file_types = (
+    #   'JavaScript Files (*.js;*.hc)',
+    #   'All files (*.*)'
+    # )
 
-    dt = params["dialogType"]
+    # dt = params["dialogType"]
 
-    file_stream = webview.create_file_dialog(
-      webview.OPEN_DIALOG if dt == "OPEN_FILE" else webview.SAVE_DIALOG if dt == "SAVE_FILE" else webview.FOLDER_DIALOG if dt == "OPEN_FOLDER" else None,
-      allow_multiple=params["allowMultipleFiles"],
-      file_types=params["fileTypes"]
-    )
+    # file_stream = webview.create_file_dialog(
+    #   webview.OPEN_DIALOG if dt == "OPEN_FILE" else webview.SAVE_DIALOG if dt == "SAVE_FILE" else webview.FOLDER_DIALOG if dt == "OPEN_FOLDER" else None,
+    #   allow_multiple=params["allowMultipleFiles"],
+    #   file_types=params["fileTypes"]
+    # )
 
-    return {
-      "message": file_stream
-    }
+    # return {
+    #   "message": file_stream
+    # }
   
   def write_file(self, params):
     file_path = ''.join(params["filePath"])
@@ -58,7 +59,7 @@ class FileSystem:
       return f.read()
   
   def append_file(self, params):
-    file_path = ''.join(params["path"])
+    file_path = ''.join(params["filePath"])
     content = ''.join(params["content"])
     
     with open(file_path, "a") as f:
