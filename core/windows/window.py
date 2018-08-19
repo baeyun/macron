@@ -75,10 +75,11 @@ class MacronWindow(Window):
     #     - None=0 | Only the client area is visible. We'll use to simulate a frameless window
     # # self.window.WindowStyle = 0
 
+    # # def on_Activated(self, sender, args):
     # Occurs when a window becomes the foreground window.
-    # # self.window.Activated += self.on_activated
+    # # self.window.Activated += self.on_Activated
     # Occurs when the window is about to close.
-    # # self.window.Closed += self.on_Closed
+    # self.window.Closed += self.on_Closed
     # Occurs directly after Close() is called, and can be handled to cancel window closure.
     # # self.window.Closing += self.on_Closing
     # Occurs just before any context menu on the element is closed.
