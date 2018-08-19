@@ -77,17 +77,57 @@ class MacronWindow(Window):
     #     - None=0 | Only the client area is visible. We'll use to simulate a frameless window
     # # self.window.WindowStyle = 0
 
+  # Attempts to bring the window to the foreground and activates it
+  # Returns {Boolean} true if the Window was successfully activated;
+  # otherwise, false.
+  def activate():
+    return self.window.Activate()
 
-    # @todo
-    # - Window.Icon
-    # - Window.Uid - Gets or sets the unique identifier (for localization) for this element
-    # - Window.WindowState - Gets or sets a value that indicates whether a window is restored, minimized, or maximized
-    # - Window.ContextMenu
-    # - Window.Owner - Gets or sets the Window that owns this Window
-    # - Window.Parent - Gets the logical parent element of this element
-    # - Window.OwnedWindows - Gets a collection of windows for which this window is the owner
-    # - Window.Language - Gets or sets localization/globalization
-    #   language information that applies to an element
+  # Attempts to set focus to this element.
+  # Returns {Boolean} true if keyboard focus and logical
+  # focus were set to this element; false if only logical
+  # focus was set to this element, or if the call to this
+  # method did not force the focus to change.
+  def focus():
+    return self.window.Focus()
+
+  # Makes a window invisible. Hide() is called on a window
+  # that is closing (Closing) or has been closed (Closed).
+  def hide():
+    self.window.Hide()
+
+  # Opens a window and returns without waiting for the newly
+  # opened window to close. Show() is called on a window that
+  # is closing (Closing) or has been closed (Closed).
+  def show():
+    self.window.Show()
+
+  # Manually closes a Window.
+  def close():
+    self.window.Close()
+
+# @todo
+# Properties
+#  - Window.Icon
+#  - Window.Uid - Gets or sets the unique identifier
+#    (for localization) for this element
+#  - Window.WindowState - Gets or sets a value that indicates
+#    whether a window is restored, minimized, or maximized
+#  - Window.ContextMenu
+#  - Window.Owner - Gets or sets the Window that owns this
+#    Window
+#  - Window.Parent - Gets the logical parent element of this
+#    element
+#  - Window.OwnedWindows - Gets a collection of windows for
+#    which this window is the owner
+#  - Window.Language - Gets or sets localization/globalization
+#    language information that applies to an element
+# Methods:
+#  - Window.DragMove() - Allows a window to be dragged by a mouse
+#    with its left button down over an exposed area of the window's
+#    client area.
+#  - Window.ShowDialog() - Opens a window and returns only when
+#    the newly opened window is closed.
 
 def create_window():
   def create():
