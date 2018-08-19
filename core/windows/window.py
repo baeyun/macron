@@ -33,8 +33,6 @@ class MacronWindow(Window):
     # # self.window.MinWidth = 500
     # Gets a value that indicates whether the window is active
     # # self.window.IsActive
-    # Gets or sets a value indicating whether this element is enabled in the user interface (UI)
-    # # self.window.IsEnabled = True
     # Gets a value that determines whether this element has logical focus
     # # self.window.IsFocused = True
     # Gets a value indicating whether this element has keyboard focus
@@ -76,6 +74,29 @@ class MacronWindow(Window):
     #   Opts:
     #     - None=0 | Only the client area is visible. We'll use to simulate a frameless window
     # # self.window.WindowStyle = 0
+
+    # Occurs when a window becomes the foreground window.
+    # # self.window.Activated += self.on_activated
+    # Occurs when the window is about to close.
+    # # self.window.Closed += self.on_Closed
+    # Occurs directly after Close() is called, and can be handled to cancel window closure.
+    # # self.window.Closing += self.on_Closing
+    # Occurs just before any context menu on the element is closed.
+    # # self.window.ContextMenuClosing += self.on_ContextMenuClosing
+    # Occurs when any context menu on the element is opened.
+    # # self.window.ContextMenuOpening += self.on_ContextMenuOpening
+    # Occurs when a window becomes a background window.
+    # # self.window.Deactivated += self.on_Deactivated
+    # Occurs when the value of the Focusable property changes.
+    # # self.window.FocusableChanged += self.on_FocusableChanged
+    # Occurs when a key is pressed while focus is on this element.
+    # # self.window.PreviewKeyDown += self.on_PreviewKeyDown
+    # Occurs when a key is released while focus is on this element.
+    # # self.window.PreviewKeyUp += self.on_PreviewKeyUp
+    # Occurs when either the ActualHeight or the ActualWidth properties change value on this element.
+    # # self.window.SizeChanged += self.on_SizeChanged
+    # Occurs when the window's WindowState property changes.
+    # # self.window.StateChanged += self.on_StateChanged
 
   # Attempts to bring the window to the foreground and activates it
   # Returns {Boolean} true if the Window was successfully activated;
