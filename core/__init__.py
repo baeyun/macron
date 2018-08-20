@@ -1,49 +1,28 @@
 import sys
 import os
 from json import loads
-# import .webviews.winforms as webview
-import webview
-import chalk
-import threading
 
 # Get current dir
 dirname = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(dirname, 'core'))
+sys.path.append(os.path.join(dirname, 'windows'))
 
-from core import MacronCoreAPI
+# from core import MacronCoreAPI
+from window import create_window
+
+def get_os():
+  return
 
 def main(args):
   app_config = loads(loads(args[1]))
-  # Windows compliant path
-  app_root_path = app_config["appRootPath"].replace("//", "\u005c")
-  app_html_path = app_config["sourcePath"]
+  # app_root_path = app_config["appRootPath"].replace("//", "\u005c")
+  # app_html_path = app_config["sourcePath"]
   # app_dev_uri = app_config["devServerURI"]
+  
+  # @todo handle err
+  if "mainWindow" not in app_config:
+    print("Error: 'mainWindow' property not defined in macron.config.js")
 
-  master_uid = webview.create_window(
-    app_config["name"],
-    app_root_path + app_html_path,
-    # app_dev_uri,
-    js_api=MacronCoreAPI(app_root_path), # Set access for logfile
-    width=500,
-    height=800,
-    text_select=True,
-    debug=True
-  )
-
-  # try:
-  #   if webview.webview_ready():
-  #     webview.evaluate_js(
-  #       uid = master_uid,
-  #       script = """
-  #         document.body.style.backgroundColor = '#222';
-  #         document.body.style.color = '#fff';
-  #       """
-  #     )
-  # except Exception as exception:
-  #   print(exception)
-
-  # return 0
+  create_window(config=app_config["mainWindow"])
 
 if __name__ == "__main__":
-  t = threading.Thread(target=main(args=sys.argv))
-  t.start()
+  main(args=sys.argv)

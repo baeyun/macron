@@ -16,11 +16,39 @@ const Window = function(config={}) {
 
   let {
     title = 'Macron App',
+    height = 500,
+    width = 500,
+    maxHeight = null,
+    maxWidth = null,
+    minHeight = null,
+    minWidth = null,
+    resizable = true,
+    focusOnStartup = true,
+    hideInTaskbar = false,
+    hideOnStartup = false,
+    startupFromCenter = false,
+    startupState = "normal",
+    frameless = false,
+
     sourcePath = null,
     nativeDependencies = null
   } = config
   
   this.title = title
+  this.height = height
+  this.width = width
+  if (maxHeight) this.maxHeight = maxHeight
+  if (maxWidth) this.maxWidth = maxWidth
+  if (minHeight) this.minHeight = minHeight
+  if (minWidth) this.minWidth = minWidth
+  this.resizable = resizable
+  this.focusOnStartup = focusOnStartup
+  this.hideInTaskbar = hideInTaskbar
+  this.hideOnStartup = hideOnStartup
+  this.startupFromCenter = startupFromCenter
+  this.startupState = startupState
+  this.frameless = frameless
+  
   this.sourcePath = sourcePath
   this.nativeDependencies = nativeDependencies
 
@@ -35,15 +63,23 @@ const Window = function(config={}) {
 }
 
 const App = new Window({
+  title: "Joker",
+  height: 700,
+  width: 900,
+  minHeight: 500,
+  minWidth: 500,
+  startupFromCenter: true,
+  frameless: true
+  // menu: require('./src/main-app-menubar'),
   // sourcePath: './public/index.html',
   // nativeDependencies: ['numpy.py', 'ffmpeg.py']
 })
-.on('close', function() {
-  console.log('App is closed')
-})
-.on('close', function() {
-  console.log('Another callback on the close event')
-})
+// .on('close', function() {
+//   console.log('App is closed')
+// })
+// .on('close', function() {
+//   console.log('Another callback on the close event')
+// })
 
 // for(let event in MacronRegisteredEventCallbacks) {
 //   MacronRegisteredEventCallbacks[event].forEach(e => {
@@ -51,7 +87,7 @@ const App = new Window({
 //   });
 // }
 
-console.log({
+module.exports = {
   name: 'Hello World App',
   mainWindow: App,
   devServerURI: 'https://mail.google.com',
@@ -64,4 +100,4 @@ console.log({
   // ],
   autoGenerateIconSizes: true,
   buildPath: './builds'
-})
+}
