@@ -10,8 +10,6 @@ module.exports = function(cwd) {
   const macronRootDir = normalize(__dirname + '/../')
   const appConfigFilePath = cwd + 'macron.config.js'
   const logfilePath = cwd + 'macron-debug.log'
-
-  // console.log(macronRootDir + 'src/__init__.py')
   
   if (!existsSync(appConfigFilePath))
     throw new Error('MACRON ERR: Application must include a macron.config.js config file.')
@@ -19,12 +17,10 @@ module.exports = function(cwd) {
   const appConfig = require(appConfigFilePath)
   appConfig.appRootPath = cwd // required
 
-  // console.log(`python ${macronRootDir}src/__init__.py "${JSON.stringify(appConfig).replace(/"/g, '\\"')}"`)
-
   const startProcess = spawn(
     process.platform !==  'linux' ? 'python' : 'python3',
     [
-      macronRootDir + 'src/__init__.py',
+      macronRootDir + 'core/__init__.py',
       // validate appConfig for cli usage
       `"${JSON.stringify(appConfig).replace(/\\/g, '/').replace(/"/g, '\\"')}"`
     ]
