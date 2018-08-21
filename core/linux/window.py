@@ -1,11 +1,10 @@
 import gi
 import sys
-import time
 import threading
 
 gi.require_version("Gtk", "3.0")
 
-from gi.repository import GLib, Gtk, GObject, Gdk
+from gi.repository import Gtk, Gdk
 
 class MacronWindow(Gtk.Window):
   def __init__(self, config):
@@ -85,14 +84,14 @@ class MacronWindow(Gtk.Window):
 
     # TODO: Handle window events
   
-  def focus(self):
-    self.window.set_focus_on_map(self.focus_on_start)
+  # def focus(self):
+  #   self.window.set_focus_on_map(self.focus_on_start)
   
-  def hide(self):
-    self.window.hide()
+  # def hide(self):
+  #   self.window.hide()
   
-  def close(self):
-    self.window.close()
+  # def close(self):
+  #   self.window.close()
 
 def create_window(config):
   def create():
