@@ -25,7 +25,7 @@ class MacronWebview:
     if "devServerURI" in config:
       self.webview.load_uri(config["devServerURI"])
     else:
-      self.webview.load_uri(config["devServerURI"])
+      self.webview.load_uri("https://google.com")
     
     self.webview.get_inspector()
     self.inspector = self.webview.get_inspector()

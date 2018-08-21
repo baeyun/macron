@@ -17,8 +17,13 @@ class MacronWindow(Gtk.Window):
       default_width=config["height"] if "height" in config else 500
     )
     self.window.connect("destroy", Gtk.main_quit)
-    # self.win_webview = MacronWebview("No config for now!!")
-    # self.window.add(self.win_webview.webview)
+
+    # Initialize every window with a webview and pass macron config
+    # passed from macron.config.js
+    self.win_webview = MacronWebview(config={
+      "devServerURI": "file:///home/bukharim96/Desktop/mactube/public/index.html"
+    })
+    self.window.add(self.win_webview.webview)
     
     # Dimensions & Geometry
     # These properties are just maps for the original
