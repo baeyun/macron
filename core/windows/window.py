@@ -1,5 +1,6 @@
 import sys
 import clr
+from os import path
 
 # if sys.platform.lower() not in ['cli','win32']:
 #   print("Only Windows Systems is supported on WPF.")
@@ -9,42 +10,45 @@ clr.AddReference(r"wpf\PresentationFramework")
 from System.Windows.Markup import XamlReader
 from System.Threading import Thread, ThreadStart, ApartmentState
 from System.Windows import Application, Window, HorizontalAlignment, VerticalAlignment, Media
-from System.Windows.Controls import WrapPanel, DockPanel, Dock, Menu, MenuItem, ToolTip
+# from System.Windows.Controls import WebBrowser, WrapPanel, DockPanel, Dock, Menu, MenuItem, ToolTip
+
+sys.path.insert(0, path.dirname(path.abspath(__file__)))
+from webview import MacronWebview
 
 class MacronWindow(Window):
   def __init__(self, config):
-    self.window = Window()
+    Webview = MacronWebview(config)
     
     # if content:
-    # self.window.Content = win_content
+    self.Content = Webview
 
     # Gets or sets a window's title
-    self.window.Title = config["title"]
+    self.Title = config["title"]
     # Gets or sets the height of the element
-    self.window.Height = config["height"]
+    self.Height = config["height"]
     # Gets or sets the width of the element
-    self.window.Width = config["width"]
+    self.Width = config["width"]
     # Gets or sets the maximum height constraint of the element
     if "maxHeight" in config:
-      self.window.MaxHeight = config["maxHeight"]
+      self.MaxHeight = config["maxHeight"]
     # Gets or sets the maximum width constraint of the element
     if "maxWidth" in config:
-      self.window.MaxWidth = config["maxWidth"]
+      self.MaxWidth = config["maxWidth"]
     # Gets or sets the minimum height constraint of the element
     if "minHeight" in config:
-      self.window.MinHeight = config["minHeight"]
+      self.MinHeight = config["minHeight"]
     # Gets or sets the minimum width constraint of the element
     if "minWidth" in config:
-      self.window.MinWidth = config["minWidth"]
+      self.MinWidth = config["minWidth"]
     # @todo handle 
       # Gets a value that indicates whether the window is active
-      # # self.window.IsActive
+      # # self.IsActive
       # Gets a value that determines whether this element has logical focus
-      # # self.window.IsFocused = True
+      # # self.IsFocused = True
       # Gets a value indicating whether this element has keyboard focus
-      # # self.window.IsKeyboardFocused
+      # # self.IsKeyboardFocused
       # Gets a value indicating whether this element is visible in the user interface (UI)
-      # # self.window.IsVisible
+      # # self.IsVisible
     # Gets or sets the resize mode 
     #   Opts:
     #     - CanMinimize=1 | The user can only minimize the window and restore it from the taskbar. The Minimize and Maximize boxes are both shown, but only the Minimize box is enabled.
@@ -52,22 +56,22 @@ class MacronWindow(Window):
     #     - CanResizeWithGrip=3 | This option has the same functionality as CanResize, but adds a "resize grip" to the lower right corner of the window.
     #     - NoResize=0 | The user cannot resize the window. The Maximize and Minimize boxes are not shown.
     if not config["resizable"]:
-      self.window.ResizeMode = 1
+      self.ResizeMode = 1
     # Gets or sets a value that indicates whether a window is activated when first shown
     #   Default: True
     if not config["focusOnStartup"]:
-      self.window.ShowActivated = False
+      self.ShowActivated = False
     # Gets or sets a value that indicates whether the window has a task bar button
     #   Default: True
     if config["hideInTaskbar"]:
-      self.window.ShowInTaskbar = False
+      self.ShowInTaskbar = False
     # Gets or sets the user interface (UI) visibility of this element
     #   Opts:
     #     - Collapsed=2	| Do not display the element, and do not reserve space for it in layout.
     #     - Hidden=1	| Do not display the element, but reserve space for the element in layout.
     #     - Visible	0	| Display the element.
     if config["hideOnStartup"]:
-      self.window.Visibility = 1
+      self.Visibility = 1
     # Gets or sets the position of the window when first shown
     #   Opts:
     #     - CenterOwner=2	 | The startup location of a Window is the center of the Window that owns it, as specified by the Owner property.
@@ -75,51 +79,51 @@ class MacronWindow(Window):
     #     - Manual=0	     | The startup location of a Window is set from code, or defers to the default Windows location.
     # @todo start from center of parent if present exists
     if config["startupFromCenter"]:
-      self.window.WindowStartupLocation = 1
+      self.WindowStartupLocation = 1
     # Gets or sets a value that indicates whether a window is restored, minimized, or maximized
     #   Opts:
     #     - Maximized=2	| The window is maximized.
     #     - Minimized=1	| The window is minimized.
     #     - Normal=0	  | The window is restored.
     if config["startupState"] == "maximized":
-      self.window.WindowState = 2
+      self.WindowState = 2
     elif config["startupState"] == "minimized":
-      self.window.WindowState = 1
+      self.WindowState = 1
     # Gets or sets a window's border style
     #   Opts:
     #     - None=0 | Only the client area is visible. We'll use to simulate a frameless window
     if config["frameless"]:
-      self.window.WindowStyle = 0
+      self.WindowStyle = 0
 
     # # def on_Activated(self, sender, args):
     # Occurs when a window becomes the foreground window.
-    # # self.window.Activated += self.on_Activated
+    # # self.Activated += self.on_Activated
     # Occurs when the window is about to close.
-    # self.window.Closed += self.on_Closed
+    # self.Closed += self.on_Closed
     # Occurs directly after Close() is called, and can be handled to cancel window closure.
-    # # self.window.Closing += self.on_Closing
+    # # self.Closing += self.on_Closing
     # Occurs just before any context menu on the element is closed.
-    # # self.window.ContextMenuClosing += self.on_ContextMenuClosing
+    # # self.ContextMenuClosing += self.on_ContextMenuClosing
     # Occurs when any context menu on the element is opened.
-    # # self.window.ContextMenuOpening += self.on_ContextMenuOpening
+    # # self.ContextMenuOpening += self.on_ContextMenuOpening
     # Occurs when a window becomes a background window.
-    # # self.window.Deactivated += self.on_Deactivated
+    # # self.Deactivated += self.on_Deactivated
     # Occurs when the value of the Focusable property changes.
-    # # self.window.FocusableChanged += self.on_FocusableChanged
+    # # self.FocusableChanged += self.on_FocusableChanged
     # Occurs when a key is pressed while focus is on this element.
-    # # self.window.PreviewKeyDown += self.on_PreviewKeyDown
+    # # self.PreviewKeyDown += self.on_PreviewKeyDown
     # Occurs when a key is released while focus is on this element.
-    # # self.window.PreviewKeyUp += self.on_PreviewKeyUp
+    # # self.PreviewKeyUp += self.on_PreviewKeyUp
     # Occurs when either the ActualHeight or the ActualWidth properties change value on this element.
-    # # self.window.SizeChanged += self.on_SizeChanged
+    # # self.SizeChanged += self.on_SizeChanged
     # Occurs when the window's WindowState property changes.
-    # # self.window.StateChanged += self.on_StateChanged
+    # # self.StateChanged += self.on_StateChanged
 
   # Attempts to bring the window to the foreground and activates it
   # Returns {Boolean} true if the Window was successfully activated;
   # otherwise, false.
   def activate(self):
-    return self.window.Activate()
+    return self.Activate()
 
   # Attempts to set focus to this element.
   # Returns {Boolean} true if keyboard focus and logical
@@ -127,22 +131,22 @@ class MacronWindow(Window):
   # focus was set to this element, or if the call to this
   # method did not force the focus to change.
   def focus(self):
-    return self.window.Focus()
+    return self.Focus()
 
   # Makes a window invisible. Hide() is called on a window
   # that is closing (Closing) or has been closed (Closed).
   def hide(self):
-    self.window.Hide()
+    self.Hide()
 
   # Opens a window and returns without waiting for the newly
   # opened window to close. Show() is called on a window that
   # is closing (Closing) or has been closed (Closed).
   def show(self):
-    self.window.Show()
+    self.Show()
 
   # Manually closes a Window.
   def close(self):
-    self.window.Close()
+    self.Close()
 
 # @todo
 # Properties
@@ -169,7 +173,7 @@ class MacronWindow(Window):
 
 def create_window(config):
   def create():
-    Application().Run(MacronWindow(config).window)
+    Application().Run(MacronWindow(config))
   
   thread = Thread(ThreadStart(create))
   thread.SetApartmentState(ApartmentState.STA)

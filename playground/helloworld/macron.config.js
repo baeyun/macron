@@ -3,12 +3,11 @@
  */
 // const { Window } = require('macron')
 
+// Macron.Window API
 var MacronRegisteredWindows = {}
-
-var MacronRegisteredEventCallbacks = {
-  close: []
-}
-
+var MacronRegisteredEventCallbacks = {close: []}
+const { sep: pathSeperator } = require('path')
+const cwd = process.cwd() + pathSeperator
 const Window = function(config={}) {
   // Register window
   this.UID = Object.keys(MacronRegisteredWindows).length + 1
@@ -30,6 +29,7 @@ const Window = function(config={}) {
     startupState = "normal",
     frameless = false,
 
+    devServerURI = null,
     sourcePath = null,
     nativeDependencies = null
   } = config
@@ -49,7 +49,9 @@ const Window = function(config={}) {
   this.startupState = startupState
   this.frameless = frameless
   
-  this.sourcePath = sourcePath
+  this.rootPath = cwd
+  if (devServerURI) this.devServerURI = devServerURI
+  this.sourcePath = sourcePath.replace("./", "").replace(/[/|\\]/g, pathSeperator)
   this.nativeDependencies = nativeDependencies
 
   // Window events
@@ -63,15 +65,17 @@ const Window = function(config={}) {
 }
 
 const App = new Window({
-  title: "Joker",
-  height: 700,
-  width: 900,
+  title: "Sample App",
+  height: 960,
+  width: 1500,
   minHeight: 500,
   minWidth: 500,
   startupFromCenter: true,
-  frameless: true
+  // frameless: true,
+  // startupState: "maximized",
+  // devServerURI: 'http://127.0.0.1:8888/browser-script-editor/',
+  sourcePath: './public/index.html',
   // menu: require('./src/main-app-menubar'),
-  // sourcePath: './public/index.html',
   // nativeDependencies: ['numpy.py', 'ffmpeg.py']
 })
 // .on('close', function() {
@@ -90,7 +94,7 @@ const App = new Window({
 module.exports = {
   name: 'Hello World App',
   mainWindow: App,
-  devServerURI: 'https://mail.google.com',
+  // devServerURI: 'http://127.0.0.1:8888',
   nativeScriptsPath: './native/',
   iconSource: './src/img/icon.png',
   // icons: [

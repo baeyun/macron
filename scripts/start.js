@@ -15,7 +15,6 @@ module.exports = function(cwd) {
     throw new Error('MACRON ERR: Application must include a macron.config.js config file.')
 
   const appConfig = require(appConfigFilePath)
-  appConfig.appRootPath = cwd // required
 
   const startProcess = spawn(
     process.platform !==  'linux' ? 'python' : 'python3',

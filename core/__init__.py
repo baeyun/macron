@@ -14,9 +14,6 @@ def get_os():
 
 def main(args):
   app_config = loads(loads(args[1]))
-  # app_root_path = app_config["appRootPath"].replace("//", "\u005c")
-  # app_html_path = app_config["sourcePath"]
-  # app_dev_uri = app_config["devServerURI"]
   
   # @todo handle err
   if "mainWindow" not in app_config:
