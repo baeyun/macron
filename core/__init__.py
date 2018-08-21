@@ -4,10 +4,31 @@ from json import loads
 
 # Get current dir
 dirname = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(dirname, 'windows'))
+
+"""
+Not only must the imports be done inside functions
+(thank God it works in Python), the code piece:
+
+sys.path.append(os.path.join(dirname, <OS_NAME>))
+
+must also be included just before the respective OS's
+native API is imported. This is because no module should
+block the main thread since modules like 'clr' aren't
+available in Linux (i.e. Windows-only).
+
+For instance:
+  if os is 'windows':
+    sys.path.append(os.path.join(dirname, 'windows'))
+    # Not necessary to name import since check is already done!
+    from window import create_window as create_windows_mswin
+"""
+
+# sys.path.append(os.path.join(dirname, 'windows'))
+sys.path.append(os.path.join(dirname, 'linux'))
 
 # from core import MacronCoreAPI
-from window import create_window
+# from window import create_window as create_windows_mswin
+from window import create_window as create_windows_linux
 
 def get_os():
   return
@@ -22,7 +43,7 @@ def main(args):
   if "mainWindow" not in app_config:
     print("Error: 'mainWindow' property not defined in macron.config.js")
 
-  create_window(config=app_config["mainWindow"])
+  create_windows_linux(config=app_config["mainWindow"])
 
 if __name__ == "__main__":
   main(args=sys.argv)

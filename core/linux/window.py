@@ -6,15 +6,19 @@ gi.require_version("Gtk", "3.0")
 
 from gi.repository import Gtk, Gdk
 
+from webview import MacronWebview
+
 class MacronWindow(Gtk.Window):
   def __init__(self, config):
-    self.title = "Hello World"
+    self.title = config["title"]
     self.window = Gtk.Window(
       title=self.title,
-      default_height=500,
-      default_width=500
+      default_height=config["height"] if "height" in config else 500,
+      default_width=config["height"] if "height" in config else 500
     )
     self.window.connect("destroy", Gtk.main_quit)
+    # self.win_webview = MacronWebview("No config for now!!")
+    # self.window.add(self.win_webview.webview)
     
     # Dimensions & Geometry
     # These properties are just maps for the original
@@ -49,38 +53,47 @@ class MacronWindow(Gtk.Window):
     # self.is_keyboard_focused = None
     # self.is_visible = None
 
-    # Gets or sets the resizable property of the window
-    # False by default
-    # self.resizable = False
-    # self.window.set_resizable(self.resizable)
+    # Gets or sets the resizable property of the window.
+    # False by default.
+    self.resizable = config["resizable"] if "resizable" in config else True
+    self.window.set_resizable(self.resizable)
 
-    # Focus on window on when created
-    # self.focus_on_startup = False if not self.window.get_focus_on_map() else True
-    # self.window.set_focus_on_map(self.focus_on_start)
+    # Focus on window on when created.
+    self.focus_on_startup = config["focusOnStartup"] if "focusOnStartup" in config else True
+    self.window.set_focus_on_map(self.focus_on_startup)
 
-    # Sets whether the window should have a taskbar button
-    # self.hide_from_taskbar = True
-    # self.window.set_skip_taskbar_hint(self.hide_from_taskbar)
-
+    # Sets whether the window should have a taskbar button.
+    self.hide_in_taskbar = config["hideInTaskbar"] if "hideInTaskbar" in config else False
+    self.window.set_skip_taskbar_hint(self.hide_in_taskbar)
+  
     # FIXME: The hide property should work as expected
-    # self.hide_on_startup = False
-    # self.window.hide()
+    # HACK: Possible workaround is to set:
+    #    hideInTaskbar: true,
+    #    startupState: "minimized"
+    # THIS 'SIMULATES' REAL 'window.hide()'
+    # from the macron.config.js file or any other window loader.
 
-    # TODO: Start from center of parent if parent exists
+
+    # self.hide_on_startup = config["hideOnStartup"] if "hideOnStartup" in config else False
+    # if self.hide_on_startup:
+    #   self.window.hide()
+
+    # Centers window to screen's center.
     # self.startup_from_center = True
-    # if self.startup_from_center == True:
-    #   self.window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+    if "startupFromCenter" in config and config["startupFromCenter"] == True:
+      self.window.set_position(Gtk.WindowPosition.CENTER)
 
-    # Determines if window should start maximized or minimized
-    # self.startup_state = "minimized"
-    # if self.startup_state == "maximized":
-    #   self.window.maximize()
-    # elif self.startup_state == "minimized":
-    #   self.window.iconify()
+    # Determines if window should start maximized or minimized.
+    self.startup_state = config["startupState"] if "startupState" in config else "normal"
+    if self.startup_state == "maximized":
+      self.window.maximize()
+    elif self.startup_state == "minimized":
+      self.window.iconify() # minimizes
 
-    # Determines whether window should be frameless or not
+    # Determines whether window should be frameless or not.
     # self.frameless = False
-    # self.window.set_decorated(self.frameless)
+    if "frameless" in config and config["frameless"] == True:
+      self.window.set_decorated(False) # False means there is no frame.
 
     # TODO: Handle window events
   
