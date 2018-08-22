@@ -17,11 +17,15 @@ from webview import MacronWebview
 
 class MacronWindow(Window):
   def __init__(self, config):
-    Webview = MacronWebview(config)
-    Webview.evaluate_script("alert('Hello from the native side of the brigde!')")
-    
-    # if content:
-    self.Content = Webview
+    webview = MacronWebview(config)
+
+    self.Content = webview
+
+    webview.evaluate_script("""
+    var body = document.getElementsByTagName('body')[0];
+    body.style.backgroundColor='#333';
+    body.style.color='#ddd';
+    """)
 
     # Gets or sets a window's title
     self.Title = config["title"]

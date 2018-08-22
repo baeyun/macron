@@ -6,6 +6,8 @@ clr.AddReference(r"wpf\PresentationFramework")
 
 sys.path.insert(0, path.dirname(path.abspath(__file__)))
 
+# from System.Windows.Forms import WebBrowser, DockStyle
+from System import Object
 from System.Windows.Controls import WebBrowser
 from System.IO import StreamReader
 from System.Windows.Navigation import LoadCompletedEventHandler
@@ -23,8 +25,11 @@ class MacronWebview(WebBrowser):
 
       # # File to string solution
       # sourcePath = (config["rootPath"] + config["sourcePath"]).replace("//", "\u005c")
+      
       # with open (sourcePath, "r") as source:
-      #   self.Navigate(source.read())
+      #   self.Navigate("about:blank")
+      #   self.Document.OpenNew(True).Write("source.read()")
+      #   self.Dock = DockStyle.Fill
     # else:
     #   # handle error
 
@@ -45,6 +50,21 @@ class MacronWebview(WebBrowser):
     # Occurs when the document being navigated to has finished
     # downloading.
     # # self.LoadCompleted += self.handle_events()
+
+  def evaluate_script(self, script):
+    if not script:
+      return
+    
+    def eval_js(sender, args):
+      try:
+        self.InvokeScript("eval", [script])
+      except Exception as e:
+        print(e)
+
+    self.LoadCompleted += LoadCompletedEventHandler(
+      eval_js
+    )
+
 
   # Gets the Uri of the current document hosted in the WebBrowser.
   def getSource(self):
@@ -81,16 +101,4 @@ class MacronWebview(WebBrowser):
   #       self.InvokeScript(functionName, args)
   #     else:
   #       self.InvokeScript(functionName)
-
-  def evaluate_script(self, script=None):
-    # if not script:
-    #   return
-    # should not be called before the document has
-    # finished loading
-    def evaluate(self):
-      self.Document.InvokeScript("alert")
-    handler = LoadCompletedEventHandler(evaluate)
-    self.LoadCompleted += handler
-
-    print(self)
 
