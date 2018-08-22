@@ -21,7 +21,7 @@ class MacronWindow(Gtk.Window):
     # Initialize every window with a webview and pass macron config
     # passed from macron.config.js
     self.win_webview = MacronWebview(config={
-      "devServerURI": "file:///home/bukharim96/Desktop/mactube/public/index.html"
+      "devServerURI": config["devServerURI"] if "devServerURI" in config else "https://localhost:3000",
     })
     self.window.add(self.win_webview.webview)
     

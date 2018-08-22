@@ -22,10 +22,7 @@ class MacronWebview:
     self.webview = WebKit2.WebView()
 
     # Set development URI if not in production
-    if "devServerURI" in config:
-      self.webview.load_uri(config["devServerURI"])
-    else:
-      self.webview.load_uri("https://google.com")
+    self.webview.load_uri("http://localhost:3000/")
     
     self.webview.get_inspector()
     self.inspector = self.webview.get_inspector()
@@ -62,15 +59,15 @@ class MacronWebview:
   # def navigate(self, view, frame, request, action, decision):
   #   decision.ignore()
 
-def create_webview(config):
-  def create():
-    MacronWebview(config=config).window.show_all()
+# def create_webview(config):
+  # def create():
+    # MacronWebview(config=config).window.show_all()
   
   # thread = threading.Thread(target=create)
   # thread.daemon = True
   # thread.start()
-  create()
-  Gtk.main()
+  # create()
+  # Gtk.main()
 
-if __name__ == "__main__":
-  create_webview("No webview config for now!!!")
+# if __name__ == "__main__":
+#   create_webview("No webview config for now!!!")
