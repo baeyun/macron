@@ -18,6 +18,7 @@ from webview import MacronWebview
 class MacronWindow(Window):
   def __init__(self, config):
     Webview = MacronWebview(config)
+    Webview.evaluate_script("alert('Hello from the native side of the brigde!')")
     
     # if content:
     self.Content = Webview
@@ -40,7 +41,7 @@ class MacronWindow(Window):
     # Gets or sets the minimum width constraint of the element
     if "minWidth" in config:
       self.MinWidth = config["minWidth"]
-    # @todo handle 
+    # TODO handle 
       # Gets a value that indicates whether the window is active
       # # self.IsActive
       # Gets a value that determines whether this element has logical focus
@@ -77,7 +78,7 @@ class MacronWindow(Window):
     #     - CenterOwner=2	 | The startup location of a Window is the center of the Window that owns it, as specified by the Owner property.
     #     - CenterScreen=1 | The startup location of a Window is the center of the screen that contains the mouse cursor.
     #     - Manual=0	     | The startup location of a Window is set from code, or defers to the default Windows location.
-    # @todo start from center of parent if present exists
+    # TODO start from center of parent if present exists
     if config["startupFromCenter"]:
       self.WindowStartupLocation = 1
     # Gets or sets a value that indicates whether a window is restored, minimized, or maximized
@@ -148,7 +149,7 @@ class MacronWindow(Window):
   def close(self):
     self.Close()
 
-# @todo
+# TODO
 # Properties
 #  - Window.Icon
 #  - Window.Uid - Gets or sets the unique identifier
