@@ -9,23 +9,22 @@ clr.AddReference(r"wpf\PresentationFramework")
 
 from System.Windows.Markup import XamlReader
 from System.Threading import Thread, ThreadStart, ApartmentState
-from System.Windows import Application, Window, HorizontalAlignment, VerticalAlignment, Media
+from System.Windows import Application, Window, MessageBox
 # from System.Windows.Controls import WebBrowser, WrapPanel, DockPanel, Dock, Menu, MenuItem, ToolTip
 
 sys.path.insert(0, path.dirname(path.abspath(__file__)))
 from webview import MacronWebview
 
 class MacronWindow(Window):
+
   def __init__(self, config):
     webview = MacronWebview(config)
 
     self.Content = webview
 
-    webview.evaluate_script("""
-    var body = document.getElementsByTagName('body')[0];
-    body.style.backgroundColor='#333';
-    body.style.color='#ddd';
-    """)
+    # webview.evaluate_script("""
+    # alert(JSON.stringify(window.external))
+    # """)
 
     # Gets or sets a window's title
     self.Title = config["title"]

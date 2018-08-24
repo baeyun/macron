@@ -11,8 +11,14 @@ from System import Object
 from System.Windows.Controls import WebBrowser
 from System.IO import StreamReader
 from System.Windows.Navigation import LoadCompletedEventHandler
+from System.Windows import MessageBox
+
+sys.path.insert(0, path.dirname(path.abspath(__file__)))
+
+from bridge import MacronBridge
 
 class MacronWebview(WebBrowser):
+
   def __init__(self, config):
     if "devServerURI" in config:
       self.Navigate(config["devServerURI"])
@@ -32,6 +38,9 @@ class MacronWebview(WebBrowser):
       #   self.Dock = DockStyle.Fill
     # else:
     #   # handle error
+
+    # Bridge
+    self.ObjectForScripting = MacronBridge()
 
     # TODO Expose to JS
     # Gets a value that indicates whether there is a document
@@ -90,15 +99,3 @@ class MacronWebview(WebBrowser):
   # Navigate forward to the next document, if there is one.
   def goForward(self):
     self.GoForward()
-
-  # @param functionName {string}
-  # @param args {object}
-  # def invokeScript(self, functionName, args=None):
-  #   # should not be called before the document has
-  #   # finished loading
-  #   if self.LoadCompleted:
-  #     if args:
-  #       self.InvokeScript(functionName, args)
-  #     else:
-  #       self.InvokeScript(functionName)
-
