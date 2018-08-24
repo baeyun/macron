@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 
-namespace MacronWebviewInterop
+namespace MacronInterop
 {
-    public interface IMacronBridge
+    public interface IWebviewBridge
     {
         object eval_python(string script);
 

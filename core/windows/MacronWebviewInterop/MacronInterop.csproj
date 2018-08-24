@@ -7,8 +7,8 @@
     <ProjectGuid>{4855B53E-6F15-45CC-BBD0-44D58C672EAB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MacronWebviewInterop</RootNamespace>
-    <AssemblyName>MacronWebviewInterop</AssemblyName>
+    <RootNamespace>MacronInterop</RootNamespace>
+    <AssemblyName>MacronInterop</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -77,7 +77,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MacronWebviewInterop.cs" />
+    <Compile Include="MacronInterop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,11 +4,11 @@ from os import path
 
 dirname = path.dirname(path.realpath(__file__))
 sys.path.append(path.join(dirname, 'assemblies'))
-clr.AddReference("MacronWebviewInterop")
+clr.AddReference("MacronInterop")
 
-from MacronWebviewInterop import IMacronBridge
+from MacronInterop import IWebviewBridge
 
-class MacronBridge(IMacronBridge):
+class MacronBridge(IWebviewBridge):
   __namespace__ = 'MacronBridge'
 
   def eval_python(self, script):
