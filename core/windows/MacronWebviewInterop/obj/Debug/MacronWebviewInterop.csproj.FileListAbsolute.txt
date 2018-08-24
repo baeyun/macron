@@ -1,8 +1,0 @@
-C:\Users\bukharim96\Desktop\Projects\macron\core\windows\MacronWebviewInterop\bin\Debug\MacronWebviewInterop.dll
-C:\Users\bukharim96\Desktop\Projects\macron\core\windows\MacronWebviewInterop\bin\Debug\MacronWebviewInterop.pdb
-C:\Users\bukharim96\Desktop\Projects\macron\core\windows\MacronWebviewInterop\bin\Debug\Interop.SHDocVw.dll
-C:\Users\bukharim96\Desktop\Projects\macron\core\windows\MacronWebviewInterop\obj\Debug\Interop.SHDocVw.dll
-C:\Users\bukharim96\Desktop\Projects\macron\core\windows\MacronWebviewInterop\obj\Debug\MacronWebviewInterop.csproj.ResolveComReference.cache
-C:\Users\bukharim96\Desktop\Projects\macron\core\windows\MacronWebviewInterop\obj\Debug\MacronWebviewInterop.csproj.CoreCompileInputs.cache
-C:\Users\bukharim96\Desktop\Projects\macron\core\windows\MacronWebviewInterop\obj\Debug\MacronWebviewInterop.dll
-C:\Users\bukharim96\Desktop\Projects\macron\core\windows\MacronWebviewInterop\obj\Debug\MacronWebviewInterop.pdb
