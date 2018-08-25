@@ -1,2 +1,2 @@
-def say_hello():
-  return "Hello from <HelloApp> native module."
+def say_hello(x, foo, bar):
+  return x + " : " + foo + " : " + bar
