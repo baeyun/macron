@@ -9,6 +9,17 @@ namespace MacronWebviewInterop
     {
         object eval_python(string script);
 
-        object call(string className, string methodName, object args);
+        object call_module_func(
+            string module_name,
+            string func_name,
+            object args
+        );
+
+        object call_module_classmethod(
+            string module_name,
+            string class_name,
+            string method_name,
+            object args
+        );
     }
 }
