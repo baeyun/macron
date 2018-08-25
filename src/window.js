@@ -34,6 +34,7 @@ module.exports = function(config={}) {
 
     devServerURI = null,
     sourcePath = null,
+    nativeModules = [],
     nativeDependencies = null
   } = config
 
@@ -55,6 +56,9 @@ module.exports = function(config={}) {
   this.rootPath = cwd
   if (devServerURI) this.devServerURI = devServerURI
   this.sourcePath = sourcePath.replace("./", "").replace(/[/|\\]/g, pathSeperator)
+  this.nativeModules = nativeModules.map(
+    path => path.replace("./", "").replace(/[/|\\]/g, pathSeperator)
+  )
   this.nativeDependencies = nativeDependencies
 
   // Window events

@@ -1,4 +1,4 @@
-const { normalize } = require('path')
+const { normalize, sep: pathSeperator } = require('path')
 const { spawn } = require('child_process')
 const {
   existsSync,
@@ -15,6 +15,8 @@ module.exports = function(cwd) {
     throw new Error('MACRON ERR: Application must include a macron.config.js config file.')
 
   const appConfig = require(appConfigFilePath)
+
+  appConfig.mainWindow.nativeModulesPath = appConfig.nativeModulesPath.replace("./", "").replace(/[/|\\]/g, pathSeperator)
 
   const startProcess = spawn(
     process.platform !==  'linux' ? 'python' : 'python3',

@@ -40,7 +40,11 @@ class MacronWebview(WebBrowser):
     #   # handle error
 
     # Bridge
-    self.ObjectForScripting = MacronBridge()
+    self.ObjectForScripting = MacronBridge().init_native_modules(
+      root_path=config["rootPath"],
+      native_modules_path=config["nativeModulesPath"],
+      native_modules=config["nativeModules"]
+    )
 
     # TODO Expose to JS
     # Gets a value that indicates whether there is a document

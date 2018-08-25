@@ -11,7 +11,7 @@ def main(args):
   # @todo handle err
   if "mainWindow" not in app_config:
     print("Error: 'mainWindow' property not defined in macron.config.js")
-  
+
   if platform.system() == "Windows":
     sys.path.append(os.path.join(dirname, 'windows'))
   elif platform.system() == "Linux":
