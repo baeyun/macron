@@ -29,11 +29,11 @@ class MacronBridge(IMacronBridge):
     return eval(script)
 
   # window.external.call("hello", "say_hello", JSON.stringify({x: "5654", foo: "5435", bar: "baz"}))
-  def call(self, className, methodName, args):
+  def call(self, module_name, func_name, args):
     if not args:
       return getattr(
-        getattr(self, className),
-        methodName
+        getattr(self, module_name),
+        func_name
       )
 
     args = loads(args)
@@ -41,6 +41,6 @@ class MacronBridge(IMacronBridge):
     args_spread = ""
     
     for key in args_keys:
-      args_spread += key + "=args[\"" + key + "\"],"
+      args_spread += "args[\"" + key + "\"],"
     
-    return eval("getattr(getattr(self, className),methodName)(" + args_spread + ")")
+    return eval("getattr(getattr(self, module_name),func_name)(" + args_spread + ")")
