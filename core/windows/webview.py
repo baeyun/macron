@@ -19,7 +19,7 @@ from bridge import MacronBridge
 
 class MacronWebview(WebBrowser):
 
-  def __init__(self, config):
+  def __init__(self, window, config):
     if "devServerURI" in config:
       self.Navigate(config["devServerURI"])
     elif "sourcePath" in config:
@@ -40,7 +40,9 @@ class MacronWebview(WebBrowser):
     #   # handle error
 
     # Bridge
-    self.ObjectForScripting = MacronBridge().init_native_modules(
+    self.ObjectForScripting = MacronBridge().initialize(
+      window=window,
+      context=self,
       root_path=config["rootPath"],
       native_modules_path=config["nativeModulesPath"],
       native_modules=config["nativeModules"]

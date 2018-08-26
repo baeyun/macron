@@ -17,7 +17,10 @@ from MacronWebviewInterop import IMacronBridge
 class MacronBridge(IMacronBridge):
   __namespace__ = 'MacronBridge'
 
-  def init_native_modules(self, root_path, native_modules_path, native_modules):
+  def initialize(self, window, context, root_path, native_modules_path, native_modules):
+    self.window = window
+    self.context = context
+
     native_mods_root_path = (root_path + native_modules_path).replace("//", "\u005c")
 
     for modname in native_modules:
@@ -31,7 +34,8 @@ class MacronBridge(IMacronBridge):
   def eval_python(self, script):
     return eval(script)
 
-  # window.external.call_module_classmethod("system", "System", "get_platform", false)
+  # window.external.call_common_module_classmethod("system", "System", "get_platform", false)
+  # TODO pre-import all common mods
   def call_common_module_classmethod(self, module_name, class_name, method_name, args):
     mod = __import__(module_name)
     class_ref = getattr(mod, class_name)
@@ -112,6 +116,6 @@ class MacronBridge(IMacronBridge):
       raise Exception("The specified class must extend macron.NativeBridge")
 
     return eval("""getattr(
-      class_ref(),
+      class_ref(self.window, self.context),
       method_name
     )({})""".format(args_spread))

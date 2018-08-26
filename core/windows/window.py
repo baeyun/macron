@@ -18,7 +18,7 @@ from webview import MacronWebview
 class MacronWindow(Window):
 
   def __init__(self, config):
-    webview = MacronWebview(config)
+    webview = MacronWebview(window=self, config=config)
 
     self.Content = webview
 

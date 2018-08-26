@@ -24,11 +24,26 @@
       Start editing this file to view changes.<br>
       If you are using a library/framework, change your render target to <code>./public/index.html</code>
     </p>
+    <div style="text-align: center;">
+      <button onclick="getPlatform()">Get Platform</button>
+      <button onclick="getSystem()">Get System</button>
+      <button onclick="closeWindow()">Close Window</button>
+    </div>
   </div>
 
   <script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
   <script>
-    document.getElementById("text").innerHTML = window.external.call_common_module_classmethod("system", "System", "get_platform", false)
+    function getPlatform() {
+      document.getElementById("text").innerHTML = window.external.call_common_module_classmethod("system", "System", "get_platform", false)
+    }
+
+    function getSystem() {
+      document.getElementById("text").innerHTML = window.external.call_common_module_classmethod("system", "System", "get_system", false)
+    }
+
+    function closeWindow() {
+      window.external.call_module_classmethod("hello", "HellBoy", "close", false)
+    }
   </script>
 
 </body>
