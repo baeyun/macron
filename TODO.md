@@ -1,30 +1,14 @@
 # @todo
 
-- BrowserView, BrowserWindow
-    - title
-    - url
-    - js_api
-    - width
-    - height
-    - resizable
-    - fullscreen
-    - min_size
-    - strings
-    - confirm_quit
-    - background_color
-    - debug
-    - text_selection
-    - frame: false
-    - transparent: true
-    - titleBarStyle: 'hidden' (mac)
-    - Draggable region
+- Auto updates
+- Debugger
+- Installers
 - Accelerator (key codes shortcuts)
 - Menu
 - Notification
 - Tray
 - Locales
 - Clipboard
-- Debugger
 - Dialog
     - browserWindow BrowserWindow (optional)
     - options Object

@@ -48,6 +48,25 @@ class MacronBridge(IMacronBridge):
 
     return eval(to_exec)
 
+  # def call_module_classproperty(self, module_name, class_name, method_name, args):
+  #   mod = getattr(self, module_name)
+  #   args_spread = ""
+    
+  #   if args:
+  #     args = loads(args)
+  #     args_keys = args.keys()
+      
+  #     for key in args_keys:
+  #       args_spread += "args[\"" + key + "\"],"
+
+  #   to_exec = "self.{}.{}().{}".format(
+  #     module_name,
+  #     class_name,
+  #     method_name
+  #   )
+
+  #   return eval(to_exec)
+
   # window.external.call_module_classmethod("hello", "HellBoy", "say_hi", JSON.stringify({x: "John", foo: "Doe"}))
   def call_module_classmethod(self, module_name, class_name, method_name, args):
     mod = getattr(self, module_name)
