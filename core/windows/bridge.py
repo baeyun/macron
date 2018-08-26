@@ -7,6 +7,8 @@ from json import loads
 from macron import NativeBridge
 
 dirname = path.dirname(path.realpath(__file__))
+
+sys.path.append(path.normpath(path.join(dirname, '../common/')))
 sys.path.append(path.join(dirname, 'assemblies'))
 clr.AddReference("MacronWebviewInterop")
 
@@ -29,6 +31,27 @@ class MacronBridge(IMacronBridge):
   def eval_python(self, script):
     return eval(script)
 
+  # window.external.call_module_classmethod("system", "System", "get_platform", false)
+  def call_common_module_classmethod(self, module_name, class_name, method_name, args):
+    mod = __import__(module_name)
+    class_ref = getattr(mod, class_name)
+    args_spread = ""
+
+    if args:
+      args = loads(args)
+      args_keys = args.keys()
+
+      for key in args_keys:
+        args_spread += "args[\"{}\"],".format(key)
+
+    if NativeBridge not in class_ref.__bases__:
+      raise Exception("The specified class must extend macron.NativeBridge")
+
+    return eval("""getattr(
+      class_ref(),
+      method_name
+    )({})""".format(args_spread))
+
   # window.external.call_module_func("hello", "say_hello", JSON.stringify({x: "5654", foo: "5435", bar: "baz"}))
   def call_module_func(self, module_name, func_name, args):
     mod = getattr(self, module_name)
@@ -44,29 +67,29 @@ class MacronBridge(IMacronBridge):
     to_exec = "self.{}.{}({})".format(
       module_name,
       func_name,
-      args_spread if args_spread else ""
+      args_spread
     )
 
     return eval(to_exec)
 
-  # def call_module_classproperty(self, module_name, class_name, method_name, args):
-  #   mod = getattr(self, module_name)
-  #   args_spread = ""
+  def call_module_classproperty(self, module_name, class_name, property_name, args):
+    mod = getattr(self, module_name)
+    args_spread = ""
     
-  #   if args:
-  #     args = loads(args)
-  #     args_keys = args.keys()
+    if args:
+      args = loads(args)
+      args_keys = args.keys()
       
-  #     for key in args_keys:
-  #       args_spread += "args[\"{}\"],".format(key)
+      for key in args_keys:
+        args_spread += "args[\"{}\"],".format(key)
 
-  #   to_exec = "self.{}.{}().{}".format(
-  #     module_name,
-  #     class_name,
-  #     method_name
-  #   )
+    to_exec = "self.{}.{}().{}".format(
+      module_name,
+      class_name,
+      property_name
+    )
 
-  #   return eval(to_exec)
+    return eval(to_exec)
 
   # window.external.call_module_classmethod("hello", "HellBoy", "say_hi", JSON.stringify({x: "John", foo: "Doe"}))
   def call_module_classmethod(self, module_name, class_name, method_name, args):
@@ -88,10 +111,7 @@ class MacronBridge(IMacronBridge):
     if NativeBridge not in class_ref.__bases__:
       raise Exception("The specified class must extend macron.NativeBridge")
 
-    return getattr(
+    return eval("""getattr(
       class_ref(),
       method_name
-    )(args) if args else getattr(
-      class_ref(),
-      method_name
-    )()
+    )({})""".format(args_spread))
