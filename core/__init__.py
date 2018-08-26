@@ -5,6 +5,7 @@ import platform
 
 # Get current dir for loading core components
 dirname = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(dirname)
 
 def main(args):
   app_config = loads(loads(args[1]))

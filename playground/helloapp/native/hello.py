@@ -1,10 +1,10 @@
-# from macron import NativeBridge
+from macron import NativeBridge
 
-class HellBoy:
+class HellBoy(NativeBridge):
   name = "Boy Helly"
 
-  def say_hi(self, one, two):
-    return one + " :: " + two
+  def say_hi(self):
+    return super().say_wow()
 
 def say_hello(one, two, three):
   return one + " :: " + two + " :: " + three
