@@ -3,7 +3,8 @@ import clr
 from os import path
 import importlib.util
 from json import loads
-# foo.MyClass()
+
+from macron import NativeBridge
 
 dirname = path.dirname(path.realpath(__file__))
 sys.path.append(path.join(dirname, 'assemblies'))
@@ -38,7 +39,7 @@ class MacronBridge(IMacronBridge):
       args_keys = args.keys()
       
       for key in args_keys:
-        args_spread += "args[\"" + key + "\"],"
+        args_spread += "args[\"{}\"],".format(key)
 
     to_exec = "self.{}.{}({})".format(
       module_name,
@@ -57,7 +58,7 @@ class MacronBridge(IMacronBridge):
   #     args_keys = args.keys()
       
   #     for key in args_keys:
-  #       args_spread += "args[\"" + key + "\"],"
+  #       args_spread += "args[\"{}\"],".format(key)
 
   #   to_exec = "self.{}.{}().{}".format(
   #     module_name,
@@ -71,19 +72,26 @@ class MacronBridge(IMacronBridge):
   def call_module_classmethod(self, module_name, class_name, method_name, args):
     mod = getattr(self, module_name)
     args_spread = ""
-    
+
     if args:
       args = loads(args)
       args_keys = args.keys()
-      
+
       for key in args_keys:
-        args_spread += "args[\"" + key + "\"],"
+        args_spread += "args[\"{}\"],".format(key)
 
-    to_exec = "self.{}.{}().{}({})".format(
+    class_ref = eval("self.{}.{}".format(
       module_name,
-      class_name,
-      method_name,
-      args_spread if args_spread else ""
-    )
+      class_name
+    ))
 
-    return eval(to_exec)
+    if NativeBridge not in class_ref.__bases__:
+      raise Exception("The specified class must extend macron.NativeBridge")
+
+    return getattr(
+      class_ref(),
+      method_name
+    )(args) if args else getattr(
+      class_ref(),
+      method_name
+    )()
