@@ -14,8 +14,8 @@ const App = new Window({
   // startupState: "maximized",
   // devServerURI: 'http://whatismybrowser.com/',
   sourcePath: './public/index.html',
-  nativeModules: ['hello']
-  // menu: require('./src/main-app-menubar'),
+  nativeModules: ['hello'],
+  // menu: require('./src/menubar'),
   // nativeDependencies: ['numpy.py', 'ffmpeg.py']
 })
 // .on('close', function() {

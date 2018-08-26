@@ -22,12 +22,8 @@ class MacronWindow(Window):
 
     self.Content = webview
 
-    # webview.evaluate_script("""
-    # alert(JSON.stringify(window.external))
-    # """)
-
     # Gets or sets a window's title
-    self.Title = config["title"]
+    self.title(config["title"])
     # Gets or sets the height of the element
     self.Height = config["height"]
     # Gets or sets the width of the element
@@ -122,6 +118,134 @@ class MacronWindow(Window):
     # # self.SizeChanged += self.on_SizeChanged
     # Occurs when the window's WindowState property changes.
     # # self.StateChanged += self.on_StateChanged
+
+  def title(self, title):
+    if title:
+      self.Title = title
+    
+    return self.Title
+
+  def height(self, height):
+    if height:
+      self.Height = height
+    
+    return self.Height
+
+  def width(self, width):
+    if width:
+      self.Width = width
+    
+    return self.Width
+
+  def max_height(self, max_height):
+    if max_height:
+      self.MaxHeight = max_height
+
+    return self.MaxHeight
+
+  def max_width(self, max_width):
+    if max_width:
+      self.MaxWidth = max_width
+
+    return self.MaxWidth
+
+  def min_height(self, min_height):
+    if min_height:
+      self.MinHeight = min_height
+
+    return self.MinHeight
+
+  def min_width(self, min_width):
+    if min_width:
+      self.MinWidth = min_width
+
+    return self.MinWidth
+
+  def resizable(self, resizable):
+    if not resizable:
+      self.ResizeMode = 1
+    else:
+      self.ResizeMode = 2
+    
+    return True if self.ResizeMode == 2 else False
+
+  def focus_on_startup(self, focus_on_startup):
+    if focus_on_startup:
+      self.ShowActivated = focus_on_startup
+    
+    return self.ShowActivated
+
+  def hide_in_taskbar(self, hide_in_taskbar):
+    if hide_in_taskbar:
+      self.ShowInTaskbar = hide_in_taskbar
+    
+    return self.Title
+
+  # def title(self, title):
+  #   if title:
+  #     self.Title = title
+    
+  #   return self.Title
+
+  # def title(self, title):
+  #   if title:
+  #     self.Title = title
+    
+  #   return self.Title
+
+  # def title(self, title):
+  #   if title:
+  #     self.Title = title
+    
+  #   return self.Title
+
+  # def title(self, title):
+  #   if title:
+  #     self.Title = title
+    
+  #   return self.Title
+
+  # def title(self, title):
+  #   if title:
+  #     self.Title = title
+    
+  #   return self.Title
+
+  # def title(self, title):
+  #   if title:
+  #     self.Title = title
+    
+  #   return self.Title
+
+  # def title(self, title):
+  #   if title:
+  #     self.Title = title
+    
+  #   return self.Title
+
+  # def title(self, title):
+  #   if title:
+  #     self.Title = title
+    
+  #   return self.Title
+
+  # def title(self, title):
+  #   if title:
+  #     self.Title = title
+    
+  #   return self.Title
+
+  # def title(self, title):
+  #   if title:
+  #     self.Title = title
+    
+  #   return self.Title
+
+  # def title(self, title):
+  #   if title:
+  #     self.Title = title
+    
+  #   return self.Title
 
   # Attempts to bring the window to the foreground and activates it
   # Returns {Boolean} true if the Window was successfully activated;

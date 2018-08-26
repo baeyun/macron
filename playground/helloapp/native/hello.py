@@ -4,7 +4,7 @@ class HellBoy(NativeBridge):
   name = "Boy Helly"
 
   def say_hi(self):
-    return self.say_wow()
+    return "Hi, all!"
 
   def close(self):
     self.window.close()
