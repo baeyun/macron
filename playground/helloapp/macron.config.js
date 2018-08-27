@@ -15,7 +15,7 @@ const App = new Window({
   // devServerURI: 'http://whatismybrowser.com/',
   sourcePath: './public/index.html',
   nativeModules: ['hello'],
-  // menu: require('./src/menubar'),
+  menu: require('./src/menubar'),
   // nativeDependencies: ['numpy.py', 'ffmpeg.py']
 })
 // .on('close', function() {

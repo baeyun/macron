@@ -35,6 +35,7 @@ module.exports = function(config={}) {
     devServerURI = null,
     sourcePath = null,
     nativeModules = [],
+    menu = null,
     nativeDependencies = null
   } = config
 
@@ -59,6 +60,7 @@ module.exports = function(config={}) {
   this.nativeModules = nativeModules.map(
     path => path.replace("./", "").replace(/[/|\\]/g, pathSeperator)
   )
+  this.menu = menu
   this.nativeDependencies = nativeDependencies
 
   // Window events

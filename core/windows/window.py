@@ -9,6 +9,9 @@ from System.Threading import Thread, ThreadStart, ApartmentState
 from System.Windows import Application, Window
 from webview import MacronWebview
 
+from System import Array
+from System.Windows.Controls import DockPanel, Dock, Menu, MenuItem, Grid
+
 class MacronWindow(Window):
 
   def __init__(self, config):
@@ -28,9 +31,35 @@ class MacronWindow(Window):
     self.state(config["startupState"])
     if config["frameless"]: self.frameless(True)
     
-    # Create webview
+    # Draw UI
+    dock = DockPanel()
+    dock.LastChildFill = True
+
+    menu = Menu()
+    dock.SetDock(menu, Dock.Top)
+    menu.IsMainMenu = True
+    menu.HorizontalAlignment = 3 # stretched to fill entire layout slot
+    # menu.VerticalAlignment = 0 # align to top of parent's layout slot
+    menu_source = Array[str](["_File", "_Edit", "_View", "_Window", "_Help"])
+    menu.ItemsSource = menu_source
+    
+    grid = Grid()
+    grid.ShowGridLines = False
+    # dock.SetDock(grid, Dock.Client)
+
     webview = MacronWebview(window=self, config=config)
-    self.Content = webview
+    # webview.HorizontalAlignment = 3 # stretched to fill the entire layout slot
+    grid.Children.Add(webview)
+    
+    # menuitem = MenuItem()
+    # menuitem.Header = "_File"
+    # menuitem.Click += self.menu_item_click
+    # menu.AddChild(menuitem)
+    
+    dock.Children.Add(menu)
+    dock.Children.Add(grid)
+    
+    self.Content = dock
 
     # # def on_Activated(self, sender, args):
     # Occurs when a window becomes the foreground window.
@@ -55,6 +84,10 @@ class MacronWindow(Window):
     # # self.SizeChanged += self.on_SizeChanged
     # Occurs when the window's WindowState property changes.
     # # self.StateChanged += self.on_StateChanged
+
+  # TODO handle event
+  def menu_item_click(self, sender, args):
+    print("Menuitem clicked!")
 
   # Gets a value that indicates whether the window is active
   def is_active(self):
