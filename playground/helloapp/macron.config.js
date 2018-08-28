@@ -5,8 +5,8 @@ const { Window } = require('../../index') // require('macron')
 
 const App = new Window({
   title: "Sample App",
-  height: 960,
-  width: 1500,
+  height: 600,
+  width: 500,
   minHeight: 500,
   minWidth: 500,
   startupFromCenter: true,
