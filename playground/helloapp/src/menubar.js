@@ -22,7 +22,7 @@ module.exports = [
       {name: "Save As", callback: "SAVE_AS"},
       {name: "Save All", callback: "SAVE_ALL"},
       {seperator: true},
-      {name: "Auto Save", toggle: true, callback: "TOGGLE_AUTO_SAVE"},
+      {name: "Auto Save", isCheckable: true, callback: "TOGGLE_AUTO_SAVE"},
       {seperator: true},
       {name: "Preferences", callback: "OPEN_PREFERENCE_SETTINGS"},
       {seperator: true},
@@ -33,7 +33,7 @@ module.exports = [
     ]
   },
   {name: "Edit", submenu: [
-    {name: "Word Wrap", toggle: true}
+    {name: "Word Wrap", isCheckable: true}
   ]},
   {name: "Selection"},
   {name: "View"},

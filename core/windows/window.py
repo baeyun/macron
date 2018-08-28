@@ -40,8 +40,6 @@ class MacronWindow(Window):
     menu.IsMainMenu = True
     menu.HorizontalAlignment = 3 # stretched to fill entire layout slot
     # menu.VerticalAlignment = 0 # align to top of parent's layout slot
-    menu_source = Array[str](["_File", "_Edit", "_View", "_Window", "_Help"])
-    menu.ItemsSource = menu_source
     
     grid = Grid()
     grid.ShowGridLines = False
@@ -49,13 +47,50 @@ class MacronWindow(Window):
 
     webview = MacronWebview(window=self, config=config)
     # webview.HorizontalAlignment = 3 # stretched to fill the entire layout slot
+    
+    menuitem = MenuItem()
+    menuitem.Header = "_File"
+    menuitem.Click += self.menu_item_click
+
+    submenuitem1 = MenuItem()
+    submenuitem1.Header = "_Sub Item"
+    submenuitem1.Click += self.menu_item_click
+
+    submenuitem3 = MenuItem()
+    submenuitem3.Header = "_Sub Item"
+    submenuitem3.Click += self.menu_item_click
+    submenuitem4 = MenuItem()
+    submenuitem4.Header = "_Sub Item"
+    submenuitem4.Click += self.menu_item_click
+    submenuitem5 = MenuItem()
+    submenuitem5.Header = "_Sub Item"
+    submenuitem5.Click += self.menu_item_click
+    submenuitem6 = MenuItem()
+    submenuitem6.Header = "_Sub Item"
+    submenuitem6.Click += self.menu_item_click
+    submenuitem7 = MenuItem()
+    submenuitem7.Header = "_Sub Item"
+    submenuitem7.Click += self.menu_item_click
+    submenuitem7.IsCheckable = True
+
+    submenuitem2 = MenuItem()
+    submenuitem2.Header = "_Yet Another Sub Item"
+    submenuitem2.Click += self.menu_item_click
+    # submenuitem2.IsCheckable = True
+    submenuitem2.AddChild(submenuitem3)
+    submenuitem2.AddChild(submenuitem4)
+    submenuitem2.AddChild(submenuitem5)
+    submenuitem2.AddChild(submenuitem6)
+    submenuitem2.AddChild(submenuitem7)
+
+    menuitem.AddChild(submenuitem1)
+    menuitem.AddChild(submenuitem2)
+    menu.AddChild(menuitem)
+
+    # menu_source = Array[MenuItem]([submenuitem1, submenuitem2])
+    # menu.ItemsSource = menu_source
+    
     grid.Children.Add(webview)
-    
-    # menuitem = MenuItem()
-    # menuitem.Header = "_File"
-    # menuitem.Click += self.menu_item_click
-    # menu.AddChild(menuitem)
-    
     dock.Children.Add(menu)
     dock.Children.Add(grid)
     
@@ -87,7 +122,8 @@ class MacronWindow(Window):
 
   # TODO handle event
   def menu_item_click(self, sender, args):
-    print("Menuitem clicked!")
+    # print(sender)
+    return
 
   # Gets a value that indicates whether the window is active
   def is_active(self):
