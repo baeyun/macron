@@ -35,13 +35,10 @@
 var field = document.getElementById('field').value;
 
 function readFile() {
-  var r =
-  window.external.call_common_module_classmethod("fs", "FileSystem", "read_dir_glob", JSON.stringify({
-    0: "C:/Users/bukharim96/Desktop/",
-    1: "*.js"
-  }))
+  // var r =
+  document.getElementById('text').innerHTML = window.external.call_common_module_classmethod("system", "System", "node", false)
 
-  alert(r)
+  // alert(r)
 }
 
 </script>

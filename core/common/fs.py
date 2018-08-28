@@ -1,10 +1,15 @@
+"""
+This module defines all file-related functionalities included in the Macron
+application system. Please refer to the official documentation site for more
+details on this section.
+"""
+
 import os
 import sys
 import fnmatch
 from pathlib import Path
 from shutil import copyfile, rmtree
 
-# from windows.bridge import NativeBridge
 from macron import NativeBridge
 
 class FileSystem(NativeBridge):
