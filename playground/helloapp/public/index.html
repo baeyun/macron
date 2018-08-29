@@ -32,11 +32,15 @@
 
   <!-- <script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script> -->
 <script>
+var text = document.getElementById('text');
 var field = document.getElementById('field').value;
 
 function readFile() {
   // var r =
-  document.getElementById('text').innerHTML = window.external.call_common_module_classmethod("system", "System", "node", false)
+  text.innerHTML=
+  window.external.call_common_module_classmethod("archive", "Archive", "get_size", JSON.stringify({
+    0: "C:/Users/bukharim96/Desktop/COMMON_ZIP.zip"
+  }))
 
   // alert(r)
 }
