@@ -12,7 +12,7 @@ const App = new Window({
   startupFromCenter: true,
   // frameless: true,
   // startupState: "maximized",
-  // devServerURI: 'http://whatismybrowser.com/',
+  // devServerURI: 'http://whatismybrowser.com',
   sourcePath: './public/index.html',
   nativeModules: ['hello'],
   menu: require('./src/menubar'),
