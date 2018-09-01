@@ -39,7 +39,7 @@
       <div class="nav-item">
         <h4 class="nav-label">Windows</h4>
         <div class="nav-item-children">
-          <div class="nav-item-child">Managing window states</div>
+          <div data-access="win-1" class="nav-item-child">Managing window states</div>
           <div class="nav-item-child">Handling window crashes</div>
           <div class="nav-item-child">Threaded windows</div>
           <div class="nav-item-child">Window events</div>
@@ -87,6 +87,15 @@
           <div class="nav-item-child">Special dialogs</div>
           <div class="nav-item-child">Dialog events</div>
           <div class="nav-item-child">Execute command after <code>onDialogShowComplete</code> fires</div>
+        </div>
+      </div>
+
+      <!-- FileSystem -->
+      <div class="nav-item">
+        <h4 class="nav-label">FileSystem</h4>
+        <div class="nav-item-children">
+          <div data-access="fs-1" class="nav-item-child">Asynchronous I/O with <code>fs</code></div>
+          <div class="nav-item-child">File operations callback</div>
         </div>
       </div>
 
@@ -153,6 +162,24 @@ exit() # Prevents this script from running after this point
     </div>
   </div>
 
+  <div data-key="fs-1">
+    <h1>Asynchronous I/O with <code>fs</code></h1>
+    <p>
+      Creating, deleting and manipulating files are done using 
+      the <kbd>fs</kbd> module.
+    </p>
+    <p>
+      In this section, we'll try displaying a few demos of how fast these
+      actions can be done.
+    </p>
+    <h3>Reading files</h3>
+    <p>
+      Press the button below to read a file.
+    </p>
+    <button onclick="document.getElementById('file-contents').innerHTML = window.external.call_common_module_classmethod('fs', 'FileSystem', 'read_file', JSON.stringify({ 0: 'C:/Users/bukharim96/Desktop/Projects/macron/LICENSE' }))">Open Window</button>
+    <pre id="file-contents">(Empty)</pre>
+  </div>
+
   <!-- <script src="C:/Users/bukharim96/Desktop/Projects/macron/playground/macron-explorer/src/js/explorer.js"></script> -->
   <script>
     /* @macron es5 */
@@ -160,14 +187,18 @@ exit() # Prevents this script from running after this point
     var main = document.getElementById('main');
     var accessors = document.querySelectorAll('[data-access]');
     var keys = document.querySelectorAll('[data-key]');
+    var arrayAccessors = []
 
     for (var i = 0; i < accessors.length; i++) {
-      var a = accessors[i];
-
-      a.onclick = function(e) {
-        main.innerHTML = document.querySelector('[data-key=' + a.getAttribute('data-access') + ']').innerHTML;
-      }
+      arrayAccessors.push(accessors[i])
     }
+    
+    arrayAccessors.forEach(function(acc, i) {
+      acc.onclick = function(e) {
+        main.innerHTML = document.querySelector('[data-key=' + acc.getAttribute('data-access') + ']').innerHTML;
+      }
+    })
+
   </script>
 </body>
 </html>

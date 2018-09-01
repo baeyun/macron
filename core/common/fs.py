@@ -36,7 +36,7 @@ class FileSystem(NativeBridge):
     """
     # return f
   
-  def read_file(self, file_path):    
+  def read_file(self, file_path):
     with open(file_path, "r") as f:
       return f.read()
   

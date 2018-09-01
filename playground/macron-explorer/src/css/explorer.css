@@ -14,7 +14,9 @@
 
 * {
   font-family: "Nunito Regular", sans-serif;
-  user-select: none;
+  /* user-select: none; */
+  /* IE11 */
+  -ms-user-select: none;
 }
 
 pre {
@@ -68,7 +70,7 @@ code {
 #nav-header > span {
   position: relative;
   top: 45px;
-  font-family: "GrandHotel Regular";
+  font-family: "GrandHotel Regular", sans-serif;
   font-size:  35px;
 }
 
@@ -126,6 +128,6 @@ div#nav-footer {
   height:  100vh;
   padding: 10px 40px;
   margin: 0 auto;
-  line-height: 42px;
-  font-size:  20px;
+  line-height: 30px;
+  font-size:  18px;
 }
