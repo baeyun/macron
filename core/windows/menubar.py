@@ -33,6 +33,8 @@ class MacronMenubar:
 
       if "submenu" not in m:
         menuitem.IsCheckable = True if "isCheckable" in m and m["isCheckable"] == True else False
+        if "checked" in m:
+          menuitem.IsChecked = True if m["checked"] else False
 
       if "submenu" in m:
         self.create_menu(src=m["submenu"], parent=menuitem)

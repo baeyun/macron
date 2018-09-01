@@ -24,7 +24,7 @@ module.exports = new Menu([
       {header: "Save As", callback: "save_as"},
       {header: "Save All", callback: "save_all"},
       Menu.SEPERATOR,
-      {header: "Auto Save", isCheckable: true, callback: "toggle_auto_save"},
+      {header: "Auto Save", isCheckable: true, checked: true, callback: "toggle_auto_save"},
       Menu.SEPERATOR,
       {header: "Preferences", callback: "open_preference_settings"},
       Menu.SEPERATOR,
