@@ -10,36 +10,91 @@ from webview import MacronWebview
 
 class MacronWindow(Gtk.Window):
   def __init__(self, config):
-    self.title = config["title"]
     self.window = Gtk.Window(
-      title=self.title,
+      title=config["title"] if "title" in config else "New Window",
       default_height=config["height"] if "height" in config else 500,
       default_width=config["height"] if "height" in config else 500
     )
     self.window.connect("destroy", Gtk.main_quit)
 
-    # Initialize every window with a webview and pass macron config
-    # passed from macron.config.js
-    self.win_webview = MacronWebview(config={
+    self.webview = MacronWebview(config={
       "devServerURI": config["devServerURI"] if "devServerURI" in config else "https://localhost:3000",
-    })
-    self.window.add(self.win_webview.webview)
-    
-    # Dimensions & Geometry
-    # These properties are just maps for the original
-    # GTK Window size setter and getter methods.
-    # self.width = 500
-    # self.height = 1000
+    }).webview
 
-    # self.window.set_default_size(
-    #   self.width,
-    #   self.height
-    # )
+    self.window.add(self.webview)
 
-    # self.max_height = 500
-    # self.max_width = 500
-    # self.min_height = 500
-    # self.min_width = 500
+    self.width(100)
+  
+  def title(self, title):
+    if title:
+      self.window.set_title(title)
+  
+  def height(self, height):
+    if height:
+      self.window.set_default_size(self.window.get_default_size()[0], height)
+  
+  def width(self, width):
+    if width:
+      self.window.set_default_size(width, self.window.get_default_size()[1])
+  
+  # def max_height(self, max_height):
+  #   if max_height:
+  #     self.window.set_max_height(max_height)
+  
+  # def max_width(self, max_width):
+  #   if max_width:
+  #     self.window.set_max_width(max_width)
+  
+  # def min_height(self, min_height):
+  #   if min_height:
+  #     self.window.set_min_height(min_height)
+  
+  # def min_width(self, min_width):
+  #   if min_width:
+  #     self.window.set_min_width(min_width)
+  
+  def resizable(self, resizable):
+    if resizable:
+      self.window.set_resizable(resizable)
+  
+  def focus_on_startup(self, focus_on_startup):
+    if focus_on_startup:
+      self.window.set_focus_on_map(focus_on_startup)
+  
+  def hide_in_taskbar(self, hide_in_taskbar):
+    if hide_in_taskbar:
+      self.window.set_skip_taskbar_hint(hide_in_taskbar)
+  
+  def hide_on_startup(self, hide_on_startup):
+    if hide_on_startup == True:
+      self.window.hide()
+  
+  def startup_from_center(self, startup_from_center):
+    if startup_from_center:
+      self.window.set_position(Gtk.WindowPosition.CENTER)
+  
+  def state(self, state):
+    if state:
+      if state == "maximized":
+        self.window.maximize()
+      elif state == "minimized":
+        self.window.iconify()
+      elif state == "normal":
+        # self.window.deiconify()
+        pass
+      # if self.WindowState == 2:
+      #   return "maximized"
+      # elif self.WindowState == 1:
+      #   return "minimized"
+      # elif self.WindowState == 0:
+      #   return "normal"
+  
+  def frameless(self, frameless):
+    if frameless:
+      self.window.set_decorated(not frameless)
+      
+  def close(self):
+    self.window.close()
 
     # gh = Gdk.Geometry()
     # gh.min_width = self.min_width
@@ -52,64 +107,7 @@ class MacronWindow(Gtk.Window):
     #   Gdk.WindowHints.ASPECT,
     #   Gdk.Geometry
     # )
-
-    # self.is_active = None
-    # self.is_focused = None
-    # self.is_keyboard_focused = None
-    # self.is_visible = None
-
-    # Gets or sets the resizable property of the window.
-    # False by default.
-    self.resizable = config["resizable"] if "resizable" in config else True
-    self.window.set_resizable(self.resizable)
-
-    # Focus on window on when created.
-    self.focus_on_startup = config["focusOnStartup"] if "focusOnStartup" in config else True
-    self.window.set_focus_on_map(self.focus_on_startup)
-
-    # Sets whether the window should have a taskbar button.
-    self.hide_in_taskbar = config["hideInTaskbar"] if "hideInTaskbar" in config else False
-    self.window.set_skip_taskbar_hint(self.hide_in_taskbar)
   
-    # FIXME: The hide property should work as expected
-    # HACK: Possible workaround is to set:
-    #    hideInTaskbar: true,
-    #    startupState: "minimized"
-    # THIS 'SIMULATES' REAL 'window.hide()'
-    # from the macron.config.js file or any other window loader.
-
-
-    # self.hide_on_startup = config["hideOnStartup"] if "hideOnStartup" in config else False
-    # if self.hide_on_startup:
-    #   self.window.hide()
-
-    # Centers window to screen's center.
-    # self.startup_from_center = True
-    if "startupFromCenter" in config and config["startupFromCenter"] == True:
-      self.window.set_position(Gtk.WindowPosition.CENTER)
-
-    # Determines if window should start maximized or minimized.
-    self.startup_state = config["startupState"] if "startupState" in config else "normal"
-    if self.startup_state == "maximized":
-      self.window.maximize()
-    elif self.startup_state == "minimized":
-      self.window.iconify() # minimizes
-
-    # Determines whether window should be frameless or not.
-    # self.frameless = False
-    if "frameless" in config and config["frameless"] == True:
-      self.window.set_decorated(False) # False means there is no frame.
-
-    # TODO: Handle window events
-  
-  # def focus(self):
-  #   self.window.set_focus_on_map(self.focus_on_start)
-  
-  # def hide(self):
-  #   self.window.hide()
-  
-  # def close(self):
-  #   self.window.close()
 
 def create_window(config):
   def create():
