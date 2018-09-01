@@ -1,48 +1,50 @@
-// const { Menu, MenuItem } = require('macron')
+// const { Menu } = require('macron')
+let Menu = function (menu) { return menu }
+Menu.SEPERATOR = {seperator: true}
 
-module.exports = [
+module.exports = new Menu([
   {
-    name: "File",
+    header: "File",
     submenu: [
-      {name: "New File", callback: "CREATE_FILE"},
-      {name: "New Window", callback: "CREATE_WINDOW"},
-      {seperator: true},
-      {name: "Open File", callback: "OPEN_FILE"},
-      {name: "Open Folder", callback: "OPEN_FOLDER"},
-      {seperator: true},
-      {name: "Open recent", submenu: [ // @todo get from store
-        {name: "./views/CodeEditor/index.js", callback: "OPEN_RECENT"},
-        {name: "../components/windows/MenuButton", callback: "OPEN_RECENT"},
-        {name: "./guppy/scripts/", callback: "openRecent"},
-        {name: "../static/img/logo.png", callback: "OPEN_RECENT"},
-        {name: "../vsnative/", callback: "OPEN_RECENT"}
+      {header: "New File", callback: "create_file"},
+      {header: "New Window", callback: "create_window"},
+      Menu.SEPERATOR,
+      {header: "Open File", callback: "open_file"},
+      {header: "Open Folder", callback: "open_folder"},
+      Menu.SEPERATOR,
+      {header: "Open recent", submenu: [
+        {header: "./views/CodeEditor/index.js", callback: "open_recent"},
+        {header: "../components/windows/MenuButton", callback: "open_recent"},
+        {header: "./guppy/scripts/", callback: "openrecent"},
+        {header: "../static/img/logo.png", callback: "open_recent"},
+        {header: "../vsnative/", callback: "open_recent"}
       ]},
-      {seperator: true},
-      {name: "Save", callback: "save"},
-      {name: "Save As", callback: "SAVE_AS"},
-      {name: "Save All", callback: "SAVE_ALL"},
-      {seperator: true},
-      {name: "Auto Save", isCheckable: true, callback: "TOGGLE_AUTO_SAVE"},
-      {seperator: true},
-      {name: "Preferences", callback: "OPEN_PREFERENCE_SETTINGS"},
-      {seperator: true},
-      {name: "Revert File", callback: "REVERT_FILE"},
-      {name: "Close Editor", callback: "CLOSE_EDITOR"},
-      {name: "Close Folder", callback: "CLOSE_FOLDER"},
-      {name: "Close Window", callback: "CLOSE_WINDOW"}
+      Menu.SEPERATOR,
+      {header: "Save", callback: "save"},
+      {header: "Save As", callback: "save_as"},
+      {header: "Save All", callback: "save_all"},
+      Menu.SEPERATOR,
+      {header: "Auto Save", isCheckable: true, callback: "toggle_auto_save"},
+      Menu.SEPERATOR,
+      {header: "Preferences", callback: "open_preference_settings"},
+      Menu.SEPERATOR,
+      {header: "Revert File", callback: "revert_file"},
+      {header: "Close Editor", callback: "close_editor"},
+      {header: "Close Folder", callback: "close_folder"},
+      {header: "Close Window", callback: "close_window"}
     ]
   },
-  {name: "Edit", submenu: [
-    {name: "Word Wrap", isCheckable: true}
+  {header: "Edit", submenu: [
+    {header: "Word Wrap", isCheckable: true}
   ]},
-  {name: "Selection"},
-  {name: "View"},
-  {name: "Go", submenu: [
-    {name: "Share", icon: "&#xE72D;"},
-    {name: "Copy"},
-    {name: "Delete"},
+  {header: "Selection"},
+  {header: "View"},
+  {header: "Go", submenu: [
+    {header: "Share", icon: "&#xE72D;"},
+    {header: "Copy"},
+    {header: "Delete"},
   ]},
-  {name: "Debug"},
-  {name: "Tasks"},
-  {name: "Help"}
-]
+  {header: "Debug"},
+  {header: "Tasks"},
+  {header: "Help"}
+])
