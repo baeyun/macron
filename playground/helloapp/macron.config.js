@@ -14,16 +14,16 @@ const App = new Window({
   // startupState: "maximized",
   // devServerURI: 'http://127.0.0.1:3000',
   sourcePath: './public/index.html',
-  nativeModules: ['hello'],
+  // nativeModules: ['Dialog'],
   menu: require('./src/menubar'),
   // nativeDependencies: ['numpy.py', 'ffmpeg.py']
 })
-.on('activate', function() {
-  alert("Welcome to Macron\'s \'Hello, World!\' App")
-})
-.on('close', function() {
-  alert('App is being closed.')
-})
+// .on('activate', function() {
+//   alert("Welcome to Macron\'s \'Hello, World!\' App")
+// })
+// .on('close', function() {
+//   alert('App is being closed.')
+// })
 
 module.exports = {
  name: 'Hello World App',

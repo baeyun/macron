@@ -40,17 +40,20 @@ class MacronWebview(WebBrowser):
     # else:
     #   # handle error
 
-    # Load main Macron JavaScript APIs
+    # Load main macron JavaScript APIs
+    self.evaluate_script(r'var macron = {};')
+    
     with open('../../src/init.js') as f:
+      self.evaluate_script(f.read())
+
+    with open('../../src/polyfills/require.js') as f:
       self.evaluate_script(f.read())
 
     # with open('../../src/front/window.js') as f:
     #   self.evaluate_script(f.read())
 
-    self.evaluate_script(r'var Macron = {};')
-
-    # Create Macron.CurrentWindow
-    self.evaluate_script('Macron.CurrentWindow = {};'.format(dumps(config)))
+    # Create macron.CurrentWindow
+    self.evaluate_script('macron.CurrentWindow = {};'.format(dumps(config)))
 
     # Bridge
     self.ObjectForScripting = MacronBridge().initialize(
@@ -81,7 +84,7 @@ class MacronWebview(WebBrowser):
 
   def triggerEvent(self, event):
     self.evaluate_script(
-      'Macron.CurrentWindow.eventCallbacks.{}'.format(event) + '''.forEach(
+      'macron.CurrentWindow.eventCallbacks.{}'.format(event) + '''.forEach(
         function(callback) {
           eval(
             "(" + callback.replace(/\\/\\//gi, '\\\\').replace(/\/.?/gi, '').replace(/\\'\\'\\'/gi, "\\"") + ")();"
