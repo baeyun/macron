@@ -16,6 +16,7 @@ from System.Windows import MessageBox
 sys.path.insert(0, path.dirname(path.abspath(__file__)))
 
 from bridge import MacronBridge
+from json import dumps
 
 class MacronWebview(WebBrowser):
 
@@ -38,6 +39,18 @@ class MacronWebview(WebBrowser):
       #   self.Dock = DockStyle.Fill
     # else:
     #   # handle error
+
+    # Load main Macron JavaScript APIs
+    with open('../../src/init.js') as f:
+      self.evaluate_script(f.read())
+
+    # with open('../../src/front/window.js') as f:
+    #   self.evaluate_script(f.read())
+
+    self.evaluate_script(r'var Macron = {};')
+
+    # Create Macron.CurrentWindow
+    self.evaluate_script('Macron.CurrentWindow = {};'.format(dumps(config)))
 
     # Bridge
     self.ObjectForScripting = MacronBridge().initialize(
@@ -65,6 +78,18 @@ class MacronWebview(WebBrowser):
     # Occurs when the document being navigated to has finished
     # downloading.
     # # self.LoadCompleted += self.handle_events()
+
+  def triggerEvent(self, event):
+    self.evaluate_script(
+      'Macron.CurrentWindow.eventCallbacks.{}'.format(event) + '''.forEach(
+        function(callback) {
+          eval(
+            "(" + callback.replace(/\\/\\//gi, '\\\\').replace(/\/.?/gi, '').replace(/\\'\\'\\'/gi, "\\"") + ")();"
+          )
+        }
+      );
+      '''
+    )
 
   def evaluate_script(self, script):
     if not script:

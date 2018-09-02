@@ -1,20 +1,16 @@
 // Macron.Window API
-var MacronRegisteredWindows = {}
-var MacronRegisteredEventCallbacks = {close: []}
-
-// for(let event in MacronRegisteredEventCallbacks) {
-//   MacronRegisteredEventCallbacks[event].forEach(e => {
-//     e.call()
-//   });
-// }
 
 const { sep: pathSeperator } = require('path')
 const cwd = process.cwd() + pathSeperator
 
+var _Macron = {}
+
 module.exports = function(config={}) {
   // Register window
-  this.UID = Object.keys(MacronRegisteredWindows).length + 1
-  MacronRegisteredWindows[this.UID] = this
+  if (_Macron.RegisteredWindows) {
+    this.UID = Object.keys(_Macron.RegisteredWindows).length + 1
+    _Macron.RegisteredWindows[this.UID] = this
+  }
 
   let {
     title = 'Macron App',
@@ -64,10 +60,27 @@ module.exports = function(config={}) {
   this.nativeDependencies = nativeDependencies
 
   // Window events
+  this.eventCallbacks = {
+    activate: [],
+    close: [],
+    closing: [],
+    contextMenuClose: [],
+    contextMenuOpen: [],
+    deactivate: [],
+    focusChange: [],
+    keydown: [],
+    keyup: [],
+    sizeChange: [],
+    stateChange: []
+  }
+  
   this.on = function(eventType, callback) {
-    MacronRegisteredEventCallbacks[eventType].push(callback)
+    this.eventCallbacks[eventType].push(
+      // double-quotes work-around
+      callback.toString().replace(/\"/gi, "\'\'\'")
+    )
     
-    return this
+    return this // Allow chaining
   }
 
   return this
