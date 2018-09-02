@@ -1,6 +1,18 @@
 from macron import NativeBridge
 
 class Dialog(NativeBridge):
+
+  def alert(self):
+    pass
+
+  def warn(self):
+    pass
+
+  def error(self):
+    pass
+    
+  def info(self):
+    pass
   
   def openFile(self):
     from tkinter import Tk, Button, messagebox
@@ -9,5 +21,8 @@ class Dialog(NativeBridge):
     Button(root, text="Macron", command=say_wow).pack()
     root.mainloop()
 
-  def par(self, a, b, c):
-    return {"0": a, 32: b, "jay": c}
+  def openFolder(self):
+    pass
+
+  def saveFile(self):
+    pass

@@ -12,7 +12,7 @@ from shutil import copyfile, rmtree
 
 from macron import NativeBridge
 
-class FileSystem(NativeBridge):
+class FS(NativeBridge):
   def __init__(self):
     return  
   

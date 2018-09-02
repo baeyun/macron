@@ -22,7 +22,9 @@ class MacronBridge(IMacronBridge):
     self.context = context
 
     self.load_common_modules([
+      'Archive',
       'Dialog',
+      'FS',
       'System'
     ])
 
@@ -148,7 +150,6 @@ class MacronBridge(IMacronBridge):
       method_name
     )({})""".format(args_spread))
 
-    # macron.Dialog.par(1,2,3)
     if type(output) == list or type(output) == tuple or type(output) == dict:
       return dumps(output)
     else:
