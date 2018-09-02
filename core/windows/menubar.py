@@ -1,4 +1,4 @@
-from System import Array
+# from System import Array
 from System.Windows.Controls import Menu, MenuItem, Separator
 from System.Windows import Thickness
 
@@ -7,7 +7,7 @@ class MacronMenubar:
   def __init__(self, src):
 
     self.menu = Menu()
-
+    self.menu.IsMainMenu = True
     # self.menu_thickness = Thickness()
     # self.menu_thickness.Bottom = 0
     # self.menu_thickness.Left = 0
@@ -16,7 +16,6 @@ class MacronMenubar:
 
     self.create_menu(src)
 
-    self.menu.IsMainMenu = True
 
   def create_menu(self, src, parent=None):
 

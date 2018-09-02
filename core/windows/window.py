@@ -37,43 +37,29 @@ class MacronWindow(Window):
 
     menu = MacronMenubar(src=config["menu"]).get_menu()
     dock.SetDock(menu, Dock.Top)
-    
+
     grid = Grid()
     grid.ShowGridLines = False
-    # dock.SetDock(grid, Dock.Client)
-
-    webview = MacronWebview(window=self, config=config)
-    # webview.HorizontalAlignment = 3 # stretched to fill the entire layout slot
     
-    grid.Children.Add(webview)
+    self.webview = MacronWebview(window=self, config=config)
+    grid.Children.Add(self.webview)
+    
     dock.Children.Add(menu)
     dock.Children.Add(grid)
-    
     self.Content = dock
 
-    # # def on_Activated(self, sender, args):
-    # Occurs when a window becomes the foreground window.
-    # # self.Activated += self.on_Activated
-    # Occurs when the window is about to close.
-    # self.Closed += self.on_Closed
-    # Occurs directly after Close() is called, and can be handled to cancel window closure.
-    # # self.Closing += self.on_Closing
-    # Occurs just before any context menu on the element is closed.
-    # # self.ContextMenuClosing += self.on_ContextMenuClosing
-    # Occurs when any context menu on the element is opened.
-    # # self.ContextMenuOpening += self.on_ContextMenuOpening
-    # Occurs when a window becomes a background window.
-    # # self.Deactivated += self.on_Deactivated
-    # Occurs when the value of the Focusable property changes.
-    # # self.FocusableChanged += self.on_FocusableChanged
-    # Occurs when a key is pressed while focus is on this element.
-    # # self.PreviewKeyDown += self.on_PreviewKeyDown
-    # Occurs when a key is released while focus is on this element.
-    # # self.PreviewKeyUp += self.on_PreviewKeyUp
-    # Occurs when either the ActualHeight or the ActualWidth properties change value on this element.
-    # # self.SizeChanged += self.on_SizeChanged
-    # Occurs when the window's WindowState property changes.
-    # # self.StateChanged += self.on_StateChanged
+    # Delegate events
+    self.Activated += self.on_activated
+    self.Closed += self.on_closed
+    self.Closing += self.on_closing
+    self.ContextMenuClosing += self.on_contextmenuclosing
+    self.ContextMenuOpening += self.on_contextmenuopening
+    self.Deactivated += self.on_deactivated
+    self.FocusableChanged += self.on_focusablechanged
+    self.PreviewKeyDown += self.on_previewkeydown
+    self.PreviewKeyUp += self.on_previewkeyup
+    self.SizeChanged += self.on_sizechanged
+    self.StateChanged += self.on_statechanged
 
   # Gets a value that indicates whether the window is active
   def is_active(self):
@@ -257,6 +243,52 @@ class MacronWindow(Window):
   # Manually closes a Window.
   def close(self):
     self.Close()
+
+  """"""""""""""""""""""" Events """""""""""""""""""""""
+
+  # Occurs when a window becomes the foreground window.
+  def on_activated(self, sender, args):
+    self.webview.triggerEvent('activate')
+
+  # Occurs when the window is about to close.
+  def on_closed(self, sender, args):
+    self.webview.triggerEvent('close')
+
+  # Occurs directly after Close() is called, and can be handled to cancel window closure.
+  def on_closing(self, sender, args):
+    self.webview.triggerEvent('closing')
+
+  # Occurs just before any context menu on the element is closed.
+  def on_contextmenuclosing(self, sender, args):
+    self.webview.triggerEvent('contextMenuClose')
+
+  # Occurs when any context menu on the element is opened.
+  def on_contextmenuopening(self, sender, args):
+    self.webview.triggerEvent('contextMenuOpen')
+
+  # Occurs when a window becomes a background window.
+  def on_deactivated(self, sender, args):
+    self.webview.triggerEvent('deactivate')
+
+  # Occurs when the value of the Focusable property changes.
+  def on_focusablechanged(self, sender, args):
+    self.webview.triggerEvent('focusChange')
+
+  # Occurs when a key is pressed while focus is on this element.
+  def on_previewkeydown(self, sender, args):
+    self.webview.triggerEvent('keydown')
+
+  # Occurs when a key is released while focus is on this element.
+  def on_previewkeyup(self, sender, args):
+    self.webview.triggerEvent('keyup')
+
+  # Occurs when either the ActualHeight or the ActualWidth properties change value on this element.
+  def on_sizechanged(self, sender, args):
+    self.webview.triggerEvent('sizeChange')
+
+  # Occurs when the window's WindowState property changes.
+  def on_statechanged(self, sender, args):
+    self.webview.triggerEvent('stateChange')
 
 # TODO
 # Properties
