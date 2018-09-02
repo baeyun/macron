@@ -2,7 +2,7 @@ import sys
 import clr
 from os import path
 import importlib.util
-from json import loads
+from json import loads, dumps
 
 from macron import NativeBridge
 
@@ -143,7 +143,13 @@ class MacronBridge(IMacronBridge):
       
     # print(dir(class_ref))
 
-    return eval("""getattr(
+    output = eval("""getattr(
       class_ref(self.window, self.context),
       method_name
     )({})""".format(args_spread))
+
+    # macron.Dialog.par(1,2,3)
+    if type(output) == list or type(output) == tuple or type(output) == dict:
+      return dumps(output)
+    else:
+      return output

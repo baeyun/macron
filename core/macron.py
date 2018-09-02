@@ -38,9 +38,11 @@ class NativeBridge:
     class_name = self.get_classname()
     members_api = ''
     for member in self.get_methods():
-      members_api += member + ''': function(args) {
-        args = args || false;
-        return window.external.call_module_classmethod("'''+self.get_modulename()+'''", "'''+class_name+'''", "'''+member+'''", args);
+      members_api += member + ''': function() {
+        args = JSON.stringify(arguments) || false;
+        return JSON.parse(
+          window.external.call_module_classmethod("'''+self.get_modulename()+'''", "'''+class_name+'''", "'''+member+'''", args)
+        );
       },
       '''
 

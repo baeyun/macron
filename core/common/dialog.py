@@ -8,3 +8,6 @@ class Dialog(NativeBridge):
     def say_wow(): messagebox.showwarning("Macron", "This is great so far!")
     Button(root, text="Macron", command=say_wow).pack()
     root.mainloop()
+
+  def par(self, a, b, c):
+    return {"0": a, 32: b, "jay": c}
