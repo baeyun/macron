@@ -74,6 +74,11 @@ class Dialog(NativeBridge):
     try:
       dir_path = askdirectory()
       self.window.focus()
+
+      # dialog closed with "cancel".
+      if not dir_path:
+        return False
+
       return dir_path
     except:
       raise Exception('Unable to select directory.')
