@@ -146,7 +146,7 @@ class MacronBridge(IMacronBridge):
     # print(dir(class_ref))
 
     output = eval("""getattr(
-      class_ref(self.window, self.context),
+      class_ref(window=self.window, context=self.context),
       method_name
     )({})""".format(args_spread))
 
