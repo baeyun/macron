@@ -1,6 +1,5 @@
 from macron import NativeBridge
 
-import tkinter as tk
 from tkinter.filedialog import (
   asksaveasfile,
   askopenfilename,
@@ -8,24 +7,7 @@ from tkinter.filedialog import (
   askdirectory
 )
 
-# Singleton instance of tkinter
-root = tk.Tk()
-# Hide tkinter window
-root.withdraw()
-
 class Dialog(NativeBridge):
-
-  def alert(self):
-    pass
-
-  def warn(self):
-    pass
-
-  def error(self):
-    pass
-    
-  def info(self):
-    pass
 
   def fileSaver(self, config):
     try:

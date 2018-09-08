@@ -25,6 +25,7 @@ class MacronBridge(IMacronBridge):
       'Archive',
       'Dialog',
       'FS',
+      'MessageBox',
       'System'
     ])
 
