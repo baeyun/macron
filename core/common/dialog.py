@@ -27,9 +27,9 @@ class Dialog(NativeBridge):
     try:
       file = asksaveasfile(
         title = config['title'] if 'title' in config else 'Save file',
-        initialdir = config['dirName'] if 'dirName' in config else None,
+        initialdir = config['initialDirectoryPath'] if 'initialDirectoryPath' in config else None,
         initialfile = config['name'] if 'name' in config else None,
-        defaultextension = config['extension'] if 'extension' in config else None,
+        defaultextension = config['defaultExtension'] if 'defaultExtension' in config else None,
         filetypes = config['fileTypes'] if 'fileTypes' in config else None,
         mode = 'w'
       )
@@ -39,11 +39,13 @@ class Dialog(NativeBridge):
       if not file:
         return False
       
+      file_name = file.name
+      
       if "content" in config:
         file.write(config['content'])
-        file_name = file.name
         file.close()
-        return file_name
+      
+      return file_name
     except:
       raise Exception('Unable to save file.')
 
