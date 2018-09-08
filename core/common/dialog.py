@@ -39,11 +39,11 @@ class Dialog(NativeBridge):
       if not file:
         return False
       
-      file_name = file.name
-      
       if "content" in config:
         file.write(config['content'])
-        file.close()
+      
+      file_name = file.name
+      file.close()
       
       return file_name
     except:
