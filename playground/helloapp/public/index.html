@@ -25,27 +25,37 @@
       If you are using a library/framework, change your render target to <code>./public/index.html</code>
     </p>
     <div style="text-align: center;">
-      <input type="text" id="field" value="import { Window } from 'macron'">
-      <button onclick="readFile()">Clear File</button>
+      <button onclick="saveFile()">Save a File</button>
+      <button onclick="console.log(require('macron').Dialog.filePicker())">Open File</button>
+      <button onclick="console.log(require('macron').Dialog.dirPicker())">Open Directory</button>
     </div>
   </div>
 
-  <script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
 <script>
-var text = document.getElementById('text');
-var field = document.getElementById('field').value;
+function saveFile() {
+  fileSaver = require('macron').Dialog.fileSaver
+  
+  path = fileSaver(
+    {
+      title: 'Save this file as:', // title of 'Save File Dialog'
+      content: 'Some lorem...',
+      name: 'test_file_01', // default name
+      path: 'C:/Users/bukharim96/Desktop/macron_tests/', // initial save path
+      extension: 'txt', // default extension
+      fileTypes: [ // 'Save As' types
+        ['All files', '.*'],
+        ['Text', '.txt'],
+        ['HTML', '.html'],
+        ['JavaScript', '.js'],
+        ['CSS', '.css'],
+        ['Markdown', '.md']
+      ]
+    }
+  )
 
-function readFile() {
-  // var r =
-  // text.innerHTML=
-  // window.external.call_common_module_classmethod("archive", "Archive", "get_size", JSON.stringify({
-  //   0: "C:/Users/bukharim96/Desktop/COMMON_ZIP.zip"
-  // }))
-
-  alert(Object.keys(Macron.Dialog))
+  console.log(path)
 }
-
 </script>
-
+<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
 </body>
 </html>
