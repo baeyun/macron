@@ -27,29 +27,38 @@
     <div style="text-align: center;">
       <button onclick="saveFile()">Save a File</button>
       <button onclick="pickFile()">Open File</button>
-      <button onclick="console.log(require('macron').Dialog.dirPicker())">Open Directory</button>
+      <button onclick="pickDirectory()">Open Directory</button>
     </div>
   </div>
 
 <script>
+function pickDirectory() {
+  directoryPicker = require('macron').Dialog.directoryPicker
+  
+  path = directoryPicker({
+    title: 'Pick folder', // title of 'Pick Folder Dialog'
+    initialDirectoryPath: 'C:/Users/bukharim96/Desktop/macron_tests/' // initial save path
+  })
+
+  console.log(path)
+}
+
 function pickFile() {
   filePicker = require('macron').Dialog.filePicker
   
-  content = filePicker(
-    {
-      title: 'Pick file', // title of 'Save File Dialog'
-      // read: true,
-      initialDirectoryPath: 'C:/Users/bukharim96/Desktop/macron_tests/', // initial save path
-      fileTypes: [ // 'Save As' types
-        ['All files', '.*'],
-        ['Text', '.txt'],
-        ['HTML', '.html'],
-        ['JavaScript', '.js'],
-        ['CSS', '.css'],
-        ['Markdown', '.md']
-      ]
-    }
-  )
+  content = filePicker({
+    title: 'Pick file', // title of 'Pick File Dialog'
+    // read: true,
+    initialDirectoryPath: 'C:/Users/bukharim96/Desktop/macron_tests/', // initial save path
+    fileTypes: [ // 'Save As' types
+      ['All files', '.*'],
+      ['Text', '.txt'],
+      ['HTML', '.html'],
+      ['JavaScript', '.js'],
+      ['CSS', '.css'],
+      ['Markdown', '.md']
+    ]
+  })
 
   console.log(content)
 }
@@ -57,23 +66,21 @@ function pickFile() {
 function saveFile() {
   fileSaver = require('macron').Dialog.fileSaver
   
-  path = fileSaver(
-    {
-      title: 'Save this file as:', // title of 'Save File Dialog'
-      content: 'Some lorem...',
-      name: 'test_file_01', // default name
-      initialDirectoryPath: 'C:/Users/bukharim96/Desktop/macron_tests/', // initial save path
-      defaultExtension: 'txt', // default extension
-      fileTypes: [ // 'Save As' types
-        ['All files', '.*'],
-        ['Text', '.txt'],
-        ['HTML', '.html'],
-        ['JavaScript', '.js'],
-        ['CSS', '.css'],
-        ['Markdown', '.md']
-      ]
-    }
-  )
+  path = fileSaver({
+    title: 'Save this file as:', // title of 'Save File Dialog'
+    content: 'Some lorem...',
+    name: 'test_file_01', // default name
+    initialDirectoryPath: 'C:/Users/bukharim96/Desktop/macron_tests/', // initial save path
+    defaultExtension: 'txt', // default extension
+    fileTypes: [ // 'Save As' types
+      ['All files', '.*'],
+      ['Text', '.txt'],
+      ['HTML', '.html'],
+      ['JavaScript', '.js'],
+      ['CSS', '.css'],
+      ['Markdown', '.md']
+    ]
+  })
 
   console.log(path)
 }

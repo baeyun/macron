@@ -1,6 +1,5 @@
 from macron import NativeBridge
 
-from os import fstat
 import tkinter as tk
 from tkinter.filedialog import asksaveasfile, askopenfilename, askdirectory
 
@@ -70,9 +69,12 @@ class Dialog(NativeBridge):
     except:
       raise Exception('Unable to select file.')
 
-  def dirPicker(self):
+  def directoryPicker(self, config):
     try:
-      dir_path = askdirectory()
+      dir_path = askdirectory(
+        title = config['title'] if 'title' in config else 'Save file',
+        initialdir = config['initialDirectoryPath'] if 'initialDirectoryPath' in config else None
+      )
       self.window.focus()
 
       # dialog closed with "cancel".
