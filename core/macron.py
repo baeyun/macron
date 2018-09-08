@@ -1,13 +1,26 @@
 from inspect import getmembers, ismethod
 from os.path import basename
 
+# Public bridge methods decorator
+def macronMethod(method):
+  def wrapper(*args, **kwargs):
+    if 'register_method' in kwargs and kwargs['register_method']:
+      args[0].registered_public_methods.append(method.__name__)
+      return
+
+    return method(*args, **kwargs)
+
+  return wrapper
+
 class NativeBridge:
   def __init__(self, window=None, context=None):
     self.window = window
     self.context = context
+    self.registered_public_methods = []
 
-  def get_methods(self):
-    names = []
+    self.register_public_methods()
+
+  def register_public_methods(self):
     private_members = [
       '__init__',
       'get_methods',
@@ -21,9 +34,13 @@ class NativeBridge:
       if member[0] in private_members:
         continue
       
-      names.append(member[0])
+      try:
+        getattr(self, member[0])(register_method=True)
+      except:
+        continue
 
-    return names
+  def get_methods(self):
+    return self.registered_public_methods
 
   def get_filename(self):
     return basename(__file__)

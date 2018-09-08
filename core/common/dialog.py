@@ -1,4 +1,4 @@
-from macron import NativeBridge
+from macron import *
 
 from tkinter.filedialog import (
   asksaveasfile,
@@ -9,6 +9,7 @@ from tkinter.filedialog import (
 
 class Dialog(NativeBridge):
 
+  @macronMethod
   def fileSaver(self, config):
     try:
       file = asksaveasfile(
@@ -34,6 +35,7 @@ class Dialog(NativeBridge):
     except:
       raise Exception('Unable to save file.')
 
+  @macronMethod
   def filePicker(self, config):
     try:
       config_opts = {
@@ -64,6 +66,7 @@ class Dialog(NativeBridge):
     except:
       raise Exception('Unable to select file.')
 
+  @macronMethod
   def directoryPicker(self, config):
     try:
       dir_path = askdirectory(

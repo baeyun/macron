@@ -12,9 +12,7 @@ from shutil import copyfile, rmtree
 
 from macron import NativeBridge
 
-class FS(NativeBridge):
-  def __init__(self):
-    return  
+class FS(NativeBridge): 
   
   # Saves immediately without waiting for close
   # Ensures file is synced with latest changes
