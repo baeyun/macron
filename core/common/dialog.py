@@ -49,10 +49,23 @@ class Dialog(NativeBridge):
     except:
       raise Exception('Unable to save file.')
 
-  def filePicker(self):
+  def filePicker(self, config):
     try:
-      file_path = askopenfilename(filetypes=(("Template files", "*.tplate"), ("HTML files", "*.html;*.htm"), ("All files", "*.*")))
+      file_path = askopenfilename(
+        title = config['title'] if 'title' in config else 'Save file',
+        initialdir = config['initialDirectoryPath'] if 'initialDirectoryPath' in config else None,
+        filetypes = config['fileTypes'] if 'fileTypes' in config else None
+      )
       self.window.focus()
+
+      # dialog closed with "cancel".
+      if not file_path:
+        return False
+
+      if 'read' in config and config['read']:
+        with open(file_path, 'r') as f:
+          return f.read()
+      
       return file_path
     except:
       raise Exception('Unable to select file.')
