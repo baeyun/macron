@@ -84,14 +84,14 @@ class MacronWebview(WebBrowser):
 
   def triggerEvent(self, event):
     self.evaluate_script(
-      'macron.CurrentWindow.eventCallbacks.{}'.format(event) + '''.forEach(
-        function(callback) {
+      '''macron.CurrentWindow.eventCallbacks.{}.forEach(
+        function(callback) {{
           eval(
             "(" + callback.replace(/\\/\\//gi, '\\\\').replace(/\/.?/gi, '').replace(/\\'\\'\\'/gi, "\\"") + ")();"
           )
-        }
+        }}
       );
-      '''
+      '''.format(event)
     )
 
   def evaluate_script(self, script):
