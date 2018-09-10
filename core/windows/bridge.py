@@ -2,7 +2,7 @@ import sys
 import clr
 from os import path
 import importlib.util
-from json import loads
+from json import loads, dumps
 
 from macron import NativeBridge
 
@@ -21,15 +21,44 @@ class MacronBridge(IMacronBridge):
     self.window = window
     self.context = context
 
-    native_mods_root_path = (root_path + native_modules_path).replace("//", "\u005c")
+    self.load_common_modules([
+      'Archive',
+      'Dialog',
+      'FS',
+      'MessageBox',
+      'System'
+    ])
 
-    for modname in native_modules:
-      modname = modname.split(".")[0]
+    native_mods_root_path = (root_path + native_modules_path).replace("//", "\u005c")
+    generated_js_apis = ''
+
+    for class_name in native_modules:
+      modname = class_name.lower()
       spec = importlib.util.spec_from_file_location(modname, native_mods_root_path + modname + ".py")
       setattr(self, modname, importlib.util.module_from_spec(spec))
-      spec.loader.exec_module(getattr(self, modname))
+      module = getattr(self, modname)
+      spec.loader.exec_module(module)
+
+      generated_js_apis += getattr(module, class_name)().generate_js_api()
+
+    self.context.evaluate_script(
+      generated_js_apis
+    )
 
     return self
+
+  def load_common_modules(self, class_names):
+    generated_js_apis = ''
+
+    for class_name in class_names:
+      mod_name = class_name.lower()
+      setattr(self, mod_name, __import__(mod_name))
+
+      generated_js_apis += getattr(getattr(self, mod_name), class_name)().generate_js_api()
+
+    self.context.evaluate_script(
+      generated_js_apis
+    )
 
   def eval_python(self, script):
     return eval(script)
@@ -95,7 +124,7 @@ class MacronBridge(IMacronBridge):
 
     return eval(to_exec)
 
-  # window.external.call_module_classmethod("hello", "HellBoy", "say_hi", JSON.stringify({x: "John", foo: "Doe"}))
+  # window.external.call_module_classmethod("hello", "HellBoy", "get_methods")
   def call_module_classmethod(self, module_name, class_name, method_name, args):
     mod = getattr(self, module_name)
     args_spread = ""
@@ -114,8 +143,15 @@ class MacronBridge(IMacronBridge):
 
     if NativeBridge not in class_ref.__bases__:
       raise Exception("The specified class must extend macron.NativeBridge")
+      
+    # print(dir(class_ref))
 
-    return eval("""getattr(
-      class_ref(self.window, self.context),
+    output = eval("""getattr(
+      class_ref(window=self.window, context=self.context),
       method_name
     )({})""".format(args_spread))
+
+    if type(output) == list or type(output) == tuple or type(output) == dict:
+      return dumps(output)
+    else:
+      return output

@@ -7,14 +7,18 @@ sys.path.insert(0, path.dirname(path.abspath(__file__)))
 
 from System.Threading import Thread, ThreadStart, ApartmentState
 from System.Windows import Application, Window
-from webview import MacronWebview
+from System.Windows.Controls import DockPanel, Dock, Grid
 
-from System import Array
-from System.Windows.Controls import DockPanel, Dock, Menu, MenuItem, Grid
+import tkinter
+from webview import MacronWebview
+from menubar import MacronMenubar
 
 class MacronWindow(Window):
 
   def __init__(self, config):
+    # Single hidden tkinter instance for app
+    tkinter.Tk().withdraw()
+
     # Initialize main window
     self.title(config["title"])
     self.height(config["height"])
@@ -35,95 +39,31 @@ class MacronWindow(Window):
     dock = DockPanel()
     dock.LastChildFill = True
 
-    menu = Menu()
+    menu = MacronMenubar(src=config["menu"]).get_menu()
     dock.SetDock(menu, Dock.Top)
-    menu.IsMainMenu = True
-    menu.HorizontalAlignment = 3 # stretched to fill entire layout slot
-    # menu.VerticalAlignment = 0 # align to top of parent's layout slot
-    
+
     grid = Grid()
     grid.ShowGridLines = False
-    # dock.SetDock(grid, Dock.Client)
-
-    webview = MacronWebview(window=self, config=config)
-    # webview.HorizontalAlignment = 3 # stretched to fill the entire layout slot
     
-    menuitem = MenuItem()
-    menuitem.Header = "_File"
-    menuitem.Click += self.menu_item_click
-
-    submenuitem1 = MenuItem()
-    submenuitem1.Header = "_Sub Item"
-    submenuitem1.Click += self.menu_item_click
-
-    submenuitem3 = MenuItem()
-    submenuitem3.Header = "_Sub Item"
-    submenuitem3.Click += self.menu_item_click
-    submenuitem4 = MenuItem()
-    submenuitem4.Header = "_Sub Item"
-    submenuitem4.Click += self.menu_item_click
-    submenuitem5 = MenuItem()
-    submenuitem5.Header = "_Sub Item"
-    submenuitem5.Click += self.menu_item_click
-    submenuitem6 = MenuItem()
-    submenuitem6.Header = "_Sub Item"
-    submenuitem6.Click += self.menu_item_click
-    submenuitem7 = MenuItem()
-    submenuitem7.Header = "_Sub Item"
-    submenuitem7.Click += self.menu_item_click
-    submenuitem7.IsCheckable = True
-
-    submenuitem2 = MenuItem()
-    submenuitem2.Header = "_Yet Another Sub Item"
-    submenuitem2.Click += self.menu_item_click
-    # submenuitem2.IsCheckable = True
-    submenuitem2.AddChild(submenuitem3)
-    submenuitem2.AddChild(submenuitem4)
-    submenuitem2.AddChild(submenuitem5)
-    submenuitem2.AddChild(submenuitem6)
-    submenuitem2.AddChild(submenuitem7)
-
-    menuitem.AddChild(submenuitem1)
-    menuitem.AddChild(submenuitem2)
-    menu.AddChild(menuitem)
-
-    # menu_source = Array[MenuItem]([submenuitem1, submenuitem2])
-    # menu.ItemsSource = menu_source
+    self.webview = MacronWebview(window=self, config=config)
+    grid.Children.Add(self.webview)
     
-    grid.Children.Add(webview)
     dock.Children.Add(menu)
     dock.Children.Add(grid)
-    
     self.Content = dock
 
-    # # def on_Activated(self, sender, args):
-    # Occurs when a window becomes the foreground window.
-    # # self.Activated += self.on_Activated
-    # Occurs when the window is about to close.
-    # self.Closed += self.on_Closed
-    # Occurs directly after Close() is called, and can be handled to cancel window closure.
-    # # self.Closing += self.on_Closing
-    # Occurs just before any context menu on the element is closed.
-    # # self.ContextMenuClosing += self.on_ContextMenuClosing
-    # Occurs when any context menu on the element is opened.
-    # # self.ContextMenuOpening += self.on_ContextMenuOpening
-    # Occurs when a window becomes a background window.
-    # # self.Deactivated += self.on_Deactivated
-    # Occurs when the value of the Focusable property changes.
-    # # self.FocusableChanged += self.on_FocusableChanged
-    # Occurs when a key is pressed while focus is on this element.
-    # # self.PreviewKeyDown += self.on_PreviewKeyDown
-    # Occurs when a key is released while focus is on this element.
-    # # self.PreviewKeyUp += self.on_PreviewKeyUp
-    # Occurs when either the ActualHeight or the ActualWidth properties change value on this element.
-    # # self.SizeChanged += self.on_SizeChanged
-    # Occurs when the window's WindowState property changes.
-    # # self.StateChanged += self.on_StateChanged
-
-  # TODO handle event
-  def menu_item_click(self, sender, args):
-    # print(sender)
-    return
+    # Delegate events
+    self.Activated += self.on_activated
+    self.Closed += self.on_closed
+    self.Closing += self.on_closing
+    self.ContextMenuClosing += self.on_contextmenuclosing
+    self.ContextMenuOpening += self.on_contextmenuopening
+    self.Deactivated += self.on_deactivated
+    self.FocusableChanged += self.on_focusablechanged
+    self.PreviewKeyDown += self.on_previewkeydown
+    self.PreviewKeyUp += self.on_previewkeyup
+    self.SizeChanged += self.on_sizechanged
+    self.StateChanged += self.on_statechanged
 
   # Gets a value that indicates whether the window is active
   def is_active(self):
@@ -307,6 +247,52 @@ class MacronWindow(Window):
   # Manually closes a Window.
   def close(self):
     self.Close()
+
+  """"""""""""""""""""""" Events """""""""""""""""""""""
+
+  # Occurs when a window becomes the foreground window.
+  def on_activated(self, sender, args):
+    self.webview.triggerEvent('activate')
+
+  # Occurs when the window is about to close.
+  def on_closed(self, sender, args):
+    self.webview.triggerEvent('close')
+
+  # Occurs directly after Close() is called, and can be handled to cancel window closure.
+  def on_closing(self, sender, args):
+    self.webview.triggerEvent('closing')
+
+  # Occurs just before any context menu on the element is closed.
+  def on_contextmenuclosing(self, sender, args):
+    self.webview.triggerEvent('contextMenuClose')
+
+  # Occurs when any context menu on the element is opened.
+  def on_contextmenuopening(self, sender, args):
+    self.webview.triggerEvent('contextMenuOpen')
+
+  # Occurs when a window becomes a background window.
+  def on_deactivated(self, sender, args):
+    self.webview.triggerEvent('deactivate')
+
+  # Occurs when the value of the Focusable property changes.
+  def on_focusablechanged(self, sender, args):
+    self.webview.triggerEvent('focusChange')
+
+  # Occurs when a key is pressed while focus is on this element.
+  def on_previewkeydown(self, sender, args):
+    self.webview.triggerEvent('keydown')
+
+  # Occurs when a key is released while focus is on this element.
+  def on_previewkeyup(self, sender, args):
+    self.webview.triggerEvent('keyup')
+
+  # Occurs when either the ActualHeight or the ActualWidth properties change value on this element.
+  def on_sizechanged(self, sender, args):
+    self.webview.triggerEvent('sizeChange')
+
+  # Occurs when the window's WindowState property changes.
+  def on_statechanged(self, sender, args):
+    self.webview.triggerEvent('stateChange')
 
 # TODO
 # Properties
