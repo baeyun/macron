@@ -7,6 +7,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk
 
 from webview import MacronWebview
+from bridge import MacronBridge
 
 class MacronWindow(Gtk.Window):
   def __init__(self, config):
@@ -21,9 +22,11 @@ class MacronWindow(Gtk.Window):
       "devServerURI": config["devServerURI"] if "devServerURI" in config else "https://localhost:3000",
     }).webview
 
+    self.bridge = MacronBridge(webview=self.webview)
+    
     self.window.add(self.webview)
 
-    self.width(100)
+    self.resizable(False)
   
   def title(self, title):
     if title:
