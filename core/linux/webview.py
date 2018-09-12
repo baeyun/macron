@@ -8,7 +8,7 @@ gi.require_version('WebKit2', '4.0')
 from gi.repository import Gtk, Gdk, WebKit2
 
 class MacronWebview:
-  def __init__(self, config):
+  def __init__(self, window, config):
     self.webview = WebKit2.WebView()
 
     # Set development URI if not in production
