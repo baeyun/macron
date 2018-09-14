@@ -6,10 +6,14 @@ gi.require_version("Gtk", "3.0")
 
 from gi.repository import Gtk, Gdk
 
+# import tkinter
 from webview import MacronWebview
 
 class MacronWindow(Gtk.Window):
   def __init__(self, config):
+    # Single hidden tkinter instance for app
+    # tkinter.Tk().withdraw()
+
     # Initialize main window
     self.window = Gtk.Window(
       title=config["title"] if "title" in config else "New Window",
@@ -29,7 +33,7 @@ class MacronWindow(Gtk.Window):
     self.state(config["startupState"])
     if config["frameless"]: self.frameless(True)
 
-    self.webview = MacronWebview(window=self, config=config).webview
+    self.webview = MacronWebview(window=self, config=config)
     
     self.window.add(self.webview)
   

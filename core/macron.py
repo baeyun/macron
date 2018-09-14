@@ -1,5 +1,6 @@
 from inspect import getmembers, ismethod
 from os.path import basename
+from platform import system
 
 # Public bridge methods decorator
 def macronMethod(method):
@@ -55,17 +56,29 @@ class NativeBridge:
     class_name = self.get_classname()
     members_api = ''
     for member in self.get_methods():
-      members_api += '''{}: function() {{
-        var args = JSON.stringify(arguments) || false;
-        var output = window.external.call_module_classmethod("{}", "{}", "{}", args)
-        
-        try {{
-          return JSON.parse(output);
-        }} catch(e) {{
-          return output
-        }}
-      }},
-      '''.format(member, self.get_modulename(), class_name, member)
+      if system() == "Windows":
+        members_api += '''{}: function() {{
+          var args = JSON.stringify(arguments) || false;
+          var output = window.external.call_module_classmethod("{}", "{}", "{}", args)
+          
+          try {{
+            return JSON.parse(output);
+          }} catch(e) {{
+            return output
+          }}
+        }},
+        '''.format(member, self.get_modulename(), class_name, member)
+      else:
+        members_api += '''{}: function() {{
+          var output = alert(JSON.stringify(["_macronBridgeCall", "{}", "{}", "{}", arguments]))
+          
+          try {{
+            return JSON.parse(output);
+          }} catch(e) {{
+            return output
+          }}
+        }},
+        '''.format(member, self.get_modulename(), class_name, member)
 
     js_api = 'macron.'+class_name+' = {'+members_api+'};'
 
