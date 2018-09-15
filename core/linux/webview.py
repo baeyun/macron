@@ -39,7 +39,6 @@ class MacronWebview(WebKit2.WebView):
     self.evaluate_script('macron.CurrentWindow = {};'.format(dumps(config)))
 
     # Bridge
-    # TODO mimic this style in Windows port
     MacronBridge().initialize(
       window=window,
       context=self,
@@ -75,7 +74,6 @@ class MacronWebview(WebKit2.WebView):
 
   # Sets the Uri of the current document hosted in the WebBrowser.
   # @param uri {string}
-  # TODO change setSource to load (in Windows port)
   def load(self, uri):
     self.load_uri(uri)
 

@@ -58,7 +58,7 @@ class MacronWebview(WebBrowser):
     self.evaluate_script('macron.CurrentWindow = {};'.format(dumps(config)))
 
     # Bridge
-    self.ObjectForScripting = MacronBridge().initialize(
+    MacronBridge().initialize(
       window=window,
       context=self,
       root_path=config["rootPath"],
@@ -84,17 +84,6 @@ class MacronWebview(WebBrowser):
     # downloading.
     # # self.LoadCompleted += self.handle_events()
 
-  def triggerEvent(self, event):
-    self.evaluate_script(
-      '''macron.CurrentWindow.eventCallbacks.{}.forEach(
-        function(callback) {{
-          eval(
-            "(" + callback.replace(/\\/\\//gi, '\\\\').replace(/\/.?/gi, '').replace(/\\'\\'\\'/gi, "\\"") + ")();"
-          )
-        }}
-      );'''.format(event)
-    )
-
   def evaluate_script(self, script):
     if not script:
       return
@@ -109,6 +98,16 @@ class MacronWebview(WebBrowser):
       eval_js
     )
 
+  def triggerEvent(self, event):
+    self.evaluate_script(
+      '''macron.CurrentWindow.eventCallbacks.{}.forEach(
+        function(callback) {{
+          eval(
+            "(" + callback.replace(/\\/\\//gi, '\\\\').replace(/\/.?/gi, '').replace(/\\'\\'\\'/gi, "\\"") + ")();"
+          )
+        }}
+      );'''.format(event)
+    )
 
   # Gets the Uri of the current document hosted in the WebBrowser.
   def getSource(self):
@@ -116,7 +115,7 @@ class MacronWebview(WebBrowser):
 
   # Sets the Uri of the current document hosted in the WebBrowser.
   # @param uri {string}
-  def setSource(self, uri):
+  def load(self, uri):
     self.Source = uri
 
   # Reloads the current page with optional cache validation.

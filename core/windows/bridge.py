@@ -45,7 +45,7 @@ class MacronBridge(IMacronBridge):
       generated_js_apis
     )
 
-    return self
+    self.context.ObjectForScripting = self
 
   def load_common_modules(self, class_names):
     generated_js_apis = ''
