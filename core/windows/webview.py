@@ -90,8 +90,7 @@ class MacronWebview(WebBrowser):
             "(" + callback.replace(/\\/\\//gi, '\\\\').replace(/\/.?/gi, '').replace(/\\'\\'\\'/gi, "\\"") + ")();"
           )
         }}
-      );
-      '''.format(event)
+      );'''.format(event)
     )
 
   def evaluate_script(self, script):
