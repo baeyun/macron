@@ -7,67 +7,96 @@ gi.require_version('WebKit2', '4.0')
 
 from gi.repository import Gtk, Gdk, WebKit2
 
-class MacronWebview:
-  def __init__(self, config):
-    # Dummy window
-    # self.window = Gtk.Window(
-    #   title="Linux (Ubuntu) WebView env",
-    #   default_height=500,
-    #   default_width=500
-    # )
-    # self.window.fullscreen()
-    # self.window.connect("destroy", Gtk.main_quit)
+from json import dumps
+from bridge import MacronBridge
 
-    # Initialize Webki 2's instance of WebView
-    self.webview = WebKit2.WebView()
+class MacronWebview(WebKit2.WebView):
+  def __init__(self, window, config):
+    super(WebKit2.WebView, self).__init__()
 
-    # Set development URI if not in production
-    self.webview.load_uri("http://localhost:3000/")
+    if "devServerURI" in config:
+      self.load(config["devServerURI"])
+    elif "sourcePath" in config:
+      sourcePath = 'file://' + (config["rootPath"] + config["sourcePath"]).replace("//", "\u005c")
+
+      self.load(
+        sourcePath
+      )
+
+    # Load main macron JavaScript APIs
+    self.evaluate_script(r'var macron = {};')
     
-    self.webview.get_inspector()
-    self.inspector = self.webview.get_inspector()
-    # self.inspector.connect("inspect-web-view", lambda x: self.inspector.show())
-    self.webview.get_settings().set_allow_modal_dialogs(False)
-    self.webview.get_settings().set_auto_load_images(True)
-    self.webview.get_settings().set_default_charset("utf-8")
-    self.webview.get_settings().set_enable_caret_browsing(False)  
-    self.webview.get_settings().set_enable_dns_prefetching(False)    
-    self.webview.get_settings().set_enable_frame_flattening(True)    
-    self.webview.get_settings().set_enable_fullscreen(False)         
-    self.webview.get_settings().set_enable_html5_database(False)     
-    self.webview.get_settings().set_enable_html5_local_storage(False)
-    self.webview.get_settings().set_enable_hyperlink_auditing(False)
-    self.webview.get_settings().set_enable_java(False)
-    self.webview.get_settings().set_enable_javascript(True)
-    self.webview.get_settings().set_enable_media_stream(False)
-    self.webview.get_settings().set_enable_mediasource(False)
-    self.webview.get_settings().set_enable_offline_web_application_cache(False)
-    self.webview.get_settings().set_enable_page_cache(False)
-    self.webview.get_settings().set_enable_plugins(False)    
-    self.webview.get_settings().set_enable_private_browsing(False)
-    self.webview.get_settings().set_enable_resizable_text_areas(True)
-    self.webview.get_settings().set_enable_site_specific_quirks(False)
-    self.webview.get_settings().set_enable_smooth_scrolling(True)
-    self.webview.get_settings().set_enable_spatial_navigation(False)
-    self.webview.get_settings().set_enable_tabs_to_links(False)
-    self.webview.get_settings().set_enable_webaudio(False)
-    self.webview.get_settings().set_enable_webgl(True)
-    self.webview.get_settings().set_enable_write_console_messages_to_stdout(True)
+    with open('../../src/init.js') as f:
+      self.evaluate_script(f.read())
 
-    # self.window.add(self.webview)
-  
-  # def navigate(self, view, frame, request, action, decision):
-  #   decision.ignore()
+    with open('../../src/polyfills/require.js') as f:
+      self.evaluate_script(f.read())
 
-# def create_webview(config):
-  # def create():
-    # MacronWebview(config=config).window.show_all()
-  
-  # thread = threading.Thread(target=create)
-  # thread.daemon = True
-  # thread.start()
-  # create()
-  # Gtk.main()
+    # with open('../../src/front/window.js') as f:
+    #   self.evaluate_script(f.read())
 
-# if __name__ == "__main__":
-#   create_webview("No webview config for now!!!")
+    # Create macron.CurrentWindow
+    self.evaluate_script('macron.CurrentWindow = {};'.format(dumps(config)))
+
+    # Bridge
+    # TODO mimic this style in Windows port
+    MacronBridge().initialize(
+      window=window,
+      context=self,
+      root_path=config["rootPath"],
+      native_modules_path=config["nativeModulesPath"],
+      native_modules=config["nativeModules"]
+    )
+
+    # TODO: Add inspector. JS APIs need logging.
+    # inspector = self.get_inspector()
+    # inspector.connect('inspect-web-view', get_webkit_inspector)
+    # inspector.attach()
+    # inspector.show()
+
+  def evaluate_script(self, script):
+    self.run_javascript(script)
+
+  def triggerEvent(self, event):
+    self.evaluate_script(
+      '''macron.CurrentWindow.eventCallbacks.{}.forEach(
+        function(callback) {{
+          eval(
+            "(" + callback.replace(/\\/\\//gi, '\\\\').replace(/\/.?/gi, '').replace(/\\'\\'\\'/gi, "\\"") + ")();"
+          )
+        }}
+      );
+      '''.format(event)
+    )
+
+  # Gets the Uri of the current document hosted in the WebBrowser.
+  def getSource(self):
+    return self.get_uri()
+
+  # Sets the Uri of the current document hosted in the WebBrowser.
+  # @param uri {string}
+  # TODO change setSource to load (in Windows port)
+  def load(self, uri):
+    self.load_uri(uri)
+
+  # Reloads the current page with optional cache validation.
+  # If noCache is true, the WebBrowser control refreshes
+  # without cache validation by sending a "Pragma:no-cache"
+  # header to the server.
+  # @param noCache {bool}
+  # TODO test
+  def refresh(self, noCache=False):
+    if noCache:
+      self.webiew.reload()
+    else:
+      self.webiew.reload_bypass_cache()
+
+  # Navigate back to the previous document, if there is one.
+  # TODO test
+  def goBack(self):
+    self.go_back()
+
+  # Navigate forward to the next document, if there is one.
+  # TODO test
+  def goForward(self):
+    self.go_forward()

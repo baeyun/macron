@@ -40,6 +40,8 @@ class MacronWebview(WebBrowser):
     # else:
     #   # handle error
 
+    self.evaluate_script(window)
+
     # Load main macron JavaScript APIs
     self.evaluate_script(r'var macron = {};')
     

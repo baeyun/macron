@@ -12,7 +12,7 @@ const App = new Window({
   startupFromCenter: true,
   // frameless: true,
   // startupState: "maximized",
-  // devServerURI: 'http://127.0.0.1:3000',
+  // devServerURI: 'http://animejs.com',
   sourcePath: './public/index.html',
   // nativeModules: ['Dialog'],
   menu: require('./src/menubar'),

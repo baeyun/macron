@@ -4,22 +4,24 @@ application system. Please refer to the official documentation site for more
 details on this section.
 """
 
+from macron import *
+
 import os
 import sys
 import fnmatch
 from pathlib import Path
 from shutil import copyfile, rmtree
 
-from macron import NativeBridge
-
 class FS(NativeBridge): 
   
   # Saves immediately without waiting for close
   # Ensures file is synced with latest changes
+  @macronMethod
   def sync_file_updates(self, file_stream):
     file_stream.flush()
     os.fsync(file_stream.fileno())
 
+  @macronMethod
   def write_file(self, file_path, file_contents):
     f = open(file_path, "x")
     f.write(file_contents)
@@ -34,16 +36,19 @@ class FS(NativeBridge):
     """
     # return f
   
+  @macronMethod
   def read_file(self, file_path):
     with open(file_path, "r") as f:
       return f.read()
   
+  @macronMethod
   def append_file(self, file_path, file_contents):
     with open(file_path, "a") as f:
       f.write(file_contents)
       self.sync_file_updates(f)
       # return f.read()
   
+  @macronMethod
   def clear_file(self, file_path):    
     with open(file_path, "w") as f:
       try:
@@ -53,6 +58,7 @@ class FS(NativeBridge):
       except Exception as e:
         return False
   
+  @macronMethod
   def copy_file(self, src, to):
     # @note 'from' is a reserved keyword in Python
 
@@ -64,12 +70,15 @@ class FS(NativeBridge):
     copyfile(src, to)
     # return
   
+  @macronMethod
   def is_file(self, file_path):
     return Path(file_path).is_file()
   
+  @macronMethod
   def is_dir(self, file_path):
     return Path(file_path).is_dir()
   
+  @macronMethod
   def mkdir(self, file_path):
     if not self.is_dir(file_path):
       try:
@@ -80,6 +89,7 @@ class FS(NativeBridge):
   
   # Might not work while running in the same UI thread.
   # I think all common APIs should run in their own thread.
+  @macronMethod
   def chdir(self, file_path):
     if not self.is_dir(file_path):
       try:
@@ -90,6 +100,7 @@ class FS(NativeBridge):
   
   # Fixed!
   # Returns real path
+  @macronMethod
   def realpath(self, file_path):
     file_path = Path(file_path)
 
@@ -100,18 +111,21 @@ class FS(NativeBridge):
   # @note should be noted that if the files
   # are not in the working directory you will
   # need the full path.
+  @macronMethod
   def rename(self, oldname, newname):
     os.rename(oldname, newname)
     # return
   
   # @note removes file permanently
   # @todo create temporary unlink
+  @macronMethod
   def unlink(self, file_path):
     if self.is_file(file_path):
       os.remove(file_path)
     return
   
   # @note removes dir and content
+  @macronMethod
   def rmdir(self, path):
     if self.is_dir(path):
       rmtree(path)
@@ -119,12 +133,14 @@ class FS(NativeBridge):
 
   # @note os.rmdir() on Windows removes directory
   # symbolic link even if the target dir isn't empty
+  @macronMethod
   def rmdir_empty(self, path):
     if self.is_dir(path):
       os.rmdir(path)
     return
   
   # @todo enhance accessability by creating types
+  @macronMethod
   def read_dir(self, file_path):
     if self.is_dir(file_path):
       # This is supposed to be a JavaScript array but the bridge has
@@ -138,6 +154,7 @@ class FS(NativeBridge):
   
   # @note unlike read_dir it returns a list with absolute
   # paths of files and dirs with Path(path)
+  @macronMethod
   def read_dir_glob(self, file_path, pattern):
     ff = []
 
