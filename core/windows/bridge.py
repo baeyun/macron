@@ -26,7 +26,8 @@ class MacronBridge(IMacronBridge):
       'Dialog',
       'FS',
       'MessageBox',
-      'System'
+      'System',
+      'WindowManager'
     ])
 
     native_mods_root_path = (root_path + native_modules_path).replace("//", "\u005c")
@@ -45,7 +46,7 @@ class MacronBridge(IMacronBridge):
       generated_js_apis
     )
 
-    return self
+    self.context.ObjectForScripting = self
 
   def load_common_modules(self, class_names):
     generated_js_apis = ''
