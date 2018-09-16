@@ -26,7 +26,8 @@ class MacronBridge(IMacronBridge):
       'Dialog',
       'FS',
       'MessageBox',
-      'System'
+      'System',
+      'WindowManager'
     ])
 
     native_mods_root_path = (root_path + native_modules_path).replace("//", "\u005c")
