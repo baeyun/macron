@@ -7,12 +7,14 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk
 
 # import tkinter
+from tkinter import messagebox, Tk
 from webview import MacronWebview
 
 class MacronWindow(Gtk.Window):
   def __init__(self, config):
     # Single hidden tkinter instance for app
-    # tkinter.Tk().withdraw()
+    Tk().withdraw()
+    # messagebox.showinfo("Info Box", "Some info...")
 
     # Initialize main window
     self.window = Gtk.Window(

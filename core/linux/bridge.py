@@ -21,7 +21,7 @@ class MacronBridge:
 
     self.load_common_modules([
       'Archive',
-      # 'Dialog',
+      'Dialog',
       'FS',
       # 'MessageBox',
       'System'
@@ -55,7 +55,7 @@ class MacronBridge:
             module_name=args[1],
             class_name=args[2],
             method_name=args[3],
-            args=args[4]
+            args=dumps(args[4])
           )
         )
       )
