@@ -17,8 +17,8 @@ from MacronWebviewInterop import IMacronBridge
 class MacronBridge(IMacronBridge):
   __namespace__ = 'MacronBridge'
 
-  def initialize(self, window, context, root_path, native_modules_path, native_modules):
-    self.window = window
+  def initialize(self, current_window, context, root_path, native_modules_path, native_modules):
+    self.current_window = current_window
     self.context = context
 
     self.load_common_modules([
@@ -27,7 +27,7 @@ class MacronBridge(IMacronBridge):
       'FS',
       'MessageBox',
       'System',
-      'WindowManager'
+      'Window'
     ])
 
     native_mods_root_path = (root_path + native_modules_path).replace("//", "\u005c")

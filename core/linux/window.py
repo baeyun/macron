@@ -7,14 +7,14 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk
 
 # import tkinter
-from tkinter import messagebox, Tk
+from tkinter import Tk
 from webview import MacronWebview
 
 class MacronWindow(Gtk.Window):
+  
   def __init__(self, config):
     # Single hidden tkinter instance for app
     Tk().withdraw()
-    # messagebox.showinfo("Info Box", "Some info...")
 
     # Initialize main window
     self.window = Gtk.Window(
@@ -35,7 +35,7 @@ class MacronWindow(Gtk.Window):
     self.state(config["startupState"])
     if config["frameless"]: self.frameless(True)
 
-    self.webview = MacronWebview(window=self, config=config)
+    self.webview = MacronWebview(current_window=self, config=config)
     
     self.window.add(self.webview)
   
@@ -151,7 +151,7 @@ class MacronWindow(Gtk.Window):
     self.window.hide()
 
   def show(self):
-    self.window.show()
+    self.window.show_all()
       
   def close(self):
     self.window.close()
@@ -205,7 +205,7 @@ class MacronWindow(Gtk.Window):
 
 def create_window(config):
   def create():
-    MacronWindow(config=config).window.show_all()
+    MacronWindow(config=config).show()
   
   # thread = threading.Thread(target=create)
   # thread.daemon = True

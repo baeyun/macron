@@ -11,7 +11,7 @@ from json import dumps
 from bridge import MacronBridge
 
 class MacronWebview(WebKit2.WebView):
-  def __init__(self, window, config):
+  def __init__(self, current_window, config):
     super(WebKit2.WebView, self).__init__()
 
     if "devServerURI" in config:
@@ -40,7 +40,7 @@ class MacronWebview(WebKit2.WebView):
 
     # Bridge
     MacronBridge().initialize(
-      window=window,
+      current_window=current_window,
       context=self,
       root_path=config["rootPath"],
       native_modules_path=config["nativeModulesPath"],

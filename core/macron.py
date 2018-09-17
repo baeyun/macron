@@ -14,8 +14,8 @@ def macronMethod(method):
   return wrapper
 
 class NativeBridge:
-  def __init__(self, window=None, context=None):
-    self.window = window
+  def __init__(self, current_window=None, context=None):
+    self.current_window = current_window
     self.context = context
     self.registered_public_methods = []
 
@@ -47,7 +47,7 @@ class NativeBridge:
     return basename(__file__)
 
   def get_modulename(self):
-    return self.__class__.__module__
+    return self.__class__.__module__.replace('common.', '').lower()
 
   def get_classname(self):
     return self.__class__.__name__

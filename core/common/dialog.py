@@ -20,7 +20,7 @@ class Dialog(NativeBridge):
         filetypes = config['fileTypes'] if 'fileTypes' in config else None,
         mode = 'w'
       )
-      self.window.focus()
+      self.current_window.focus()
 
       # dialog closed with 'cancel'
       if not file: return False
@@ -43,7 +43,7 @@ class Dialog(NativeBridge):
         'initialdir': config['initialDirectoryPath'] if 'initialDirectoryPath' in config else None,
         'filetypes': config['fileTypes'] if 'fileTypes' in config else None
       }
-      self.window.focus()
+      self.current_window.focus()
 
       if 'allowMultiPick' in config and config['allowMultiPick']:
         file_paths = askopenfilenames(**config_opts)
@@ -73,7 +73,7 @@ class Dialog(NativeBridge):
         title = config['title'] if 'title' in config else 'Save file',
         initialdir = config['initialDirectoryPath'] if 'initialDirectoryPath' in config else None
       )
-      self.window.focus()
+      self.current_window.focus()
 
       # dialog closed with 'cancel'
       if not dir_path: return False

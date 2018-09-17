@@ -15,8 +15,8 @@ sys.path.append(path.normpath(path.join(dirname, '../common/')))
 
 class MacronBridge:
   
-  def initialize(self, window, context, root_path, native_modules_path, native_modules):
-    self.window = window
+  def initialize(self, current_window, context, root_path, native_modules_path, native_modules):
+    self.current_window = current_window
     self.context = context
 
     self.load_common_modules([
@@ -24,7 +24,8 @@ class MacronBridge:
       'Dialog',
       'FS',
       # 'MessageBox',
-      'System'
+      'System',
+      'Window'
     ])
 
     native_mods_root_path = (root_path + native_modules_path).replace("//", "\u005c")
@@ -67,6 +68,12 @@ class MacronBridge:
 
     for class_name in class_names:
       mod_name = class_name.lower()
+      if mod_name == 'window':
+        from common import window
+        self.window = window
+        generated_js_apis += self.window.Window().generate_js_api()
+        continue
+      
       setattr(self, mod_name, __import__(mod_name))
 
       generated_js_apis += getattr(getattr(self, mod_name), class_name)().generate_js_api()
@@ -97,7 +104,7 @@ class MacronBridge:
     # print(dir(class_ref))
 
     output = eval("""getattr(
-      class_ref(window=self.window, context=self.context),
+      class_ref(current_window=self.current_window, context=self.context),
       method_name
     )({})""".format(args_spread))
 

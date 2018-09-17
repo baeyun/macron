@@ -45,7 +45,7 @@ class MacronWindow(Window):
     grid = Grid()
     grid.ShowGridLines = False
     
-    self.webview = MacronWebview(window=self, config=config)
+    self.webview = MacronWebview(current_window=self, config=config)
     grid.Children.Add(self.webview)
     
     dock.Children.Add(menu)
