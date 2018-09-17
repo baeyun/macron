@@ -65,77 +65,65 @@ class MacronWindow(Window):
     self.SizeChanged += self.on_sizechanged
     self.StateChanged += self.on_statechanged
 
-  # Gets a value that indicates whether the window is active
   def is_active(self):
     return self.IsActive
 
-  # Gets a value that determines whether this element has logical focus
   def is_focused(self):
     return self.IsFocused
 
-  # Gets a value indicating whether this element has keyboard focus
   def is_keyboard_focused(self):
     return self.IsKeyboardFocused
 
-  # Gets a value indicating whether this element is visible in the user interface (UI)
   def is_visible(self):
     return self.IsVisible
 
-  # Gets or sets a window's title
   def title(self, title):
     if title:
       self.Title = title
     
     return self.Title
 
-  # Gets or sets the height of the element
   def height(self, height):
     if height:
       self.Height = height
     
     return self.Height
 
-  # Gets or sets the width of the element
   def width(self, width):
     if width:
       self.Width = width
     
     return self.Width
 
-  # Gets or sets the maximum height constraint of the element
   def max_height(self, max_height):
     if max_height:
       self.MaxHeight = max_height
 
     return self.MaxHeight
 
-  # Gets or sets the maximum width constraint of the element
   def max_width(self, max_width):
     if max_width:
       self.MaxWidth = max_width
 
     return self.MaxWidth
 
-  # Gets or sets the minimum height constraint of the element
   def min_height(self, min_height):
     if min_height:
       self.MinHeight = min_height
 
     return self.MinHeight
 
-  # Gets or sets the minimum width constraint of the element
   def min_width(self, min_width):
     if min_width:
       self.MinWidth = min_width
 
     return self.MinWidth
 
-  # Gets or sets the resize mode 
-  #   Opts:
-  #     - CanMinimize=1 | The user can only minimize the window and restore it from the taskbar. The Minimize and Maximize boxes are both shown, but only the Minimize box is enabled.
-  #     - CanResize=2 | The user has the full ability to resize the window, using the Minimize and Maximize boxes, and a draggable outline around the window. The Minimize and Maximize boxes are shown and enabled. (Default).
-  #     - CanResizeWithGrip=3 | This option has the same functionality as CanResize, but adds a "resize grip" to the lower right corner of the window.
-  #     - NoResize=0 | The user cannot resize the window. The Maximize and Minimize boxes are not shown.
+  # Opts:
+  #   - CanMinimize=1 | The user can only minimize the window and restore it from the taskbar. The Minimize and Maximize boxes are both shown, but only the Minimize box is enabled.
+  #   - CanResize=2 | The user has the full ability to resize the window, using the Minimize and Maximize boxes, and a draggable outline around the window. The Minimize and Maximize boxes are shown and enabled. (Default).
+  #   - CanResizeWithGrip=3 | This option has the same functionality as CanResize, but adds a "resize grip" to the lower right corner of the window.
+  #   - NoResize=0 | The user cannot resize the window. The Maximize and Minimize boxes are not shown.
   def resizable(self, resizable):
     if resizable:
       self.ResizeMode = 2
@@ -144,27 +132,22 @@ class MacronWindow(Window):
     
     return True if self.ResizeMode == 2 else False
 
-  # Gets or sets a value that indicates whether a window is activated when first shown
-  #   Default: True
   def focus_on_startup(self, focus_on_startup):
     if focus_on_startup:
       self.ShowActivated = focus_on_startup
     
     return self.ShowActivated
 
-  # Gets or sets a value that indicates whether the window has a task bar button
-  #   Default: True
   def hide_in_taskbar(self, hide_in_taskbar):
     if hide_in_taskbar:
       self.ShowInTaskbar = hide_in_taskbar
     
     return self.Title
 
-  # Gets or sets the user interface (UI) visibility of this element
-  #   Opts:
-  #     - Collapsed=2	| Do not display the element, and do not reserve space for it in layout.
-  #     - Hidden=1	| Do not display the element, but reserve space for the element in layout.
-  #     - Visible	0	| Display the element.
+  # Opts:
+  #   - Collapsed=2	| Do not display the element, and do not reserve space for it in layout.
+  #   - Hidden=1	| Do not display the element, but reserve space for the element in layout.
+  #   - Visible	0	| Display the element.
   def hide_on_startup(self, hide_on_startup):
     if hide_on_startup:
       self.Visibility = 1
@@ -173,11 +156,10 @@ class MacronWindow(Window):
     
     return True if self.Visibility else False
 
-  # Gets or sets the position of the window when first shown
-  #   Opts:
-  #     - CenterOwner=2	 | The startup location of a Window is the center of the Window that owns it, as specified by the Owner property.
-  #     - CenterScreen=1 | The startup location of a Window is the center of the screen that contains the mouse cursor.
-  #     - Manual=0	     | The startup location of a Window is set from code, or defers to the default Windows location.
+  # Opts:
+  #   - CenterOwner=2	 | The startup location of a Window is the center of the Window that owns it, as specified by the Owner property.
+  #   - CenterScreen=1 | The startup location of a Window is the center of the screen that contains the mouse cursor.
+  #   - Manual=0	     | The startup location of a Window is set from code, or defers to the default Windows location.
   # TODO start from center of parent if present exists
   def startup_from_center(self, startup_from_center):
     if startup_from_center:
@@ -185,11 +167,10 @@ class MacronWindow(Window):
     
     return True if self.WindowStartupLocation == 1 else False
 
-  # Gets or sets a value that indicates whether a window is restored, minimized, or maximized
-  #   Opts:
-  #     - Maximized=2	| The window is maximized.
-  #     - Minimized=1	| The window is minimized.
-  #     - Normal=0	  | The window is restored.
+  # Opts:
+  #   - Maximized=2	| The window is maximized.
+  #   - Minimized=1	| The window is minimized.
+  #   - Normal=0	  | The window is restored.
   def state(self, state):
     if state == "maximized":
       self.WindowState = 2
@@ -205,10 +186,9 @@ class MacronWindow(Window):
     elif self.WindowState == 0:
       return "normal"
 
-  # Gets or sets a window's border style
-  #   Opts:
-  #     - None=0 | Only the client area is visible. We'll use to simulate a frameless window
-  #     - SingleBorderWindow=1 | A window with a single border. (Default)
+  # Opts:
+  #   - None=0 | Only the client area is visible. We'll use to simulate a frameless window
+  #   - SingleBorderWindow=1 | A window with a single border. (Default)
   def frameless(self, frameless):
     if frameless:
       self.WindowStyle = 0
@@ -219,32 +199,18 @@ class MacronWindow(Window):
     
     return True if self.WindowStyle == 0 else False
 
-  # Attempts to bring the window to the foreground and activates it
-  # Returns {Boolean} true if the Window was successfully activated;
-  # otherwise, false.
   def activate(self):
     return self.Activate()
 
-  # Attempts to set focus to this element.
-  # Returns {Boolean} true if keyboard focus and logical
-  # focus were set to this element; false if only logical
-  # focus was set to this element, or if the call to this
-  # method did not force the focus to change.
   def focus(self):
     return self.Focus()
 
-  # Makes a window invisible. Hide() is called on a window
-  # that is closing (Closing) or has been closed (Closed).
   def hide(self):
     self.Hide()
 
-  # Opens a window and returns without waiting for the newly
-  # opened window to close. Show() is called on a window that
-  # is closing (Closing) or has been closed (Closed).
   def show(self):
     self.Show()
 
-  # Manually closes a Window.
   def close(self):
     self.Close()
 
