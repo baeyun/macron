@@ -54,8 +54,8 @@ class MacronWebview(WebBrowser):
     # with open('../../src/front/window.js') as f:
     #   self.evaluate_script(f.read())
 
-    # Create macron.CurrentWindow
-    self.evaluate_script('macron.CurrentWindow = {};'.format(dumps(config)))
+    # # Create macron.CurrentWindow
+    # self.evaluate_script('macron.CurrentWindow = {};'.format(dumps(config)))
 
     # Bridge
     MacronBridge().initialize(

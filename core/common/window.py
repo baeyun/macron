@@ -14,7 +14,6 @@ elif platform.system() == "Linux":
 from window import MacronWindow
 
 class Window(NativeBridge):
-  # require('macron').Window.create(macron.CurrentWindow)
   @macronMethod
   def create(self, config):
     win = MacronWindow(config)

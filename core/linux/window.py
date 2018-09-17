@@ -16,6 +16,8 @@ class MacronWindow(Gtk.Window):
     # Single hidden tkinter instance for app
     Tk().withdraw()
 
+    self.config = config
+
     # Initialize main window
     self.window = Gtk.Window(
       title=config["title"] if "title" in config else "New Window",

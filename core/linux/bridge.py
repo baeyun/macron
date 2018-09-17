@@ -21,6 +21,7 @@ class MacronBridge:
 
     self.load_common_modules([
       'Archive',
+      'CurrentWindow',
       'Dialog',
       'FS',
       # 'MessageBox',
