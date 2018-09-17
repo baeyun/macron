@@ -54,7 +54,7 @@ class CurrentWindow(NativeBridge):
   # Gets or sets the maximum height constraint of the
   # element
   @macronMethod
-  def max_height(self, max_height):
+  def maxHeight(self, max_height):
     if max_height != None:
       return self.current_window.max_height(max_height)
     
@@ -63,7 +63,7 @@ class CurrentWindow(NativeBridge):
   # Gets or sets the maximum width constraint of the
   # element
   @macronMethod
-  def max_width(self, max_width):
+  def maxWidth(self, max_width):
     if max_width != None:
       return self.current_window.max_width(max_width)
     
@@ -72,7 +72,7 @@ class CurrentWindow(NativeBridge):
   # Gets or sets the minimum height constraint of the
   # element
   @macronMethod
-  def min_height(self, min_height):
+  def minHeight(self, min_height):
     if min_height != None:
       return self.current_window.min_height(min_height)
     
@@ -81,7 +81,7 @@ class CurrentWindow(NativeBridge):
   # Gets or sets the minimum width constraint of the
   # element
   @macronMethod
-  def min_width(self, min_width):
+  def minWidth(self, min_width):
     if min_width != None:
       return self.current_window.min_width(min_width)
     
@@ -98,7 +98,7 @@ class CurrentWindow(NativeBridge):
   # Gets or sets a value that indicates whether a
   # window is activated when first shown
   @macronMethod
-  def focus_on_startup(self, focus_on_startup):
+  def focusOnStartup(self, focus_on_startup):
     if focus_on_startup != None:
       return self.current_window.focus_on_startup(focus_on_startup)
     
@@ -107,7 +107,7 @@ class CurrentWindow(NativeBridge):
   # Gets or sets a value that indicates whether the
   # window has a task bar button
   @macronMethod
-  def hide_in_taskbar(self, hide_in_taskbar):
+  def hideInTaskbar(self, hide_in_taskbar):
     if hide_in_taskbar != None:
       return self.current_window.hide_in_taskbar(hide_in_taskbar)
     
@@ -116,7 +116,7 @@ class CurrentWindow(NativeBridge):
   # Gets or sets the user interface (UI) visibility of
   # this element
   @macronMethod
-  def hide_on_startup(self, hide_on_startup):
+  def hideOnStartup(self, hide_on_startup):
     if hide_on_startup != None:
       return self.current_window.hide_on_startup(hide_on_startup)
     
@@ -125,7 +125,7 @@ class CurrentWindow(NativeBridge):
   # Gets or sets the position of the window when first
   # shown
   @macronMethod
-  def startup_from_center(self, startup_from_center):
+  def startupFromCenter(self, startup_from_center):
     if startup_from_center != None:
       return self.current_window.startup_from_center(startup_from_center)
     
@@ -189,5 +189,4 @@ class CurrentWindow(NativeBridge):
   # instance.
   @macronMethod
   def clone(self):
-    win = window.Window().create(self.current_window.config)
-    win.show()
+    window.Window().create(self.current_window.config).show()
