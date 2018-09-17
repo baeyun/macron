@@ -13,10 +13,39 @@ elif platform.system() == "Linux":
 
 from window import MacronWindow
 
+# track windows
+registered_windows = []
+
 class Window(NativeBridge):
+  
   @macronMethod
   def create(self, config):
-    win = MacronWindow(config)
-    # win.Owner = self.window
-    win.show()
+    # create window
+    window = MacronWindow(config)
     
+    # register
+    window.config['ID'] = len(registered_windows) + 1
+    registered_windows.append(window)
+
+    # TODO handle window ownership
+    # window.Owner = self.window
+    
+    return window.config['ID']
+
+  # TODO test
+  @macronMethod
+  def close(self, ID):
+    if not registered_windows[ID]:
+      return False
+
+    registered_windows[ID].close()
+    return True
+  
+  # TODO test
+  @macronMethod
+  def closeAll(self):
+    if len(registered_windows) < 1:
+      return False
+    
+    for window in registered_windows:
+      window.close()

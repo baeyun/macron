@@ -189,4 +189,4 @@ class CurrentWindow(NativeBridge):
   # instance.
   @macronMethod
   def clone(self):
-    window.Window().create(self.current_window.config).show()
+    window.Window().create(self.current_window.config)
