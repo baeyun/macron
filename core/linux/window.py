@@ -9,6 +9,7 @@ from gi.repository import Gtk, Gdk
 # import tkinter
 from tkinter import Tk
 from webview import MacronWebview
+from menubar import MacronMenubar
 
 class MacronWindow(Gtk.Window):
   
@@ -37,9 +38,17 @@ class MacronWindow(Gtk.Window):
     self.state(config["startupState"])
     if config["frameless"]: self.frameless(True)
 
+    # Draw UI
+    menu = MacronMenubar(src=config["menu"]).get_menu()
+    self.window.layout = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    self.window.layout.pack_start(menu, False, False, 0)
+
     self.webview = MacronWebview(current_window=self, config=config)
+
+    # self.window.add(self.webview)
+    self.window.layout.pack_start(self.webview, True, True, 0)
     
-    self.window.add(self.webview)
+    self.window.add(self.window.layout)
   
   def title(self, title):
     if title != None:
