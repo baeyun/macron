@@ -23,9 +23,10 @@ class MacronBridge(IMacronBridge):
 
     self.load_common_modules([
       'Archive',
+      'CurrentWindow',
       'Dialog',
       'FS',
-      'MessageBox',
+      # 'MessageBox',
       'System',
       'Window'
     ])
@@ -53,6 +54,12 @@ class MacronBridge(IMacronBridge):
 
     for class_name in class_names:
       mod_name = class_name.lower()
+      if mod_name == 'window':
+        from common import window
+        self.window = window
+        generated_js_apis += self.window.Window().generate_js_api()
+        continue
+      
       setattr(self, mod_name, __import__(mod_name))
 
       generated_js_apis += getattr(getattr(self, mod_name), class_name)().generate_js_api()
@@ -148,7 +155,7 @@ class MacronBridge(IMacronBridge):
     # print(dir(class_ref))
 
     output = eval("""getattr(
-      class_ref(window=self.window, context=self.context),
+      class_ref(current_window=self.current_window, context=self.context),
       method_name
     )({})""".format(args_spread))
 

@@ -19,6 +19,8 @@ class MacronWindow(Window):
     # Single hidden tkinter instance for app
     tkinter.Tk().withdraw()
 
+    self.config = config
+
     # Initialize main window
     self.title(config["title"])
     self.height(config["height"])

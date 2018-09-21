@@ -58,14 +58,11 @@ class MacronWebview(WebKit2.WebView):
 
   def triggerEvent(self, event):
     self.evaluate_script(
-      '''macron.CurrentWindow.eventCallbacks.{}.forEach(
+      '''_macron.RegisteredEventCallbacks.{}.forEach(
         function(callback) {{
-          eval(
-            "(" + callback.replace(/\\/\\//gi, '\\\\').replace(/\/.?/gi, '').replace(/\\'\\'\\'/gi, "\\"") + ")();"
-          )
+          callback()
         }}
-      );
-      '''.format(event)
+      );'''.format(event)
     )
 
   # Gets the Uri of the current document hosted in the WebBrowser.

@@ -15,12 +15,12 @@ from System.Windows import MessageBox
 
 sys.path.insert(0, path.dirname(path.abspath(__file__)))
 
-from bridge import MacronBridge
 from json import dumps
+from bridge import MacronBridge
 
 class MacronWebview(WebBrowser):
 
-  def __init__(self, window, config):
+  def __init__(self, current_window, config):
     if "devServerURI" in config:
       self.Navigate(config["devServerURI"])
     elif "sourcePath" in config:
@@ -40,8 +40,6 @@ class MacronWebview(WebBrowser):
     # else:
     #   # handle error
 
-    self.evaluate_script(window)
-
     # Load main macron JavaScript APIs
     self.evaluate_script(r'var macron = {};')
     
@@ -59,7 +57,7 @@ class MacronWebview(WebBrowser):
 
     # Bridge
     MacronBridge().initialize(
-      window=window,
+      current_window=current_window,
       context=self,
       root_path=config["rootPath"],
       native_modules_path=config["nativeModulesPath"],
@@ -100,11 +98,9 @@ class MacronWebview(WebBrowser):
 
   def triggerEvent(self, event):
     self.evaluate_script(
-      '''macron.CurrentWindow.eventCallbacks.{}.forEach(
+      '''_macron.RegisteredEventCallbacks.{}.forEach(
         function(callback) {{
-          eval(
-            "(" + callback.replace(/\\/\\//gi, '\\\\').replace(/\/.?/gi, '').replace(/\\'\\'\\'/gi, "\\"") + ")();"
-          )
+          callback()
         }}
       );'''.format(event)
     )

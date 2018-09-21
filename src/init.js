@@ -2,13 +2,13 @@
  * Macron APIs initializers
  */
 
-var _Macron = {}
+var _macron = {}
 
 // All windows created during app lifespan
-_Macron.RegisteredWindows = {}
+_macron.RegisteredWindows = {}
 
 // Triggered by native-end
-_Macron.RegisteredEventCallbacks = {
+_macron.RegisteredEventCallbacks = {
   activate: [],
   close: [],
   closing: [],
@@ -22,7 +22,7 @@ _Macron.RegisteredEventCallbacks = {
   stateChange: []
 }
 
-// _Macron.invokeEventCallbacks = function(event) {
-//   for(callback in _Macron.RegisteredEventCallbacks[event])
+// _macron.invokeEventCallbacks = function(event) {
+//   for(callback in _macron.RegisteredEventCallbacks[event])
 //     callback.call()
 // }
