@@ -45,7 +45,6 @@ class MacronWindow(Gtk.Window):
 
     self.webview = MacronWebview(current_window=self, config=config)
 
-    # self.window.add(self.webview)
     self.window.layout.pack_start(self.webview, True, True, 0)
     
     self.window.add(self.window.layout)
