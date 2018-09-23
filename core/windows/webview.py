@@ -2,18 +2,14 @@ import sys
 import clr
 from os import path
 
-clr.AddReference(r"wpf\PresentationFramework")
+dirname = path.dirname(path.realpath(__file__))
+sys.path.insert(0, dirname)
 
-sys.path.insert(0, path.dirname(path.abspath(__file__)))
-
-# from System.Windows.Forms import WebBrowser, DockStyle
 from System import Object
 from System.Windows.Controls import WebBrowser
 from System.IO import StreamReader
 from System.Windows.Navigation import LoadCompletedEventHandler
 from System.Windows import MessageBox
-
-sys.path.insert(0, path.dirname(path.abspath(__file__)))
 
 from json import dumps
 from bridge import MacronBridge
@@ -41,13 +37,18 @@ class MacronWebview(WebBrowser):
     #   # handle error
 
     # Load main macron JavaScript APIs
-    self.evaluate_script(r'var macron = {};')
+    self.evaluate_script(r'var macron = {readyState: false};')
     
+    with open('../../src/polyfills/require.js') as f:
+      self.evaluate_script(f.read())
+
     with open('../../src/init.js') as f:
       self.evaluate_script(f.read())
 
-    with open('../../src/polyfills/require.js') as f:
+    with open('../../src/contextmenu.js') as f:
       self.evaluate_script(f.read())
+
+    self.evaluate_script('macron.readyState = true;')
 
     # with open('../../src/front/window.js') as f:
     #   self.evaluate_script(f.read())
@@ -80,7 +81,14 @@ class MacronWebview(WebBrowser):
     # # self.Navigated += self.handle_events()
     # Occurs when the document being navigated to has finished
     # downloading.
-    # # self.LoadCompleted += self.handle_events()
+    
+    # self.Document.oncontextmenu += self.on_contextmenu
+    # document_events = HTMLDocumentEvents2_Event(self.Document)
+    # document_events.oncontextmenu += self.on_contextmenu
+
+  def on_contextmenu(self, sender, args):
+    print(sender)
+    print(args)
 
   def evaluate_script(self, script):
     if not script:

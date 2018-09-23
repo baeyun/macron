@@ -7,11 +7,11 @@ sys.path.insert(0, path.dirname(path.abspath(__file__)))
 
 from System.Threading import Thread, ThreadStart, ApartmentState
 from System.Windows import Application, Window
-from System.Windows.Controls import DockPanel, Dock, Grid
+from System.Windows.Controls import DockPanel, Dock, Grid, ContextMenu
 
 import tkinter
-from webview import MacronWebview
 from menubar import MacronMenubar
+from webview import MacronWebview
 
 class MacronWindow(Window):
 
@@ -41,7 +41,7 @@ class MacronWindow(Window):
     dock = DockPanel()
     dock.LastChildFill = True
 
-    menu = MacronMenubar(src=config["menu"]).get_menu()
+    menu = MacronMenubar(src=config["menu"])
     dock.SetDock(menu, Dock.Top)
 
     grid = Grid()
@@ -236,6 +236,7 @@ class MacronWindow(Window):
 
   # Occurs when any context menu on the element is opened.
   def on_contextmenuopening(self, sender, args):
+    # print(sender.ContextMenu.PlacementTargetProperty)
     self.webview.triggerEvent('contextMenuOpen')
 
   # Occurs when a window becomes a background window.

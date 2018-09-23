@@ -1,4 +1,4 @@
-// Macron.Window API
+// macron.Window API
 
 const { sep: pathSeperator } = require('path')
 const cwd = process.cwd() + pathSeperator

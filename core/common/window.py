@@ -40,12 +40,12 @@ class Window(NativeBridge):
 
     registered_windows[ID].close()
     return True
-  
+
   # TODO test
   @macronMethod
   def closeAll(self):
     if len(registered_windows) < 1:
       return False
-    
+
     for window in registered_windows:
       window.close()

@@ -1,4 +1,4 @@
-// Macron.Menubar API
+// macron.Menubar API
 
 let Menubar = function (menu) { return menu }
 Menubar.SEPERATOR = {seperator: true}

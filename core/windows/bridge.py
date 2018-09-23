@@ -23,6 +23,7 @@ class MacronBridge(IMacronBridge):
 
     self.load_common_modules([
       'Archive',
+      '_ContextMenu',
       'CurrentWindow',
       'Dialog',
       'FS',
