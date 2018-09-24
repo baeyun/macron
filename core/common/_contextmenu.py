@@ -2,31 +2,33 @@ from macron import *
 import sys
 from os import path
 from platform import system
-from System.Windows.Controls import ContextMenu
 
 dirname = path.dirname(path.realpath(__file__))
 
 if system() == "Windows":
+  from System.Windows.Controls import ContextMenu
   sys.path.append(path.join(dirname, '../windows/'))
 elif system() == "Linux":
+  import gi
+  gi.require_version('Gtk', '3.0')
+  from gi.repository import Gtk
   sys.path.append(path.join(dirname, '../linux/'))
 
 from menu import create_menu
 
-context_menus = {}
+_registered_contextmenus = {}
 
 class _ContextMenu(NativeBridge):
 
   @macronMethod
   def spawn(self, query, menu_src):
-    self.context.evaluate_script("(function() { document.querySelector('#text').style.color = 'red' })()")
     if system() == 'Windows':
-      if query in context_menus:
-        self.current_window.ContextMenu = context_menus[query]
+      if query in _registered_contextmenus:
+        self.current_window.ContextMenu = _registered_contextmenus[query]
         self.current_window.ContextMenu.IsOpen = True
       else:
         cm = ContextMenu()
-        context_menus[query] = cm
+        _registered_contextmenus[query] = cm
         self.current_window.ContextMenu = cm
         create_menu(
           cm,
@@ -36,4 +38,21 @@ class _ContextMenu(NativeBridge):
         cm.HorizontalOffset = 7
         cm.IsOpen = True
     elif system() == 'Linux':
-      print('linux context')
+      if query in _registered_contextmenus:
+        self.context.popup = _registered_contextmenus[query]
+        self.context.connect('button-release-event', self.button_release_event)
+      else:
+        self.context.popup = Gtk.Menu()
+        create_menu(
+          self.context.popup,
+          menu_src,
+          self.context.evaluate_script
+        )
+        self.context.popup.show_all()
+        self.context.connect('button-release-event', self.button_release_event)
+        _registered_contextmenus[query] = self.context.popup
+
+  # Linux only
+  def button_release_event(self, button, event):
+    if event.button == 3:
+        self.context.popup.popup(None, None, None, None, event.button, event.time)

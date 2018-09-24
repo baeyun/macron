@@ -1,5 +1,5 @@
-from menu import create_menu
 from System.Windows.Controls import Menu
+from menu import create_menu
 
 class MacronMenubar(Menu):
 

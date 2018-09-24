@@ -37,7 +37,7 @@ class MacronWebview(WebBrowser):
     #   # handle error
 
     # Load main macron JavaScript APIs
-    self.evaluate_script(r'var macron = {readyState: false};')
+    self.evaluate_script(r'var macron = {};')
     
     with open('../../src/polyfills/require.js') as f:
       self.evaluate_script(f.read())
@@ -47,8 +47,6 @@ class MacronWebview(WebBrowser):
 
     with open('../../src/contextmenu.js') as f:
       self.evaluate_script(f.read())
-
-    self.evaluate_script('macron.readyState = true;')
 
     # with open('../../src/front/window.js') as f:
     #   self.evaluate_script(f.read())
