@@ -1,6 +1,7 @@
 // macron.Menubar API
 
-let Menubar = function (menu) { return menu }
-Menubar.SEPERATOR = {seperator: true}
+let Menubar = function (menu) {
+  return menu
+}
 
 module.exports = Menubar

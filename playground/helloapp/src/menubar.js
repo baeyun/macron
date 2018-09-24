@@ -1,15 +1,40 @@
-const { Menubar } = require('../../../index') // require('macron')
+const { Menubar, Menu } = require('../../../index') // require('macron')
 
 module.exports = new Menubar([
   {
     header: "File",
     submenu: [
-      {header: "New File", callback: "create_file"},
-      {header: "New Window", callback: "create_window"},
-      Menubar.SEPERATOR,
+      {
+        header: "New File",
+        click: Menu.callback(function() {
+          console.log(
+            require('macron').Dialog.filePicker({
+              title: 'Pick file', // title of 'Save File Dialog'
+              read: true,
+              // allowMultiPick: true,
+              initialDirectoryPath: 'C:/Users/bukharim96/Desktop/macron_tests/', // initial save path
+              fileTypes: [ // 'Save As' types
+                ['All files', '.*'],
+                ['Text', '.txt'],
+                ['HTML', '.html'],
+                ['JavaScript', '.js'],
+                ['CSS', '.css'],
+                ['Markdown', '.md']
+              ]
+            })
+          )
+        })
+      },
+      {
+        header: "New Window",
+        click: Menu.callback(function() {
+          require('macron').CurrentWindow.clone()
+        })
+      },
+      Menu.SEPERATOR,
       {header: "Open File", callback: "open_file"},
       {header: "Open Folder", callback: "open_folder"},
-      Menubar.SEPERATOR,
+      Menu.SEPERATOR,
       {header: "Open recent", submenu: [
         {header: "./views/CodeEditor/index.js", callback: "open_recent"},
         {header: "../components/windows/MenuButton", callback: "open_recent"},
@@ -17,15 +42,15 @@ module.exports = new Menubar([
         {header: "../static/img/logo.png", callback: "open_recent"},
         {header: "../vsnative/", callback: "open_recent"}
       ]},
-      Menubar.SEPERATOR,
+      Menu.SEPERATOR,
       {header: "Save", callback: "save"},
       {header: "Save As", callback: "save_as"},
       {header: "Save All", callback: "save_all"},
-      Menubar.SEPERATOR,
+      Menu.SEPERATOR,
       {header: "Auto Save", isCheckable: true, checked: true, callback: "toggle_auto_save"},
-      Menubar.SEPERATOR,
+      Menu.SEPERATOR,
       {header: "Preferences", callback: "open_preference_settings"},
-      Menubar.SEPERATOR,
+      Menu.SEPERATOR,
       {header: "Revert File", callback: "revert_file"},
       {header: "Close Editor", callback: "close_editor"},
       {header: "Close Folder", callback: "close_folder"},

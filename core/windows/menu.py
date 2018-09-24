@@ -3,7 +3,7 @@ from System.Windows.Controls import (
   Separator
 )
 
-def create_menu(menu_instance, src, click_handler, parent=None):
+def create_menu(menu_instance, src, eval_script, parent=None):
   for m in src:
     if "seperator" in m:
       if parent:
@@ -12,8 +12,22 @@ def create_menu(menu_instance, src, click_handler, parent=None):
         menu_instance.AddChild(Separator())
       continue
 
+    def click_handler(sender, args):
+      if sender.Tag:
+        eval_script(
+          script='''({})()'''.format(
+            sender.Tag.replace('/n', ' ').replace('/r', '')
+          ),
+          on_ready=False
+        )
+        print('''({})()'''.format(
+          sender.Tag
+        ))
+
     menuitem = MenuItem()
     menuitem.Header = m["header"]
+    if 'click' in m:
+      menuitem.Tag = m["click"]
     menuitem.Click += click_handler
 
     if "submenu" not in m:
@@ -25,7 +39,7 @@ def create_menu(menu_instance, src, click_handler, parent=None):
       create_menu(
         menu_instance=menu_instance,
         src=m["submenu"],
-        click_handler=click_handler,
+        eval_script=eval_script,
         parent=menuitem
       )
 

@@ -41,13 +41,13 @@ class MacronWindow(Window):
     dock = DockPanel()
     dock.LastChildFill = True
 
-    menu = MacronMenubar(src=config["menu"])
+    self.webview = MacronWebview(current_window=self, config=config)
+    menu = MacronMenubar(window=self)
     dock.SetDock(menu, Dock.Top)
 
     grid = Grid()
     grid.ShowGridLines = False
     
-    self.webview = MacronWebview(current_window=self, config=config)
     grid.Children.Add(self.webview)
     
     dock.Children.Add(menu)

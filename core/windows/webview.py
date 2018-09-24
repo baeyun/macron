@@ -81,28 +81,23 @@ class MacronWebview(WebBrowser):
     # # self.Navigated += self.handle_events()
     # Occurs when the document being navigated to has finished
     # downloading.
-    
-    # self.Document.oncontextmenu += self.on_contextmenu
-    # document_events = HTMLDocumentEvents2_Event(self.Document)
-    # document_events.oncontextmenu += self.on_contextmenu
 
-  def on_contextmenu(self, sender, args):
-    print(sender)
-    print(args)
-
-  def evaluate_script(self, script):
+  def evaluate_script(self, script, on_ready=True):
     if not script:
       return
     
-    def eval_js(sender, args):
+    def eval_js(sender=None, args=None):
       try:
         self.InvokeScript("eval", [script])
       except Exception as e:
         print(e)
 
-    self.LoadCompleted += LoadCompletedEventHandler(
-      eval_js
-    )
+    if on_ready:
+      self.LoadCompleted += LoadCompletedEventHandler(
+        eval_js
+      )
+    else:
+      eval_js()
 
   def triggerEvent(self, event):
     self.evaluate_script(

@@ -30,12 +30,21 @@
   </div>
 
 <script>
+var Menu = {
+  callback: function(func) {return func.toString()}
+}
+
 window.addEventListener('load', function() {
   require('macron').ContextMenu.register('#text', [
     {
       header: "File",
       submenu: [
-        {header: "New File", callback: "create_file"},
+        {
+          header: "New File",
+          click: Menu.callback(
+            function() { document.querySelector('#text').style.backgroundColor = 'red' }
+          )
+        },
         {header: "New Window", callback: "create_window"},
         {seperator: true},
         {header: "Open File", callback: "open_file"},
