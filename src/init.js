@@ -22,5 +22,8 @@ _macron.RegisteredEventCallbacks = {
   stateChange: []
 }
 
-// Menu events
-_macron.registeredMenuCallbacks = []
+// Menubar events
+_macron.menubarCallbacks = []
+
+// ContextMenu events
+_macron.contextmenuCallbacks = []

@@ -22,7 +22,7 @@ module.exports = new Menubar([
                 ['Markdown', '.md']
               ]
             })
-          )
+          );
         }
       }),
       Menu.MenuItem({
@@ -32,65 +32,67 @@ module.exports = new Menubar([
         }
       }),
       Menu.Seperator,
-      Menu.MenuItem({label: "Open File", click: () => {
-        console.log('callback function')
+      Menu.MenuItem({label: "Open File", click: function(menuitem) {
+        console.log(menuitem)
       }}),
-      Menu.MenuItem({label: "Open Folder", click: () => {
+      Menu.MenuItem({label: "Open Folder", click: function() {
         console.log('callback function')
       }}),
       Menu.Seperator,
       Menu.MenuItem({label: "Open recent", submenu: [
-        Menu.MenuItem({label: "./views/CodeEditor/index.js", click: () => {
+        Menu.MenuItem({label: "./views/CodeEditor/index.js", click: function() {
           console.log('callback function')
         }}),
-        Menu.MenuItem({label: "../components/windows/MenuButton", click: () => {
+        Menu.MenuItem({label: "../components/windows/MenuButton", click: function() {
           console.log('callback function')
         }}),
-        Menu.MenuItem({label: "./guppy/scripts/", click: () => {
+        Menu.MenuItem({label: "./guppy/scripts/", click: function() {
           console.log('callback function')
         }}),
-        Menu.MenuItem({label: "../static/img/logo.png", click: () => {
+        Menu.MenuItem({label: "../static/img/logo.png", click: function() {
           console.log('callback function')
         }}),
-        Menu.MenuItem({label: "../vsnative/", click: () => {
+        Menu.MenuItem({label: "../vsnative/", click: function() {
           console.log('callback function')
         }})
       ]}),
       Menu.Seperator,
-      Menu.MenuItem({label: "Save", click: () => {
+      Menu.MenuItem({label: "Save", click: function() {
         console.log('callback function')
       }}),
-      Menu.MenuItem({label: "Save As", click: () => {
+      Menu.MenuItem({label: "Save As", click: function() {
         console.log('callback function')
       }}),
-      Menu.MenuItem({label: "Save All", click: () => {
-        console.log('callback function')
-      }}),
-      Menu.Seperator,
-      Menu.MenuItem({label: "Auto Save", isCheckable: true, checked: true, click: () => {
+      Menu.MenuItem({label: "Save All", click: function() {
         console.log('callback function')
       }}),
       Menu.Seperator,
-      Menu.MenuItem({label: "Preferences", click: () => {
+      Menu.MenuItem({label: "Auto Save", isCheckable: true, checked: true, click: function(menuitem) {
+        console.log(menuitem)
+      }}),
+      Menu.Seperator,
+      Menu.MenuItem({label: "Preferences", click: function() {
         console.log('callback function')
       }}),
       Menu.Seperator,
-      Menu.MenuItem({label: "Revert File", click: () => {
+      Menu.MenuItem({label: "Revert File", click: function() {
         console.log('callback function')
       }}),
-      Menu.MenuItem({label: "Close Editor", click: () => {
+      Menu.MenuItem({label: "Close Editor", click: function() {
         console.log('callback function')
       }}),
-      Menu.MenuItem({label: "Close Folder", click: () => {
+      Menu.MenuItem({label: "Close Folder", click: function() {
         console.log('callback function')
       }}),
-      Menu.MenuItem({label: "Close Window", click: () => {
+      Menu.MenuItem({label: "Close Window", click: function() {
         console.log('callback function')
       }})
     ]
   }),
   Menu.MenuItem({label: "Edit", submenu: [
-    Menu.MenuItem({label: "Word Wrap", isCheckable: true})
+    Menu.MenuItem({label: "Word Wrap", isCheckable: true, click: function(menuitem) {
+      console.log(menuitem)
+    }})
   ]}),
   Menu.MenuItem({label: "Selection"}),
   Menu.MenuItem({label: "View"}),

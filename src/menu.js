@@ -11,10 +11,14 @@ var Menu = {
     }
 
     if (menuitem.click && typeof module === 'undefined') {
-      _macron.registeredMenuCallbacks.push(
+      newMenuitem.type = 'contextmenuitem'
+      _macron.contextmenuCallbacks.push(
         menuitem.click
       )
-      newMenuitem.callbackID = _macron.registeredMenuCallbacks.length - 1
+      newMenuitem.callbackID = _macron.contextmenuCallbacks.length - 1
+    } else if (menuitem.click) {
+      newMenuitem.type = 'menubaritem'
+      newMenuitem.clickCallback = menuitem.click.toString()
     }
 
     return newMenuitem

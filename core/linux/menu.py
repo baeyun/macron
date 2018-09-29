@@ -3,8 +3,13 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 from json import dumps
+import re
+
+_menubar_item_callback_id = 0
 
 def create_menu(menu_instance, src, eval_script, parent=None):
+  global _menubar_item_callback_id
+  
   for m in src:
     if "seperator" in m:
       if parent:
@@ -13,18 +18,31 @@ def create_menu(menu_instance, src, eval_script, parent=None):
         menu_instance.append(Gtk.SeparatorMenuItem())
       continue
 
-    def click_handler(menuitem, callback_id, menuitem_config_obj):
-      if type(menuitem) == Gtk.CheckMenuItem:
-        m['checked'] = menuitem.get_active()
-      
+    if 'clickCallback' in m:
+      m['callbackID'] = _menubar_item_callback_id
+      _menubar_item_callback_id += 1
+
       eval_script(
-        script='_macron.registeredMenuCallbacks[{}].call(null, {})'.format(
-          callback_id,
-          dumps(menuitem_config_obj)
+        script='_macron.menubarCallbacks.push({})'.format(
+          multiple_replace(m['clickCallback'], {
+            '/n': '\n',
+            '/r': '\r'
+          })
         )
       )
 
-    menuitem_obj = Gtk.MenuItem.new_with_label
+    def click_handler(menuitem, menuitem_config):
+      if type(menuitem) == Gtk.CheckMenuItem:
+        menuitem_config['checked'] = menuitem.get_active()
+      
+      if 'callbackID' in menuitem_config:
+        eval_script(
+          script='_macron.{}[{}].call(null, {})'.format(
+            'contextmenuCallbacks' if menuitem_config['type'] == 'contextmenuitem' else 'menubarCallbacks',
+            menuitem_config['callbackID'],
+            dumps(menuitem_config)
+          )
+        )
 
     if m["isCheckable"] == True and m['submenu'] == None:
       menuitem = Gtk.CheckMenuItem(m['label'])
@@ -38,7 +56,6 @@ def create_menu(menu_instance, src, eval_script, parent=None):
       menuitem.connect(
         'activate',
         click_handler,
-        m['callbackID'] if 'callbackID' in m else None,
         m # config obj
       )
     
@@ -56,3 +73,9 @@ def create_menu(menu_instance, src, eval_script, parent=None):
       parent.append(menuitem)
     else:
       menu_instance.append(menuitem)
+
+def multiple_replace(text, adict):
+  rx = re.compile('|'.join(map(re.escape, adict)))
+  def one_xlat(match):
+    return adict[match.group(0)]
+  return rx.sub(one_xlat, text)
