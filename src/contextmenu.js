@@ -9,7 +9,10 @@ require('macron').ContextMenu = {
       if (e.stopPropagation != undefined)
         e.stopPropagation()
 
-      require('macron')._ContextMenu.spawn(query, menu)
+      require('macron')._ContextMenu.spawn(
+        query,
+        menu
+      )
     })
   }
 }

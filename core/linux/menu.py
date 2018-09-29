@@ -11,26 +11,31 @@ def create_menu(menu_instance, src, eval_script, parent=None):
         menu_instance.append(Gtk.SeparatorMenuItem())
       continue
 
-    def click_handler(menuitem, callback):
-      if callback:
-        eval_script(
-          script='''({})()'''.format(
-            callback.replace('/n', ' ').replace('/r', '')
-          )
+    def click_handler(menuitem, callbackID):
+      eval_script(
+        script='_macron.registeredMenuCallbacks[{}].call()'.format(
+          callbackID
         )
+      )
 
     menuitem_obj = Gtk.MenuItem.new_with_label
 
-    if "submenu" not in m and "isCheckable" in m and m["isCheckable"]:
+    if "submenu" not in m and not m['submenu'] and "isCheckable" in m and m["isCheckable"]:
       menuitem_obj = Gtk.CheckMenuItem
 
-    menuitem = menuitem_obj(m["header"])
-    menuitem.connect('activate', click_handler, m['click'] if 'click' in m else None)
+    menuitem = menuitem_obj(m['label'])
     
-    if "checked" in m and m["checked"]:
-      menuitem.set_active(True)
+    if 'callbackID' in m:
+      menuitem.connect(
+        'activate',
+        click_handler,
+        m['callbackID'] if 'callbackID' in m else None
+      )
     
-    if "submenu" in m:
+    if "submenu" not in m and not m['submenu'] and "isCheckable" in m and m["isCheckable"] and "checked" in m:
+      menuitem.set_active(m["checked"])
+    
+    if "submenu" in m and m['submenu']:
       submenu = Gtk.Menu.new()
       create_menu(
         menu_instance=menu_instance,
