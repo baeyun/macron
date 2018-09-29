@@ -26,29 +26,33 @@
   </div>
 
 <script>
-const { MenuItem, Seperator } = require('macron').Menu
+var Menu = require('macron').Menu,
+    MenuItem = Menu.MenuItem,
+    Seperator = Menu.Seperator;
 
+// ContextMenu sample
 require('macron').ContextMenu.register('#text', [
   MenuItem({label: 'RGB', submenu: [
-    MenuItem({label: 'New File', click: () => {
+    MenuItem({label: 'Red', click: function() {
       document.querySelector('#text').style.backgroundColor = 'red'
       document.querySelector('#text').style.color = 'white'
     }}),
-    MenuItem({label: 'New Window', click: () => {
+    MenuItem({label: 'Green', click: function() {
       document.querySelector('#text').style.backgroundColor = 'green'
       document.querySelector('#text').style.color = 'white'
     }}),
-    MenuItem({label: 'Recent', click: () => {
+    MenuItem({label: 'Blue', click: function() {
       document.querySelector('#text').style.backgroundColor = 'blue'
       document.querySelector('#text').style.color = 'white'
     }})
   ]}),
   Seperator,
-  MenuItem({label: 'Purple', click: () => {
+  MenuItem({label: 'Purple', isCheckable: true, click: function(menuitem) {
     document.querySelector('#text').style.backgroundColor = 'purple'
     document.querySelector('#text').style.color = 'white'
+    alert(JSON.stringify(menuitem))
   }})
-])
+]);
 </script>
 <!-- <script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script> -->
 </body>

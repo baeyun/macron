@@ -6,7 +6,7 @@ var Menu = {
     var newMenuitem = {
       label: menuitem.label,
       isCheckable: menuitem.isCheckable || null,
-      checked: menuitem.checked || null,
+      checked: menuitem.checked || false,
       submenu: menuitem.submenu || null
     }
 

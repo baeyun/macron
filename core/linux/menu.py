@@ -2,6 +2,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from json import dumps
+
 def create_menu(menu_instance, src, eval_script, parent=None):
   for m in src:
     if "seperator" in m:
@@ -11,29 +13,34 @@ def create_menu(menu_instance, src, eval_script, parent=None):
         menu_instance.append(Gtk.SeparatorMenuItem())
       continue
 
-    def click_handler(menuitem, callbackID):
+    def click_handler(menuitem, callback_id, menuitem_config_obj):
+      if type(menuitem) == Gtk.CheckMenuItem:
+        m['checked'] = menuitem.get_active()
+      
       eval_script(
-        script='_macron.registeredMenuCallbacks[{}].call()'.format(
-          callbackID
+        script='_macron.registeredMenuCallbacks[{}].call(null, {})'.format(
+          callback_id,
+          dumps(menuitem_config_obj)
         )
       )
 
     menuitem_obj = Gtk.MenuItem.new_with_label
 
-    if "submenu" not in m and not m['submenu'] and "isCheckable" in m and m["isCheckable"]:
-      menuitem_obj = Gtk.CheckMenuItem
+    if m["isCheckable"] == True and m['submenu'] == None:
+      menuitem = Gtk.CheckMenuItem(m['label'])
 
-    menuitem = menuitem_obj(m['label'])
+      if "checked" in m:
+        menuitem.set_active(m['checked'])
+    else:
+      menuitem = Gtk.MenuItem.new_with_label(m['label'])
     
     if 'callbackID' in m:
       menuitem.connect(
         'activate',
         click_handler,
-        m['callbackID'] if 'callbackID' in m else None
+        m['callbackID'] if 'callbackID' in m else None,
+        m # config obj
       )
-    
-    if "submenu" not in m and not m['submenu'] and "isCheckable" in m and m["isCheckable"] and "checked" in m:
-      menuitem.set_active(m["checked"])
     
     if "submenu" in m and m['submenu']:
       submenu = Gtk.Menu.new()

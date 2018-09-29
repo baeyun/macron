@@ -1,4 +1,4 @@
-const { Menubar, Menu } = require('../../../index') // require('macron')
+const { Menubar, Menu } = require('../../../index') // @todo require('macron')
 
 module.exports = new Menubar([
   Menu.MenuItem({
