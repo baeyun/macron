@@ -22,7 +22,8 @@ _macron.RegisteredEventCallbacks = {
   stateChange: []
 }
 
-// _macron.invokeEventCallbacks = function(event) {
-//   for(callback in _macron.RegisteredEventCallbacks[event])
-//     callback.call()
-// }
+// Menubar events
+_macron.menubarCallbacks = []
+
+// ContextMenu events
+_macron.contextmenuCallbacks = []

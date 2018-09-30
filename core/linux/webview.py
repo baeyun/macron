@@ -32,6 +32,12 @@ class MacronWebview(WebKit2.WebView):
     with open('../../src/polyfills/require.js') as f:
       self.evaluate_script(f.read())
 
+    with open('../../src/menu.js') as f:
+      self.evaluate_script(f.read())
+
+    with open('../../src/contextmenu.js') as f:
+      self.evaluate_script(f.read())
+
     # with open('../../src/front/window.js') as f:
     #   self.evaluate_script(f.read())
 

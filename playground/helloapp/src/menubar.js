@@ -1,12 +1,12 @@
-const { Menubar, Menu } = require('../../../index') // require('macron')
+const { Menubar, Menu } = require('../../../index') // @todo require('macron')
 
 module.exports = new Menubar([
-  {
-    header: "File",
+  Menu.MenuItem({
+    label: "File",
     submenu: [
-      {
-        header: "New File",
-        click: Menu.callback(function() {
+      Menu.MenuItem({
+        label: "New File",
+        click: function() {
           console.log(
             require('macron').Dialog.filePicker({
               title: 'Pick file', // title of 'Save File Dialog'
@@ -22,52 +22,86 @@ module.exports = new Menubar([
                 ['Markdown', '.md']
               ]
             })
-          )
-        })
-      },
-      {
-        header: "New Window",
-        click: Menu.callback(function() {
+          );
+        }
+      }),
+      Menu.MenuItem({
+        label: "New Window",
+        click: function() {
           require('macron').CurrentWindow.clone()
-        })
-      },
-      Menu.SEPERATOR,
-      {header: "Open File", callback: "open_file"},
-      {header: "Open Folder", callback: "open_folder"},
-      Menu.SEPERATOR,
-      {header: "Open recent", submenu: [
-        {header: "./views/CodeEditor/index.js", callback: "open_recent"},
-        {header: "../components/windows/MenuButton", callback: "open_recent"},
-        {header: "./guppy/scripts/", callback: "openrecent"},
-        {header: "../static/img/logo.png", callback: "open_recent"},
-        {header: "../vsnative/", callback: "open_recent"}
-      ]},
-      Menu.SEPERATOR,
-      {header: "Save", callback: "save"},
-      {header: "Save As", callback: "save_as"},
-      {header: "Save All", callback: "save_all"},
-      Menu.SEPERATOR,
-      {header: "Auto Save", isCheckable: true, checked: true, callback: "toggle_auto_save"},
-      Menu.SEPERATOR,
-      {header: "Preferences", callback: "open_preference_settings"},
-      Menu.SEPERATOR,
-      {header: "Revert File", callback: "revert_file"},
-      {header: "Close Editor", callback: "close_editor"},
-      {header: "Close Folder", callback: "close_folder"},
-      {header: "Close Window", callback: "close_window"}
+        }
+      }),
+      Menu.Seperator,
+      Menu.MenuItem({label: "Open File", click: function(menuitem) {
+        console.log(menuitem)
+      }}),
+      Menu.MenuItem({label: "Open Folder", click: function() {
+        console.log('callback function')
+      }}),
+      Menu.Seperator,
+      Menu.MenuItem({label: "Open recent", submenu: [
+        Menu.MenuItem({label: "./views/CodeEditor/index.js", click: function() {
+          console.log('callback function')
+        }}),
+        Menu.MenuItem({label: "../components/windows/MenuButton", click: function() {
+          console.log('callback function')
+        }}),
+        Menu.MenuItem({label: "./guppy/scripts/", click: function() {
+          console.log('callback function')
+        }}),
+        Menu.MenuItem({label: "../static/img/logo.png", click: function() {
+          console.log('callback function')
+        }}),
+        Menu.MenuItem({label: "../vsnative/", click: function() {
+          console.log('callback function')
+        }})
+      ]}),
+      Menu.Seperator,
+      Menu.MenuItem({label: "Save", click: function() {
+        console.log('callback function')
+      }}),
+      Menu.MenuItem({label: "Save As", click: function() {
+        console.log('callback function')
+      }}),
+      Menu.MenuItem({label: "Save All", click: function() {
+        console.log('callback function')
+      }}),
+      Menu.Seperator,
+      Menu.MenuItem({label: "Auto Save", isCheckable: true, checked: true, click: function(menuitem) {
+        console.log(menuitem)
+      }}),
+      Menu.Seperator,
+      Menu.MenuItem({label: "Preferences", click: function() {
+        console.log('callback function')
+      }}),
+      Menu.Seperator,
+      Menu.MenuItem({label: "Revert File", click: function() {
+        console.log('callback function')
+      }}),
+      Menu.MenuItem({label: "Close Editor", click: function() {
+        console.log('callback function')
+      }}),
+      Menu.MenuItem({label: "Close Folder", click: function() {
+        console.log('callback function')
+      }}),
+      Menu.MenuItem({label: "Close Window", click: function() {
+        console.log('callback function')
+      }})
     ]
-  },
-  {header: "Edit", submenu: [
-    {header: "Word Wrap", isCheckable: true}
-  ]},
-  {header: "Selection"},
-  {header: "View"},
-  {header: "Go", submenu: [
-    {header: "Share", icon: "&#xE72D;"},
-    {header: "Copy"},
-    {header: "Delete"},
-  ]},
-  {header: "Debug"},
-  {header: "Tasks"},
-  {header: "Help"}
+  }),
+  Menu.MenuItem({label: "Edit", submenu: [
+    Menu.MenuItem({label: "Word Wrap", isCheckable: true, click: function(menuitem) {
+      console.log(menuitem)
+    }})
+  ]}),
+  Menu.MenuItem({label: "Selection"}),
+  Menu.MenuItem({label: "View"}),
+  Menu.MenuItem({label: "Go", submenu: [
+    Menu.MenuItem({label: "Share", icon: "&#xE72D;"}),
+    Menu.MenuItem({label: "Copy"}),
+    Menu.MenuItem({label: "Delete"}),
+  ]}),
+  Menu.MenuItem({label: "Debug"}),
+  Menu.MenuItem({label: "Tasks"}),
+  Menu.MenuItem({label: "Help"})
 ])

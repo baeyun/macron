@@ -39,14 +39,12 @@ class MacronWindow(Gtk.Window):
     if config["frameless"]: self.frameless(True)
 
     # Draw UI
-    menu = MacronMenubar(src=config["menu"]).get_menu()
+    self.webview = MacronWebview(current_window=self, config=config)
+    menu = MacronMenubar(window=self).get_menu()
+
     self.window.layout = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
     self.window.layout.pack_start(menu, False, False, 0)
-
-    self.webview = MacronWebview(current_window=self, config=config)
-
     self.window.layout.pack_start(self.webview, True, True, 0)
-    
     self.window.add(self.window.layout)
   
   def title(self, title):

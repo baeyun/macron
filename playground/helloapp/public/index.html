@@ -18,42 +18,41 @@
       Start editing this file to view changes.<br>
       If you are using a library/framework, change your render target to <code>./public/index.html</code>
     </p>
-    <div style="text-align: center;"></div>
+    <div style="text-align: center;">
+      <button onclick="require('macron').CurrentWindow.clone()">Clone Window</button>
+      <button onclick="require('macron').CurrentWindow.title('Foo | Bar')">Set Title</button>
+      <button onclick="require('macron').CurrentWindow.title('Macron App')">Set Title</button>
+    </div>
   </div>
 
 <script>
+var Menu = require('macron').Menu,
+    MenuItem = Menu.MenuItem,
+    Seperator = Menu.Seperator;
 
-window.addEventListener('load', function() {
-  require('macron').Accelerator.register('Ctrl+B', function(e) {
-    alert('You clicked Ctrl+B');
-  });
-  require('macron').Accelerator.register('Ctrl+Shift+S', function(e) {
-    require('macron').Dialog.fileSaver({
-      title: 'Save this file as...',
-      content: 'Some text'
-    });
-  });
-  require('macron').Accelerator.register('Ctrl+Alt+N', function(e) {
-    require('macron').CurrentWindow.clone();
-  });
-  require('macron').Accelerator.register('Ctrl+O', function(e) {
-    require('macron').Dialog.filePicker({
-  title: 'Pick file', // title of 'Save File Dialog'
-  // read: true,
-  // allowMultiPick: true,
-  initialDirectoryPath: 'C:/Users/bukharim96/Desktop/macron_tests/', // initial save path
-  fileTypes: [ // 'Save As' types
-    ['All files', '.*'],
-    ['Text', '.txt'],
-    ['HTML', '.html'],
-    ['JavaScript', '.js'],
-    ['CSS', '.css'],
-    ['Markdown', '.md']
-  ]
-})
-  });
-})
-
+// ContextMenu sample
+require('macron').ContextMenu.register('#text', [
+  MenuItem({label: 'RGB', submenu: [
+    MenuItem({label: 'Red', click: function() {
+      document.querySelector('#text').style.backgroundColor = 'red'
+      document.querySelector('#text').style.color = 'white'
+    }}),
+    MenuItem({label: 'Green', click: function() {
+      document.querySelector('#text').style.backgroundColor = 'green'
+      document.querySelector('#text').style.color = 'white'
+    }}),
+    MenuItem({label: 'Blue', click: function() {
+      document.querySelector('#text').style.backgroundColor = 'blue'
+      document.querySelector('#text').style.color = 'white'
+    }})
+  ]}),
+  Seperator,
+  MenuItem({label: 'Purple', isCheckable: true, click: function(menuitem) {
+    document.querySelector('#text').style.backgroundColor = 'purple'
+    document.querySelector('#text').style.color = 'white'
+    alert(JSON.stringify(menuitem))
+  }})
+]);
 </script>
 <script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
 </body>
