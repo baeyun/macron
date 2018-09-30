@@ -47,6 +47,9 @@ class MacronWebview(WebBrowser):
 
     with open('../../src/contextmenu.js') as f:
       self.evaluate_script(f.read())
+    
+    with open('../../src/accelerator.js') as f:
+      self.evaluate_script(f.read())
 
     self.evaluate_script('macron.readyState = true;')
 

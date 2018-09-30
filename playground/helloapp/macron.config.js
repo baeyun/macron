@@ -4,7 +4,7 @@
 const { Window } = require('../../index') // require('macron')
 
 const App = new Window({
-  title: "HelloApp | Macron Test App",
+  title: "MacLine",
   width: 1200,
   height: 960,
   minHeight: 500,
@@ -12,10 +12,11 @@ const App = new Window({
   startupFromCenter: true,
   // frameless: true,
   // startupState: "maximized",
-  // devServerURI: 'http://localhost:3000/',
+  // devServerURI: 'file:///C:/Users/bukharim96/Desktop/Projects/_GitRepoRefs/monaco-editor-samples/browser-amd-editor/editor.html',
   sourcePath: './public/index.html',
   // nativeModules: ['Dialog'],
   menu: require('./src/menubar'),
+  // accelerators: require('./src/keybindings'),
   // nativeDependencies: ['numpy.py', 'ffmpeg.py']
 })
 // .on('activate', function() {

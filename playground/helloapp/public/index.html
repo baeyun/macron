@@ -18,130 +18,42 @@
       Start editing this file to view changes.<br>
       If you are using a library/framework, change your render target to <code>./public/index.html</code>
     </p>
-    <div style="text-align: center;">
-      <button onclick="console.log(macron.readyState)">BTN</button>
-      <button onclick="saveFile()">Save a File</button>
-      <button onclick="pickFile()">Open File</button>
-      <button onclick="pickDirectory()">Open Directory</button>
-      <button onclick="require('macron').CurrentWindow.clone()">Clone Window</button>
-      <button onclick="require('macron').CurrentWindow.title('Foo | Bar')">Set Title</button>
-      <button onclick="require('macron').CurrentWindow.title('Foo | Bar')">Set Title</button>
-    </div>
+    <div style="text-align: center;"></div>
   </div>
 
 <script>
-var Menu = {
-  callback: function(func) {return func.toString()}
-}
 
 window.addEventListener('load', function() {
-  require('macron').ContextMenu.register('#text', [
-    {
-      header: "File",
-      submenu: [
-        {
-          header: "New File",
-          click: Menu.callback(
-            function() { document.querySelector('#text').style.backgroundColor = 'red' }
-          )
-        },
-        {header: "New Window", callback: "create_window"},
-        {seperator: true},
-        {header: "Open File", callback: "open_file"},
-        {header: "Open Folder", callback: "open_folder"},
-        {seperator: true},
-        {header: "Open recent", submenu: [
-          {header: "./views/CodeEditor/index.js", callback: "open_recent"},
-          {header: "../components/windows/MenuButton", callback: "open_recent"},
-          {header: "./guppy/scripts/", callback: "openrecent"},
-          {header: "../static/img/logo.png", callback: "open_recent"},
-          {header: "../vsnative/", callback: "open_recent"}
-        ]},
-        {seperator: true},
-        {header: "Save", callback: "save"},
-        {header: "Save As", callback: "save_as"},
-        {header: "Save All", callback: "save_all"},
-        {seperator: true},
-        {header: "Auto Save", isCheckable: true, checked: true, callback: "toggle_auto_save"},
-        {seperator: true},
-        {header: "Preferences", callback: "open_preference_settings"},
-        {seperator: true},
-        {header: "Revert File", callback: "revert_file"},
-        {header: "Close Editor", callback: "close_editor"},
-        {header: "Close Folder", callback: "close_folder"},
-        {header: "Close Window", callback: "close_window"}
-      ]
-    },
-    {header: "Edit", submenu: [
-      {header: "Word Wrap", isCheckable: true}
-    ]},
-    {header: "Selection"},
-    {header: "View"},
-    {header: "Go", submenu: [
-      {header: "Share", icon: "&#xE72D;"},
-      {header: "Copy"},
-      {header: "Delete"},
-    ]},
-    {header: "Debug"},
-    {header: "Tasks"},
-    {seperator: true},
-    {header: "Help"}
-  ])
+  require('macron').Accelerator.register('Ctrl+B', function(e) {
+    alert('You clicked Ctrl+B');
+  });
+  require('macron').Accelerator.register('Ctrl+Shift+S', function(e) {
+    require('macron').Dialog.fileSaver({
+      title: 'Save this file as...',
+      content: 'Some text'
+    });
+  });
+  require('macron').Accelerator.register('Ctrl+Alt+N', function(e) {
+    require('macron').CurrentWindow.clone();
+  });
+  require('macron').Accelerator.register('Ctrl+O', function(e) {
+    require('macron').Dialog.filePicker({
+  title: 'Pick file', // title of 'Save File Dialog'
+  // read: true,
+  // allowMultiPick: true,
+  initialDirectoryPath: 'C:/Users/bukharim96/Desktop/macron_tests/', // initial save path
+  fileTypes: [ // 'Save As' types
+    ['All files', '.*'],
+    ['Text', '.txt'],
+    ['HTML', '.html'],
+    ['JavaScript', '.js'],
+    ['CSS', '.css'],
+    ['Markdown', '.md']
+  ]
+})
+  });
 })
 
-function pickDirectory() {
-  directoryPicker = require('macron').Dialog.directoryPicker
-  
-  path = directoryPicker({
-    title: 'Pick folder', // title of 'Pick Folder Dialog'
-    initialDirectoryPath: 'C:/Users/bukharim96/Desktop/macron_tests/' // initial save path
-  })
-
-  console.log(path)
-}
-
-function pickFile() {
-  filePicker = require('macron').Dialog.filePicker
-  
-  content = filePicker({
-    title: 'Pick file', // title of 'Pick File Dialog'
-    // read: true,
-    allowMultiPick: true,
-    initialDirectoryPath: 'C:/Users/bukharim96/Desktop/macron_tests/', // initial save path
-    fileTypes: [ // 'Save As' types
-      ['All files', '.*'],
-      ['Text', '.txt'],
-      ['HTML', '.html'],
-      ['JavaScript', '.js'],
-      ['CSS', '.css'],
-      ['Markdown', '.md']
-    ]
-  })
-
-  console.log(content)
-}
-
-function saveFile() {
-  fileSaver = require('macron').Dialog.fileSaver
-  
-  path = fileSaver({
-    title: 'Save this file as:', // title of 'Save File Dialog'
-    content: 'Some lorem...',
-    name: 'test_file_01', // default name
-    initialDirectoryPath: 'C:/Users/bukharim96/Desktop/macron_tests/', // initial save path
-    defaultExtension: 'txt', // default extension
-    fileTypes: [ // 'Save As' types
-      ['All files', '.*'],
-      ['Text', '.txt'],
-      ['HTML', '.html'],
-      ['JavaScript', '.js'],
-      ['CSS', '.css'],
-      ['Markdown', '.md']
-    ]
-  })
-
-  console.log(path)
-}
 </script>
 <script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
 </body>

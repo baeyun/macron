@@ -20,9 +20,6 @@ def create_menu(menu_instance, src, eval_script, parent=None):
           ),
           on_ready=False
         )
-        print('''({})()'''.format(
-          sender.Tag
-        ))
 
     menuitem = MenuItem()
     menuitem.Header = m["header"]
