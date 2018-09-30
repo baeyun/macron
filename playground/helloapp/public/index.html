@@ -26,33 +26,40 @@
   </div>
 
 <script>
-var Menu = require('macron').Menu,
-    MenuItem = Menu.MenuItem,
-    Seperator = Menu.Seperator;
+window.onload = function() {
+  var macron = require('macron'),
+      Menu = macron.Menu,
+      MenuItem = Menu.MenuItem,
+      Seperator = Menu.Seperator;
 
-// ContextMenu sample
-require('macron').ContextMenu.register('#text', [
-  MenuItem({label: 'RGB', submenu: [
-    MenuItem({label: 'Red', click: function() {
-      document.querySelector('#text').style.backgroundColor = 'red'
+  // ContextMenu sample
+  macron.ContextMenu.register('#text', [
+    MenuItem({label: 'RGB', submenu: [
+      MenuItem({label: 'Red', click: function() {
+        document.querySelector('#text').style.backgroundColor = 'red'
+        document.querySelector('#text').style.color = 'white'
+      }}),
+      MenuItem({label: 'Green', click: function() {
+        document.querySelector('#text').style.backgroundColor = 'green'
+        document.querySelector('#text').style.color = 'white'
+      }}),
+      MenuItem({label: 'Blue', click: function() {
+        document.querySelector('#text').style.backgroundColor = 'blue'
+        document.querySelector('#text').style.color = 'white'
+      }})
+    ]}),
+    Seperator,
+    MenuItem({label: 'Purple', isCheckable: true, click: function(menuitem) {
+      document.querySelector('#text').style.backgroundColor = 'purple'
       document.querySelector('#text').style.color = 'white'
+      alert(JSON.stringify(menuitem))
     }}),
-    MenuItem({label: 'Green', click: function() {
-      document.querySelector('#text').style.backgroundColor = 'green'
-      document.querySelector('#text').style.color = 'white'
-    }}),
-    MenuItem({label: 'Blue', click: function() {
-      document.querySelector('#text').style.backgroundColor = 'blue'
-      document.querySelector('#text').style.color = 'white'
+    Seperator,
+    MenuItem({label: 'Clone Window', click: function(menuitem) {
+      macron.CurrentWindow.clone()
     }})
-  ]}),
-  Seperator,
-  MenuItem({label: 'Purple', isCheckable: true, click: function(menuitem) {
-    document.querySelector('#text').style.backgroundColor = 'purple'
-    document.querySelector('#text').style.color = 'white'
-    alert(JSON.stringify(menuitem))
-  }})
-]);
+  ]);
+}
 </script>
 <script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
 </body>

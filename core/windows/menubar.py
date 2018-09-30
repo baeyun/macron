@@ -13,4 +13,5 @@ class MacronMenubar(Menu):
       window.webview.evaluate_script
     )
 
+  def get_menu(self):
     return self

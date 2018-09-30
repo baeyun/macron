@@ -38,11 +38,8 @@ class MacronWebview(WebKit2.WebView):
     with open('../../src/contextmenu.js') as f:
       self.evaluate_script(f.read())
 
-    # with open('../../src/front/window.js') as f:
+    # with open('../../src/accelerator.js') as f:
     #   self.evaluate_script(f.read())
-
-    # # Create macron.CurrentWindow
-    # self.evaluate_script('macron.CurrentWindow = {};'.format(dumps(config)))
 
     # Bridge
     MacronBridge().initialize(

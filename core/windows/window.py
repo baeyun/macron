@@ -42,7 +42,7 @@ class MacronWindow(Window):
     dock.LastChildFill = True
 
     self.webview = MacronWebview(current_window=self, config=config)
-    menu = MacronMenubar(window=self)
+    menu = MacronMenubar(window=self).get_menu()
     dock.SetDock(menu, Dock.Top)
 
     grid = Grid()

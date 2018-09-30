@@ -23,10 +23,12 @@ class _ContextMenu(NativeBridge):
   @macronMethod
   def spawn(self, query, menu_src):
     if system() == 'Windows':
-      if query in _registered_contextmenus:
-        self.current_window.ContextMenu = _registered_contextmenus[query]
-        self.current_window.ContextMenu.IsOpen = True
-      else:
+      # FIXME required for better perf
+      # BUG affects only intial window instance
+      # if query in _registered_contextmenus:
+      #   self.current_window.ContextMenu = _registered_contextmenus[query]
+      #   self.current_window.ContextMenu.IsOpen = True
+      # else:
         cm = ContextMenu()
         _registered_contextmenus[query] = cm
         self.current_window.ContextMenu = cm
@@ -38,10 +40,12 @@ class _ContextMenu(NativeBridge):
         cm.HorizontalOffset = 7
         cm.IsOpen = True
     elif system() == 'Linux':
-      if query in _registered_contextmenus:
-        self.context.popup = _registered_contextmenus[query]
-        self.context.connect('button-release-event', self.button_release_event)
-      else:
+      # FIXME required for better perf
+      # BUG affects only intial window instance
+      # if query in _registered_contextmenus:
+      #   self.context.popup = _registered_contextmenus[query]
+      #   self.context.connect('button-release-event', self.button_release_event)
+      # else:
         self.context.popup = Gtk.Menu()
         create_menu(
           self.context.popup,

@@ -1,7 +1,6 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-
 from json import dumps
 import re
 
@@ -11,25 +10,26 @@ def create_menu(menu_instance, src, eval_script, parent=None):
   global _menubar_item_callback_id
   
   for m in src:
-    if "seperator" in m:
-      if parent:
-        parent.append(Gtk.SeparatorMenuItem())
-      else:
-        menu_instance.append(Gtk.SeparatorMenuItem())
-      continue
-
     if 'clickCallback' in m:
       m['callbackID'] = _menubar_item_callback_id
       _menubar_item_callback_id += 1
 
       eval_script(
-        script='_macron.menubarCallbacks.push({})'.format(
+        script='_macron.menubarCallbacks[{}] = {}'.format(
+          m['callbackID'],
           multiple_replace(m['clickCallback'], {
             '/n': '\n',
             '/r': '\r'
           })
         )
       )
+
+    if "seperator" in m:
+      if parent:
+        parent.append(Gtk.SeparatorMenuItem())
+      else:
+        menu_instance.append(Gtk.SeparatorMenuItem())
+      continue
 
     def click_handler(menuitem, menuitem_config):
       if type(menuitem) == Gtk.CheckMenuItem:
