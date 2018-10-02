@@ -36,5 +36,12 @@ switch(args[0]) {
   case 'build':
     require('./build')(cwd)
     break
+
+  /**
+   * macron deploy
+   */
+  case 'deploy':
+    require('./deploy')(cwd)
+    break
 }
 
