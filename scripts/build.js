@@ -1,20 +1,24 @@
+const { existsSync, writeFileSync } = require('fs')
 const { sep: pathSeperator } = require('path')
 const { exec } = require('child_process')
-const { existsSync, writeFileSync } = require('fs')
+const chalk = require('chalk')
+const ora = require('ora')
 
 module.exports = function(cwd) {
   const appConfigFilePath = cwd + 'macron.config.js'
   const appConfig = require(appConfigFilePath)
   
   if (!existsSync(appConfigFilePath))
-    throw new Error('MACRON ERR: Application must include a macron.config.js config file.')
-
+  throw new Error('MACRON ERR: Application must include a macron.config.js config file.')
+  
   if (!appConfig.name)
-    throw new Error('MACRON ERR: macron.config.js must include a name property.')
-
+  throw new Error('MACRON ERR: macron.config.js must include a name property.')
+  
   appConfig.cwd = cwd
   appName = appConfig.name.replace(/\s/g, '_')
   appConfig.mainWindow.nativeModulesPath = appConfig.nativeModulesPath.replace("./", "").replace(/[/|\\]/g, pathSeperator)
+  
+  const spinner = ora('Starting build process...').start()
 
   const buildProcess = exec([
     `pyinstaller`,
@@ -26,9 +30,9 @@ module.exports = function(cwd) {
     `--hiddenimport=pathlib`,
     `--hiddenimport=json`,
     '--log-level DEBUG',
-    '-y',
     // '-c',
     '-w',
+    '-y',
     'app/__init__.py'
   ].join(' '), (err, stdout, stderr) => {
     if (err) {
@@ -40,11 +44,11 @@ module.exports = function(cwd) {
   })
 
   buildProcess.stdout.on('data', function(data) {
-    process.stdout.write(data.toString())
+    spinner.text = data.toString()
   })
 
   buildProcess.stderr.on('data', function(data) {
-    process.stdout.write(data.toString())
+    spinner.text = data.toString()
   })
 
   buildProcess.on('exit', function(data) {
@@ -52,6 +56,12 @@ module.exports = function(cwd) {
       `${cwd}build/${appName}/.buildinfo`,
       JSON.stringify(appConfig),
       'utf8'
+    )
+
+    spinner.stop()
+    process.stdout.write(
+      chalk.green('\n    √ Build process complete.')
+      + '\n    Run: ' + chalk.cyan('macron start build\n')
     )
   })
 }

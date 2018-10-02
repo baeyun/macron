@@ -24,6 +24,7 @@
     "chalk": "^2.4.1",
     "compare-versions": "^3.3.0",
     "meow": "^5.0.0",
+    "ora": "^3.0.0",
     "username": "^3.0.0"
   }
 }
