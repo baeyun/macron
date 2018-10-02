@@ -45,6 +45,7 @@ imports:
  &#8226;   <a href="#_heapq">_heapq</a>
  &#8226;   <a href="#_imp">_imp</a>
  &#8226;   <a href="#_io">_io</a>
+ &#8226;   <a href="#_json">_json</a>
  &#8226;   <a href="#_locale">_locale</a>
  &#8226;   <a href="#_lzma">_lzma</a>
  &#8226;   <a href="#_md5">_md5</a>
@@ -95,6 +96,7 @@ imports:
  &#8226;   <a href="#contextlib">contextlib</a>
  &#8226;   <a href="#copy">copy</a>
  &#8226;   <a href="#copyreg">copyreg</a>
+ &#8226;   <a href="#core">core</a>
  &#8226;   <a href="#datetime">datetime</a>
  &#8226;   <a href="#difflib">difflib</a>
  &#8226;   <a href="#dis">dis</a>
@@ -275,6 +277,9 @@ imports:
  &#8226;   <a href="#itertools">itertools</a>
  &#8226;   <a href="#java">java</a>
  &#8226;   <a href="#json">json</a>
+ &#8226;   <a href="#json.decoder">json.decoder</a>
+ &#8226;   <a href="#json.encoder">json.encoder</a>
+ &#8226;   <a href="#json.scanner">json.scanner</a>
  &#8226;   <a href="#keyword">keyword</a>
  &#8226;   <a href="#linecache">linecache</a>
  &#8226;   <a href="#locale">locale</a>
@@ -359,7 +364,6 @@ imports:
  &#8226;   <a href="#warnings">warnings</a>
  &#8226;   <a href="#weakref">weakref</a>
  &#8226;   <a href="#webbrowser">webbrowser</a>
- &#8226;   <a href="#window">window</a>
  &#8226;   <a href="#winreg">winreg</a>
  &#8226;   <a href="#xml">xml</a>
  &#8226;   <a href="#xml.parsers">xml.parsers</a>
@@ -391,7 +395,7 @@ imported by:
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
     <a href="#__init__.py">__init__.py</a>
- &#8226;   <a href="#pickle">pickle</a>
+ &#8226;   <a href="#copy">copy</a>
  &#8226;   <a href="#xml.sax">xml.sax</a>
 
   </div>
@@ -779,7 +783,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#json.decoder">json.decoder</a>
+    <a href="#__init__.py">__init__.py</a>
+ &#8226;   <a href="#json.decoder">json.decoder</a>
  &#8226;   <a href="#json.encoder">json.encoder</a>
  &#8226;   <a href="#json.scanner">json.scanner</a>
 
@@ -1785,8 +1790,8 @@ imported by:
   <a target="code" href="///C:/users/bukharim96/appdata/local/programs/python/python36/lib/copy.py" type="text/plain"><tt>copy</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#copyreg">copyreg</a>
- &#8226;   <a href="#org">org</a>
+    <a href="#'org.python'">'org.python'</a>
+ &#8226;   <a href="#copyreg">copyreg</a>
  &#8226;   <a href="#types">types</a>
  &#8226;   <a href="#weakref">weakref</a>
 
@@ -1819,6 +1824,17 @@ imported by:
  &#8226;   <a href="#copy">copy</a>
  &#8226;   <a href="#pickle">pickle</a>
  &#8226;   <a href="#re">re</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="core"></a>
+  <a target="code" href="" type="text/plain"><tt>core</tt></a>
+<span class="moduletype">MissingModule</span>  <div class="import">
+imported by:
+    <a href="#__init__.py">__init__.py</a>
 
   </div>
 
@@ -5845,7 +5861,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#_json">_json</a>
+    <a href="#__init__.py">__init__.py</a>
+ &#8226;   <a href="#_json">_json</a>
  &#8226;   <a href="#json">json</a>
 
   </div>
@@ -5864,7 +5881,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#json">json</a>
+    <a href="#__init__.py">__init__.py</a>
+ &#8226;   <a href="#json">json</a>
 
   </div>
 
@@ -5882,7 +5900,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#json">json</a>
+    <a href="#__init__.py">__init__.py</a>
+ &#8226;   <a href="#json">json</a>
  &#8226;   <a href="#json.decoder">json.decoder</a>
 
   </div>
@@ -6237,7 +6256,7 @@ imported by:
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
     <a href="#__init__.py">__init__.py</a>
- &#8226;   <a href="#copy">copy</a>
+ &#8226;   <a href="#pickle">pickle</a>
 
   </div>
 
@@ -6392,8 +6411,7 @@ imported by:
   <a target="code" href="///C:/users/bukharim96/appdata/local/programs/python/python36/lib/pickle.py" type="text/plain"><tt>pickle</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#'org.python'">'org.python'</a>
- &#8226;   <a href="#_compat_pickle">_compat_pickle</a>
+    <a href="#_compat_pickle">_compat_pickle</a>
  &#8226;   <a href="#_pickle">_pickle</a>
  &#8226;   <a href="#argparse">argparse</a>
  &#8226;   <a href="#codecs">codecs</a>
@@ -6402,6 +6420,7 @@ imports:
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#io">io</a>
  &#8226;   <a href="#itertools">itertools</a>
+ &#8226;   <a href="#org">org</a>
  &#8226;   <a href="#pprint">pprint</a>
  &#8226;   <a href="#re">re</a>
  &#8226;   <a href="#struct">struct</a>
@@ -8173,17 +8192,6 @@ imports:
 imported by:
     <a href="#__init__.py">__init__.py</a>
  &#8226;   <a href="#pydoc">pydoc</a>
-
-  </div>
-
-</div>
-
-<div class="node">
-  <a name="window"></a>
-  <a target="code" href="" type="text/plain"><tt>window</tt></a>
-<span class="moduletype">MissingModule</span>  <div class="import">
-imported by:
-    <a href="#__init__.py">__init__.py</a>
 
   </div>
 

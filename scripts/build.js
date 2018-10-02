@@ -1,11 +1,6 @@
 const { sep: pathSeperator } = require('path')
 const { exec } = require('child_process')
-const {
-  existsSync,
-  writeFileSync,
-  readFileSync,
-  renameSync
-} = require('fs')
+const { existsSync, writeFileSync } = require('fs')
 
 module.exports = function(cwd) {
   const appConfigFilePath = cwd + 'macron.config.js'
@@ -18,29 +13,21 @@ module.exports = function(cwd) {
     throw new Error('MACRON ERR: macron.config.js must include a name property.')
 
   appConfig.cwd = cwd
-  appConfig.name = appConfig.name.replace(/\s/g, '_')
+  appName = appConfig.name.replace(/\s/g, '_')
   appConfig.mainWindow.nativeModulesPath = appConfig.nativeModulesPath.replace("./", "").replace(/[/|\\]/g, pathSeperator)
 
-  writeFileSync(
-    `${cwd}app/.buildinfo`,
-    JSON.stringify(appConfig),
-    'utf8'
-  )
-
-  // const pyiSpecFileTempPath = `${cwd}app/__init__.spec`
-  // const newSpecFilePath = `${cwd}app/${appConfig['name']}.spec`
-  // renameSync(pyiSpecFileTempPath, newSpecFilePath)
-
   const buildProcess = exec([
-    'pyinstaller',
-    `--name=__init__`,
+    `pyinstaller`,
+    `--name=${appName}`,
     `--workpath=${cwd}app`,
     `--distpath=${cwd}build`,
     `--specpath=${cwd}app`,
     `--hiddenimport=clr`,
     `--hiddenimport=pathlib`,
+    `--hiddenimport=json`,
     '--log-level DEBUG',
     '-y',
+    // '-c',
     '-w',
     'app/__init__.py'
   ].join(' '), (err, stdout, stderr) => {
@@ -61,7 +48,10 @@ module.exports = function(cwd) {
   })
 
   buildProcess.on('exit', function(data) {
-    // renameSync(newSpecFilePath, pyiSpecFileTempPath)
-    process.stdout.write(data.toString())
+    writeFileSync(
+      `${cwd}build/${appName}/.buildinfo`,
+      JSON.stringify(appConfig),
+      'utf8'
+    )
   })
 }

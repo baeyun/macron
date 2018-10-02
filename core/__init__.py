@@ -14,21 +14,22 @@ elif platform.system() == "Linux":
 
 from window import create_window
 
-def main(args):
-  try:
-    app_config = loads(loads(args[1]))
-    RESOURCE_PATH = app_config['cwd']
-  except IndexError:
-    RESOURCE_PATH = path.join(sys._MEIPASS, '')
+class MacronApp:
+  def __init__(self, argv):
+    try:
+      app_config = loads(loads(argv[1]))
+      RESOURCE_PATH = app_config['cwd']
+    except IndexError:
+      RESOURCE_PATH = path.join(sys._MEIPASS, '')
+      
+      with open(RESOURCE_PATH + '.buildinfo') as f:
+        app_config = load(f)
     
-    with open(RESOURCE_PATH + 'app/.buildinfo') as f:
-      app_config = load(f)
-  
-  # @todo handle err
-  if "mainWindow" not in app_config:
-    print("Error: 'mainWindow' property not defined in macron.config.js")
-  
-  create_window(config=app_config["mainWindow"])
+    # @todo handle err
+    if "mainWindow" not in app_config:
+      print("Error: 'mainWindow' property not defined in macron.config.js")
+    
+    create_window(config=app_config["mainWindow"])
 
 if __name__ == "__main__":
-  main(args=sys.argv)
+  MacronApp(argv=sys.argv)
