@@ -9,20 +9,20 @@ module.exports = function(cwd) {
   const appConfig = require(appConfigFilePath)
   
   if (!existsSync(appConfigFilePath))
-  throw new Error('MACRON ERR: Application must include a macron.config.js config file.')
+    throw new Error('MACRON ERR: Application must include a macron.config.js config file.')
   
   if (!appConfig.name)
-  throw new Error('MACRON ERR: macron.config.js must include a name property.')
+    throw new Error('MACRON ERR: macron.config.js must include a name property.')
   
   appConfig.cwd = cwd
-  appName = appConfig.name.replace(/\s/g, '_')
   appConfig.mainWindow.nativeModulesPath = appConfig.nativeModulesPath.replace("./", "").replace(/[/|\\]/g, pathSeperator)
   
+  const qualifiedAppName = appConfig.name.replace(/\s/g, '_')
   const spinner = ora('Starting build process...').start()
 
   const buildProcess = exec([
     `pyinstaller`,
-    `--name=${appName}`,
+    `--name=${qualifiedAppName}`,
     `--workpath=${cwd}app`,
     `--distpath=${cwd}build`,
     `--specpath=${cwd}app`,
@@ -53,15 +53,15 @@ module.exports = function(cwd) {
 
   buildProcess.on('exit', function(data) {
     writeFileSync(
-      `${cwd}build/${appName}/.buildinfo`,
+      `${cwd}build/${qualifiedAppName}/.buildinfo`,
       JSON.stringify(appConfig),
       'utf8'
     )
 
     spinner.stop()
     process.stdout.write(
-      chalk.green('\n    √ Build process complete.')
-      + '\n    Run: ' + chalk.cyan('macron start build\n')
+      chalk.green('\n    Build process complete.')
+      + '\n    Run: ' + chalk.cyan('macron start build') + ' to execute your app.\n'
     )
   })
 }

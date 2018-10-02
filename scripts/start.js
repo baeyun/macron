@@ -1,20 +1,24 @@
 const { normalize, sep: pathSeperator } = require('path')
-const { spawn } = require('child_process')
-const {
-  existsSync,
-  readFileSync,
-  watchFile
-} = require('fs')
+const { spawn, execSync } = require('child_process')
+const { existsSync } = require('fs')
 
-module.exports = function(cwd) {
+module.exports = function(cwd, startBuild) {
   const macronRootDir = normalize(__dirname + '/../')
   const appConfigFilePath = cwd + 'macron.config.js'
-  const logfilePath = cwd + 'macron-debug.log'
   
   if (!existsSync(appConfigFilePath))
     throw new Error('MACRON ERR: Application must include a macron.config.js config file.')
 
   const appConfig = require(appConfigFilePath)
+  const qualifiedAppName = appConfig.name.replace(/\s/g, '_')
+
+  if (startBuild) {
+    let cmd = `${cwd}build/${qualifiedAppName}/${qualifiedAppName}`
+    cmd += (process.platform == 'win32') ? '.exe' : ''
+
+    execSync(cmd)
+    process.exit(0)
+  }
 
   appConfig.cwd = cwd
   appConfig.mainWindow.nativeModulesPath = appConfig.nativeModulesPath.replace("./", "").replace(/[/|\\]/g, pathSeperator)
@@ -29,26 +33,14 @@ module.exports = function(cwd) {
   )
 
   startProcess.stdout.on('data', function(data) {
-    console.log(data.toString())
+    process.stdout.write(data.toString())
   })
 
   startProcess.stderr.on('data', function(data) {
-    console.log(data.toString())
+    process.stdout.write(data.toString())
   })
 
   startProcess.on('exit', function(data) {
-    console.log(data.toString())
+    process.stdout.write(data.toString())
   })
-
-  // macron-debug.log to console
-  if (existsSync(logfilePath))
-    watchFile(logfilePath, { interval: 500 }, (curr, prev) => {
-      let from = curr.size - prev.size
-      let cont = readFileSync(logfilePath).toString().substr(-from)
-  
-      if (cont === '\x1bc')
-        process.stdout.write('\x1bc')
-      else
-        process.stdout.write(cont)
-    })
 }
