@@ -16,6 +16,7 @@ module.exports = function(cwd) {
 
   const appConfig = require(appConfigFilePath)
 
+  appConfig.cwd = cwd
   appConfig.mainWindow.nativeModulesPath = appConfig.nativeModulesPath.replace("./", "").replace(/[/|\\]/g, pathSeperator)
 
   const startProcess = spawn(
@@ -38,8 +39,7 @@ module.exports = function(cwd) {
   startProcess.on('exit', function(data) {
     console.log(data.toString())
   })
-  
-  
+
   // macron-debug.log to console
   if (existsSync(logfilePath))
     watchFile(logfilePath, { interval: 500 }, (curr, prev) => {

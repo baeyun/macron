@@ -7,14 +7,16 @@ from json import load, loads
 dirname = path.dirname(path.realpath(__file__))
 sys.path.append(dirname)
 
-if platform.system() == "Windows":
-  sys.path.append(path.join(dirname, 'windows'))
-elif platform.system() == "Linux":
-  sys.path.append(path.join(dirname, 'linux'))
+# if platform.system() == "Windows":
+#   sys.path.append(path.join(dirname, 'windows'))
+# elif platform.system() == "Linux":
+#   sys.path.append(path.join(dirname, 'linux'))
 
-from window import create_window
+# from window import create_window
 
 def main(args):
+  print(args)
+  exit()
   try:
     app_config = loads(loads(args[1]))
     RESOURCE_PATH = app_config['cwd']

@@ -9,7 +9,7 @@ from System.Threading import Thread, ThreadStart, ApartmentState
 from System.Windows import Application, Window
 from System.Windows.Controls import DockPanel, Dock, Grid, ContextMenu
 
-import tkinter
+# import tkinter
 from menubar import MacronMenubar
 from webview import MacronWebview
 
@@ -17,7 +17,7 @@ class MacronWindow(Window):
 
   def __init__(self, config):
     # Single hidden tkinter instance for app
-    tkinter.Tk().withdraw()
+    # tkinter.Tk().withdraw()
 
     self.config = config
 
@@ -47,7 +47,7 @@ class MacronWindow(Window):
 
     grid = Grid()
     grid.ShowGridLines = False
-    grid.Children.Add(self.webview)    
+    grid.Children.Add(self.webview)
     
     dock.Children.Add(menu)
     dock.Children.Add(grid)

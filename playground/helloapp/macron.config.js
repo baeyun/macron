@@ -12,7 +12,7 @@ const App = new Window({
   startupFromCenter: true,
   // frameless: true,
   // startupState: "maximized",
-  // devServerURI: 'file:///C:/Users/bukharim96/Desktop/Projects/_GitRepoRefs/monaco-editor-samples/browser-amd-editor/editor.html',
+  // devServerURI: 'http://localhost:3000/',
   sourcePath: './public/index.html',
   // nativeModules: ['Dialog'],
   menu: require('./src/menubar'),
@@ -27,15 +27,10 @@ const App = new Window({
 // })
 
 module.exports = {
- name: 'Hello World App',
- mainWindow: App,
- nativeModulesPath: './native/',
- iconSource: './src/img/icon.png',
- // icons: [
- //   './src/img/icon_x32.ico',
- //   './src/img/icon_x64.ico',
- //   './src/img/icon_x150.ico'
- // ],
- autoGenerateIconSizes: true,
- buildPath: './builds'
+  name: 'TestApp',
+  mainWindow: App,
+  nativeModulesPath: './native/',
+  iconSource: './src/img/icon.png',
+  autoGenerateIconSizes: true,
+  buildPath: './builds'
 }

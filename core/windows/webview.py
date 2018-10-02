@@ -39,19 +39,19 @@ class MacronWebview(WebBrowser):
     # Load main macron JavaScript APIs
     self.evaluate_script(r'var macron = {};')
     
-    with open('../../src/polyfills/require.js') as f:
+    with open(dirname + '/../../src/polyfills/require.js') as f:
       self.evaluate_script(f.read())
 
-    with open('../../src/init.js') as f:
+    with open(dirname + '/../../src/init.js') as f:
       self.evaluate_script(f.read())
 
-    with open('../../src/menu.js') as f:
+    with open(dirname + '/../../src/menu.js') as f:
       self.evaluate_script(f.read())
 
-    with open('../../src/contextmenu.js') as f:
+    with open(dirname + '/../../src/contextmenu.js') as f:
       self.evaluate_script(f.read())
     
-    # with open('../../src/accelerator.js') as f:
+    # with open(dirname + '/../../src/accelerator.js') as f:
     #   self.evaluate_script(f.read())
 
     # Bridge

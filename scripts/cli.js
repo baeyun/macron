@@ -3,7 +3,6 @@
 // prompts required build tools
 // require('./dependencyChecks')()
 
-// const meow = require('meow');
 const { sep: pathSeperator } = require('path')
 
 const cwd = process.cwd() + pathSeperator

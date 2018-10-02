@@ -1,18 +1,13 @@
 from macron import *
 
-from tkinter.filedialog import (
-  asksaveasfile,
-  askopenfilename,
-  askopenfilenames,
-  askdirectory
-)
+import tkinter
 
 class Dialog(NativeBridge):
 
   @macronMethod
   def fileSaver(self, config):
     try:
-      file = asksaveasfile(
+      file = tkinter.filedialog.asksaveasfile(
         title = config['title'] if 'title' in config else 'Save file',
         initialdir = config['initialDirectoryPath'] if 'initialDirectoryPath' in config else None,
         initialfile = config['name'] if 'name' in config else None,
@@ -46,14 +41,14 @@ class Dialog(NativeBridge):
       self.current_window.focus()
 
       if 'allowMultiPick' in config and config['allowMultiPick']:
-        file_paths = askopenfilenames(**config_opts)
+        file_paths = tkinter.filedialog.askopenfilenames(**config_opts)
         
         # dialog closed with 'cancel'
         if not file_paths: return False
         
         return file_paths
       else:
-        file_path = askopenfilename(**config_opts)
+        file_path = tkinter.filedialog.askopenfilename(**config_opts)
         
         # dialog closed with 'cancel'
         if not file_path: return False
@@ -69,7 +64,7 @@ class Dialog(NativeBridge):
   @macronMethod
   def directoryPicker(self, config):
     try:
-      dir_path = askdirectory(
+      dir_path = tkinter.filedialog.askdirectory(
         title = config['title'] if 'title' in config else 'Save file',
         initialdir = config['initialDirectoryPath'] if 'initialDirectoryPath' in config else None
       )
