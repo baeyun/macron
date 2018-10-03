@@ -23,9 +23,9 @@ module.exports = function(cwd) {
   const buildProcess = exec([
     `pyinstaller`,
     `--name=${qualifiedAppName}`,
-    `--workpath=${cwd}app`,
-    `--distpath=${cwd}build`,
-    `--specpath=${cwd}app`,
+    `--workpath=app`,
+    `--distpath=build`,
+    `--specpath=app`,
     `--hiddenimport=clr`,
     `--hiddenimport=pathlib`,
     `--hiddenimport=json`,

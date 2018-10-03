@@ -2,7 +2,7 @@ const { normalize, sep: pathSeperator } = require('path')
 const { spawn, execSync } = require('child_process')
 const { existsSync } = require('fs')
 
-module.exports = function(cwd, startBuild) {
+module.exports = function(cwd, toStart) {
   const macronRootDir = normalize(__dirname + '/../')
   const appConfigFilePath = cwd + 'macron.config.js'
   
@@ -12,8 +12,14 @@ module.exports = function(cwd, startBuild) {
   const appConfig = require(appConfigFilePath)
   const qualifiedAppName = appConfig.name.replace(/\s/g, '_')
 
-  if (startBuild) {
+  if (toStart == 'build') {
     let cmd = `${cwd}build/${qualifiedAppName}/${qualifiedAppName}`
+    cmd += (process.platform == 'win32') ? '.exe' : ''
+
+    execSync(cmd)
+    process.exit(0)
+  } else if (toStart == 'wizard') {
+    let cmd = `${cwd}dist/${qualifiedAppName}Setup`
     cmd += (process.platform == 'win32') ? '.exe' : ''
 
     execSync(cmd)
@@ -24,8 +30,7 @@ module.exports = function(cwd, startBuild) {
   appConfig.mainWindow.nativeModulesPath = appConfig.nativeModulesPath.replace("./", "").replace(/[/|\\]/g, pathSeperator)
 
   const startProcess = spawn(
-    process.platform !==  'linux' ? 'python' : 'python3',
-    [
+    process.platform !==  'linux' ? 'python' : 'python3', [
       macronRootDir + 'core/__init__.py',
       // validate appConfig for cli usage
       `"${JSON.stringify(appConfig).replace(/\\/g, '/').replace(/"/g, '\\"')}"`

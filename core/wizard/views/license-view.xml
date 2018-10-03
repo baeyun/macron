@@ -1,0 +1,223 @@
+<?xml version='1.0' encoding='utf-8'?>
+<interface>
+  <object class="tk.Toplevel" id="Toplevel_1">
+    <property name="height">360</property>
+    <property name="width">500</property>
+    <child>
+      <object class="tk.Frame" id="Frame_0">
+        <property name="height">360</property>
+        <property name="width">500</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="row">0</property>
+        </layout>
+        <child>
+          <object class="tk.Frame" id="Frame_2">
+            <property name="background">#ffffff</property>
+            <property name="height">310</property>
+            <property name="width">500</property>
+            <layout>
+              <property name="column">0</property>
+              <property name="propagate">False</property>
+              <property name="row">0</property>
+            </layout>
+            <child>
+              <object class="tk.Frame" id="Frame_4">
+                <property name="background">#ffffff</property>
+                <property name="height">60</property>
+                <property name="width">500</property>
+                <layout>
+                  <property name="column">0</property>
+                  <property name="propagate">False</property>
+                  <property name="row">1</property>
+                </layout>
+                <child>
+                  <object class="tk.Frame" id="Frame_1">
+                    <property name="background">#ffffff</property>
+                    <property name="height">60</property>
+                    <property name="padx">20</property>
+                    <property name="pady">10</property>
+                    <property name="takefocus">true</property>
+                    <property name="width">440</property>
+                    <layout>
+                      <property name="column">0</property>
+                      <property name="propagate">False</property>
+                      <property name="row">0</property>
+                    </layout>
+                    <child>
+                      <object class="ttk.Label" id="Label_1">
+                        <property name="anchor">e</property>
+                        <property name="background">#ffffff</property>
+                        <property name="font">{10} 10 {bold}</property>
+                        <property name="justify">right</property>
+                        <property name="text" translatable="yes">License Agreement</property>
+                        <property name="underline">0</property>
+                        <layout>
+                          <property name="column">0</property>
+                          <property name="propagate">True</property>
+                          <property name="row">0</property>
+                          <property name="sticky">w</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="ttk.Label" id="Label_2">
+                        <property name="background">#ffffff</property>
+                        <property name="font">{8} 9 {}</property>
+                        <property name="text" translatable="yes">Please read the following important information before continuing.</property>
+                        <layout>
+                          <property name="column">0</property>
+                          <property name="padx">15</property>
+                          <property name="propagate">True</property>
+                          <property name="row">1</property>
+                        </layout>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="tk.Frame" id="SetupLogo">
+                    <property name="background">#ffffff</property>
+                    <property name="height">60</property>
+                    <property name="width">60</property>
+                    <layout>
+                      <property name="column">1</property>
+                      <property name="propagate">True</property>
+                      <property name="row">0</property>
+                    </layout>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="tk.Frame" id="Frame_5">
+                <property name="background">#f8f8f8</property>
+                <property name="height">250</property>
+                <property name="padx">35</property>
+                <property name="pady">10</property>
+                <property name="width">500</property>
+                <layout>
+                  <property name="column">0</property>
+                  <property name="propagate">False</property>
+                  <property name="row">2</property>
+                </layout>
+                <child>
+                  <object class="ttk.Label" id="Label_3">
+                    <property name="background">#f8f8f8</property>
+                    <property name="text" translatable="yes">Please read the following License Agreement. You must accept the terms of this agreement before continuing with the installation.</property>
+                    <property name="wraplength">425</property>
+                    <layout>
+                      <property name="column">0</property>
+                      <property name="propagate">True</property>
+                      <property name="row">0</property>
+                      <property name="sticky">w</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="tk.Text" id="LicenseInput">
+                    <property name="font">{8} 10 {}</property>
+                    <property name="height">7</property>
+                    <property name="highlightthickness">1</property>
+                    <property name="padx">4</property>
+                    <property name="pady">0</property>
+                    <property name="relief">flat</property>
+                    <property name="text" translatable="yes"> </property>
+                    <property name="width">60</property>
+                    <layout>
+                      <property name="column">0</property>
+                      <property name="pady">15</property>
+                      <property name="propagate">True</property>
+                      <property name="row">1</property>
+                      <property name="sticky">w</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="tk.Radiobutton" id="Radiobutton_4">
+                    <property name="background">#f8f8f8</property>
+                    <property name="command">on_accept</property>
+                    <property name="highlightbackground">#f8f8f8</property>
+                    <property name="highlightthickness">0</property>
+                    <property name="text" translatable="yes">I accept the agreement</property>
+                    <property name="value">1</property>
+                    <layout>
+                      <property name="column">0</property>
+                      <property name="propagate">True</property>
+                      <property name="row">2</property>
+                      <property name="sticky">w</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="tk.Radiobutton" id="Radiobutton_5">
+                    <property name="background">#f8f8f8</property>
+                    <property name="command">on_not_accept</property>
+                    <property name="highlightthickness">0</property>
+                    <property name="text" translatable="yes">I do not accept the agreement</property>
+                    <property name="value">0</property>
+                    <layout>
+                      <property name="column">0</property>
+                      <property name="propagate">True</property>
+                      <property name="row">3</property>
+                      <property name="sticky">w</property>
+                    </layout>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Frame" id="Frame_3">
+            <property name="background">#f0f0f0</property>
+            <property name="height">50</property>
+            <property name="padx">238</property>
+            <property name="pady">13</property>
+            <property name="width">500</property>
+            <layout>
+              <property name="column">0</property>
+              <property name="columnspan">2</property>
+              <property name="propagate">False</property>
+              <property name="row">1</property>
+            </layout>
+            <child>
+              <object class="ttk.Button" id="Button_1">
+                <property name="command">on_license_back</property>
+                <property name="text" translatable="yes">&lt; Back</property>
+                <layout>
+                  <property name="column">0</property>
+                  <property name="propagate">True</property>
+                  <property name="row">0</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="ttk.Button" id="Button_2">
+                <property name="command">on_license_next</property>
+                <property name="text" translatable="yes">Next &gt;</property>
+                <layout>
+                  <property name="column">1</property>
+                  <property name="padx">10</property>
+                  <property name="propagate">True</property>
+                  <property name="row">0</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="ttk.Button" id="Button_3">
+                <property name="command">on_cancel</property>
+                <property name="text" translatable="yes">Cancel</property>
+                <layout>
+                  <property name="column">2</property>
+                  <property name="propagate">True</property>
+                  <property name="row">0</property>
+                </layout>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
