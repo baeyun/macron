@@ -13,6 +13,7 @@
         </layout>
         <child>
           <object class="tk.Frame" id="Frame_2">
+            <property name="background">#ffffff</property>
             <property name="height">310</property>
             <property name="width">500</property>
             <layout>

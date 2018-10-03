@@ -14,7 +14,7 @@ class MacronSetupWizard:
       'start_after_setup': True,
       'app_name': 'MacronApp',
       'setup_banner': 'setup-banner.png',
-      'setup_logo': 'rx_logo60x60.png',
+      'setup_logo': 'vue60x60.png',
       'app_license': 'MIT License',
       'build_info_src': 'http://localhost:3000/releases/app/latest.txt',
       'build_info': {
@@ -151,7 +151,7 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
   def set_image(self, dimensions, img_path, frame):
     img = Image.open(img_path)
     img = ImageTk.PhotoImage(img.resize(dimensions, Image.ANTIALIAS))
-    lb = Label(frame, image=img)
+    lb = Label(frame, image=img, bg='#ffffff')
     lb.image = img
     lb.pack()
 
