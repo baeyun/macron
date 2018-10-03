@@ -75,8 +75,8 @@
                   </object>
                 </child>
                 <child>
-                  <object class="tk.Frame" id="Frame_7">
-                    <property name="background">#2cd9d9</property>
+                  <object class="tk.Frame" id="SetupLogo">
+                    <property name="background">#ffffff</property>
                     <property name="height">60</property>
                     <property name="width">60</property>
                     <layout>
@@ -114,18 +114,14 @@
                   </object>
                 </child>
                 <child>
-                  <object class="tk.Text" id="Text_2">
+                  <object class="tk.Text" id="LicenseInput">
                     <property name="font">{8} 10 {}</property>
                     <property name="height">7</property>
                     <property name="highlightthickness">1</property>
                     <property name="padx">4</property>
                     <property name="pady">0</property>
                     <property name="relief">flat</property>
-                    <property name="text" translatable="yes">Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (Vue CLI), to deal in Vue CLI without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of Vue CLI, and to permit persons to whom Vue CLI is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of Vue CLI.
-
-VUE CLI IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH VUE CLI OR THE USE OR OTHER DEALINGS IN VUE CLI.</property>
+                    <property name="text" translatable="yes"> </property>
                     <property name="width">60</property>
                     <layout>
                       <property name="column">0</property>

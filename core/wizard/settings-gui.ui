@@ -57,10 +57,10 @@
                       </object>
                     </child>
                     <child>
-                      <object class="ttk.Label" id="Label_2">
+                      <object class="ttk.Label" id="SetupReadyLabel">
                         <property name="background">#ffffff</property>
                         <property name="font">{8} 9 {}</property>
-                        <property name="text" translatable="yes">Setup is ready to download and install Vue CLI on your computer.</property>
+                        <property name="text" translatable="yes"> </property>
                         <property name="wraplength">440</property>
                         <layout>
                           <property name="column">0</property>
@@ -73,8 +73,8 @@
                   </object>
                 </child>
                 <child>
-                  <object class="tk.Frame" id="Frame_7">
-                    <property name="background">#b19bd9</property>
+                  <object class="tk.Frame" id="SetupLogo">
+                    <property name="background">#ffffff</property>
                     <property name="height">60</property>
                     <property name="width">60</property>
                     <layout>
@@ -124,7 +124,7 @@
                     </layout>
                     <child>
                       <object class="ttk.Entry" id="Entry_2">
-                        <property name="text" translatable="yes">C:/Users/default/Program Files/</property>
+                        <property name="text" translatable="yes"> </property>
                         <property name="width">53</property>
                         <layout>
                           <property name="column">0</property>
@@ -155,6 +155,7 @@
                     <property name="background">#f8f8f8</property>
                     <property name="highlightthickness">0</property>
                     <property name="text" translatable="yes">Create desktop shortcut</property>
+                    <property name="variable">boolean:create_shortcut</property>
                     <layout>
                       <property name="column">0</property>
                       <property name="propagate">True</property>
@@ -168,6 +169,7 @@
                     <property name="background">#f8f8f8</property>
                     <property name="highlightthickness">0</property>
                     <property name="text" translatable="yes">Start application after installation</property>
+                    <property name="variable">boolean:start_after_setup</property>
                     <layout>
                       <property name="column">0</property>
                       <property name="propagate">True</property>

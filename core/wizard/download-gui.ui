@@ -72,8 +72,8 @@
                   </object>
                 </child>
                 <child>
-                  <object class="tk.Frame" id="Frame_8">
-                    <property name="background">#43e040</property>
+                  <object class="tk.Frame" id="SetupLogo">
+                    <property name="background">#ffffff</property>
                     <property name="height">60</property>
                     <property name="width">60</property>
                     <layout>
@@ -98,21 +98,7 @@
                   <property name="row">2</property>
                 </layout>
                 <child>
-                  <object class="ttk.Label" id="Label_3">
-                    <property name="background">#f8f8f8</property>
-                    <property name="text" translatable="yes">Download</property>
-                    <property name="wraplength">580</property>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="pady">10</property>
-                      <property name="propagate">True</property>
-                      <property name="row">0</property>
-                      <property name="sticky">w</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="tk.Frame" id="Frame_6">
+                  <object class="tk.Frame" id="DownloadProgress">
                     <property name="background">#f8f8f8</property>
                     <layout>
                       <property name="column">0</property>
@@ -121,26 +107,41 @@
                       <property name="sticky">w</property>
                     </layout>
                     <child>
-                      <object class="ttk.Progressbar" id="Progressbar_1">
-                        <property name="length">430</property>
-                        <property name="orient">horizontal</property>
-                        <property name="value">75</property>
-                        <layout>
-                          <property name="column">0</property>
-                          <property name="propagate">True</property>
-                          <property name="row">0</property>
-                        </layout>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="ttk.Label" id="Label_4">
+                      <object class="ttk.Label" id="Label_3">
                         <property name="background">#f8f8f8</property>
-                        <property name="text" translatable="yes">75 %</property>
+                        <property name="text" translatable="yes">Download</property>
+                        <property name="wraplength">580</property>
                         <layout>
                           <property name="column">0</property>
                           <property name="pady">10</property>
                           <property name="propagate">True</property>
+                          <property name="row">0</property>
+                          <property name="sticky">w</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="ttk.Progressbar" id="DownloadProgressbar">
+                        <property name="length">430</property>
+                        <property name="orient">horizontal</property>
+                        <property name="value">0</property>
+                        <property name="variable">double:download_progress</property>
+                        <layout>
+                          <property name="column">0</property>
+                          <property name="propagate">True</property>
                           <property name="row">1</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="ttk.Label" id="DownloadRatio">
+                        <property name="background">#f8f8f8</property>
+                        <property name="text" translatable="yes"> </property>
+                        <layout>
+                          <property name="column">0</property>
+                          <property name="pady">10</property>
+                          <property name="propagate">True</property>
+                          <property name="row">2</property>
                           <property name="sticky">e</property>
                         </layout>
                       </object>
@@ -148,20 +149,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="ttk.Label" id="Label_5">
-                    <property name="background">#f8f8f8</property>
-                    <property name="text" translatable="yes">Install</property>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="pady">10</property>
-                      <property name="propagate">True</property>
-                      <property name="row">3</property>
-                      <property name="sticky">w</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="tk.Frame" id="Frame_1">
+                  <object class="tk.Frame" id="InstallProgress">
                     <property name="background">#f8f8f8</property>
                     <layout>
                       <property name="column">0</property>
@@ -170,12 +158,12 @@
                       <property name="sticky">w</property>
                     </layout>
                     <child>
-                      <object class="ttk.Progressbar" id="Progressbar_2">
-                        <property name="length">430</property>
-                        <property name="orient">horizontal</property>
-                        <property name="value">0</property>
+                      <object class="ttk.Label" id="Label_5">
+                        <property name="background">#f8f8f8</property>
+                        <property name="text" translatable="yes">Install</property>
                         <layout>
                           <property name="column">0</property>
+                          <property name="pady">10</property>
                           <property name="propagate">True</property>
                           <property name="row">0</property>
                           <property name="sticky">w</property>
@@ -183,15 +171,15 @@
                       </object>
                     </child>
                     <child>
-                      <object class="ttk.Label" id="Label_6">
-                        <property name="background">#f8f8f8</property>
-                        <property name="text" translatable="yes">0 %</property>
+                      <object class="ttk.Progressbar" id="InstallProgressbar">
+                        <property name="length">430</property>
+                        <property name="orient">horizontal</property>
+                        <property name="value">0</property>
                         <layout>
                           <property name="column">0</property>
-                          <property name="pady">10</property>
                           <property name="propagate">True</property>
                           <property name="row">1</property>
-                          <property name="sticky">e</property>
+                          <property name="sticky">w</property>
                         </layout>
                       </object>
                     </child>
@@ -226,7 +214,7 @@
               </object>
             </child>
             <child>
-              <object class="ttk.Button" id="Button_2">
+              <object class="ttk.Button" id="FinishButton">
                 <property name="command">on_finish</property>
                 <property name="text" translatable="yes">Finish</property>
                 <layout>
