@@ -63,10 +63,10 @@ module.exports = function(cwd, appName) {
   
   // package.json file
   if (!existsSync(packageJsonFilePath))
-  writeFileSync(
-    packageJsonFilePath,
-    require('./temps/package-json')(appName)
-  )
+    writeFileSync(
+      packageJsonFilePath,
+      require('./temps/package-json')(appName)
+    )
 
   // gitignore file
   if (!existsSync(gitIgnoreFilePath))

@@ -1,4 +1,5 @@
 const { existsSync, writeFileSync } = require('fs')
+const { normalize } = require('path')
 const { exec } = require('child_process')
 const chalk = require('chalk')
 const ora = require('ora')
@@ -12,43 +13,50 @@ module.exports = function(cwd) {
   
   if (!appConfig.name)
     throw new Error('MACRON ERR: macron.config.js must include a name property.')
-  
-  const setupDefaultSettings = {
-    'install_path': null,
-    'create_shortcut': true,
-    'start_after_setup': true,
-    'app_name': 'MacronApp',
-    'setup_banner': 'setup-banner.png',
-    'setup_logo': 'vue.png',
-    'app_license': 'MIT License',
-    'build_info_src': 'http://localhost:3000/releases/app/.setupinfo'
-  }
+
+  if (!existsSync('./LICENSE'))
+    throw new Error('MACRON ERR: A LICENSE file is required for deployment. Please include it in your project root.')
 
   const qualifiedAppName = appConfig.name.replace(/\s/g, '_')
   const spinner = ora('Starting deployment process...').start()
 
-  const buildProcess = exec([
-    `pyinstaller`,
+  const setupInfo = {
+    'app_name': appConfig.name
+  }
+
+  writeFileSync(
+    `${cwd}/.setupdata`,
+    JSON.stringify(setupInfo),
+    'utf8'
+  )
+
+  const buildWizardProcess = exec([
+    'pyinstaller',
     `--name=${qualifiedAppName}Setup`,
-    `--icon=${cwd}app/assets/icon.ico`,
-    `--workpath=app`,
-    `--distpath=dist`,
-    `--specpath=app`,
+    `--icon=${cwd}public/assets/icon.ico`,
+    `--workpath=` + normalize(__dirname + '/../cache'),
+    // `--distpath=${cwd}dist`,
+    `--specpath=` + normalize(__dirname + '/../cache'),
     `--hiddenimport=tkinter`,
     `--hiddenimport=tkinter.messagebox`,
     `--hiddenimport=tkinter.filedialog`,
+    `--hiddenimport=json`,
+    `--hiddenimport=urllib.request`,
     `--hiddenimport=pygubu`,
     `--hiddenimport=pygubu.builder.ttkstdwidgets`,
     // `--hiddenimport=PIL.ImageTk`,
     // `--hiddenimport=PIL.Image`,
     // `--hiddenimport=json`,
-    `--add-data=assets;assets`,
+    `--add-data=${cwd}/.setupdata;.`,
+    `--add-data=${normalize(__dirname + '/../')}core/wizard/views;assets/views`,
+    `--add-data=${cwd}public/assets/icon.ico;assets`,
+    `--add-data=${cwd}LICENSE;assets`,
     // '--log-level DEBUG',
-    '-F',
     // '-c',
+    '-F',
     '-w',
     '-y',
-    'app/__wizard__.py'
+    normalize(__dirname + '/../core/wizard/') + '__wizard__.py'
   ].join(' '), (err, stdout, stderr) => {
     if (err) {
       console.error(err)
@@ -58,24 +66,19 @@ module.exports = function(cwd) {
     console.log(stdout)
   })
 
-  buildProcess.stdout.on('data', function(data) {
+  buildWizardProcess.stdout.on('data', function(data) {
     spinner.text = data.toString()
   })
 
-  buildProcess.stderr.on('data', function(data) {
+  buildWizardProcess.stderr.on('data', function(data) {
     spinner.text = data.toString()
   })
 
-  buildProcess.on('exit', function(data) {
-    // writeFileSync(
-    //   `${cwd}build/${qualifiedAppName}Setup/.setupinfo`,
-    //   JSON.stringify(setupDefaultSettings),
-    //   'utf8'
-    // )
-
+  buildWizardProcess.on('exit', function(data) {
     spinner.stop()
     process.stdout.write(
       chalk.green('\n    Setup wizard built successfully.\n')
+      + '\n    Run: ' + chalk.cyan('macron start wizard') + ' to test your app\'s setup wizard.\n'
     )
   })
 }

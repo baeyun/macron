@@ -3,7 +3,8 @@ import clr
 from os import path
 
 dirname = path.dirname(path.realpath(__file__))
-sys.path.insert(0, dirname)
+sys.path.append(dirname)
+sys.path.append(path.join(dirname, '../'))
 
 from System import Object
 from System.Windows.Controls import WebBrowser
@@ -13,6 +14,8 @@ from System.Windows import MessageBox
 
 from json import dumps
 from bridge import MacronBridge
+
+from utils import get_resource_path
 
 class MacronWebview(WebBrowser):
 
@@ -39,20 +42,40 @@ class MacronWebview(WebBrowser):
     # Load main macron JavaScript APIs
     self.evaluate_script(r'var macron = {};')
     
-    with open(dirname + '/../../src/polyfills/require.js') as f:
-      self.evaluate_script(f.read())
+    with open(
+      get_resource_path(
+        'macron/polyfills/require.js',
+        dirname + '/../../src/polyfills/require.js'
+      )
+    ) as f: self.evaluate_script(f.read())
 
-    with open(dirname + '/../../src/init.js') as f:
-      self.evaluate_script(f.read())
+    with open(
+      get_resource_path(
+        'macron/init.js',
+        dirname + '/../../src/init.js'
+      )
+    ) as f: self.evaluate_script(f.read())
 
-    with open(dirname + '/../../src/menu.js') as f:
-      self.evaluate_script(f.read())
+    with open(
+      get_resource_path(
+        'macron/menu.js',
+        dirname + '/../../src/menu.js'
+      )
+    ) as f: self.evaluate_script(f.read())
 
-    with open(dirname + '/../../src/contextmenu.js') as f:
-      self.evaluate_script(f.read())
-    
-    # with open(dirname + '/../../src/accelerator.js') as f:
-    #   self.evaluate_script(f.read())
+    with open(
+      get_resource_path(
+        'macron/contextmenu.js',
+        dirname + '/../../src/contextmenu.js'
+      )
+    ) as f: self.evaluate_script(f.read())
+
+    # with open(
+    #   get_resource_path(
+    #     'macron/accelerator.js',
+    #     dirname + '/../../src/accelerator.js'
+    #   )
+    # ) as f: self.evaluate_script(f.read())
 
     # Bridge
     MacronBridge().initialize(

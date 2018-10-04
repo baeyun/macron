@@ -21,8 +21,8 @@ class MacronApp:
       RESOURCE_PATH = app_config['cwd']
     except IndexError:
       RESOURCE_PATH = path.join(sys._MEIPASS, '')
-      
-      with open(RESOURCE_PATH + '.buildinfo') as f:
+
+      with open(RESOURCE_PATH + '.builddata') as f:
         app_config = load(f)
     
     # @todo handle err

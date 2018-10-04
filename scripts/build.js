@@ -1,5 +1,5 @@
 const { existsSync, writeFileSync } = require('fs')
-const { sep: pathSeperator } = require('path')
+const { sep: pathSeperator, normalize } = require('path')
 const { exec } = require('child_process')
 const chalk = require('chalk')
 const ora = require('ora')
@@ -20,26 +20,45 @@ module.exports = function(cwd) {
   const qualifiedAppName = appConfig.name.replace(/\s/g, '_')
   const spinner = ora('Starting build process...').start()
 
+  writeFileSync(
+    `${cwd}/.builddata`,
+    JSON.stringify(appConfig),
+    'utf8'
+  )
+
   const buildProcess = exec([
-    `pyinstaller`,
+    'pyinstaller',
     `--name=${qualifiedAppName}`,
-    `--workpath=app`,
-    `--distpath=build`,
-    `--specpath=app`,
+    `--icon=${cwd}public/assets/icon.ico`,
+    `--workpath=` + normalize(__dirname + '/../cache'),
+    `--distpath=${cwd}build`,
+    `--specpath=` + normalize(__dirname + '/../core'),
     `--hiddenimport=clr`,
     `--hiddenimport=pathlib`,
     `--hiddenimport=json`,
+    `--paths=${normalize(__dirname + '/../core')};${normalize(__dirname + '/../core/common')};${normalize(__dirname + '/../core/windows')}`,
+    `--hiddenimport=_contextmenu`,
+    `--hiddenimport=archive`,
+    `--hiddenimport=currentwindow`,
+    `--hiddenimport=windowmanager`,
+    `--hiddenimport=fs`,
+    `--hiddenimport=system`,
+    // `--add-binary=` + normalize(__dirname + '/../core/windows/assemblies/MacronWebviewInterop.dll'), // Windows specific
+    `--add-data=${normalize(__dirname + '/../core/windows/assemblies/MacronWebviewInterop.dll')};assemblies`, // Windows specific
+    `--add-data=${cwd}/.builddata;.`,
+    `--add-data=${cwd}public/assets/icon.ico;assets`,
+    `--add-data=${normalize(__dirname + '/../src')};macron`,
     '--log-level DEBUG',
-    // '-c',
-    '-w',
+    '-c',
+    // '-w',
     '-y',
-    'app/__init__.py'
+    normalize(__dirname + '/../core/') + '__init__.py'
   ].join(' '), (err, stdout, stderr) => {
     if (err) {
       console.error(err)
       return
     }
-    
+
     console.log(stdout)
   })
 
@@ -52,15 +71,10 @@ module.exports = function(cwd) {
   })
 
   buildProcess.on('exit', function(data) {
-    writeFileSync(
-      `${cwd}build/${qualifiedAppName}/.buildinfo`,
-      JSON.stringify(appConfig),
-      'utf8'
-    )
-
     spinner.stop()
+
     process.stdout.write(
-      chalk.green('\n    Build process complete.')
+      chalk.green('\n    Build process complete.\n')
       + '\n    Run: ' + chalk.cyan('macron start build') + ' to execute your app.\n'
     )
   })

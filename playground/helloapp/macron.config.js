@@ -1,7 +1,7 @@
 /**
  * Macron Configuration File
  */
-const { Window } = require('../../index') // require('macron')
+const { Window } = require('../../index') // @todo require('macron')
 
 const App = new Window({
   title: "MacLine",
@@ -29,8 +29,13 @@ const App = new Window({
 module.exports = {
   name: 'TestApp',
   mainWindow: App,
-  nativeModulesPath: './native/',
-  iconSource: './src/img/icon.png',
-  autoGenerateIconSizes: true,
-  buildPath: './builds'
+  nativeModulesPath: './native/', // remove
+  build: {
+    assetsDirectory: './public',
+    outputDirectory: './build',
+    distDirectory: './dist',
+    iconPath: './src/img/icon.png',
+    autoGenerateIconSizes: true,
+    // binaries: []
+  }
 }

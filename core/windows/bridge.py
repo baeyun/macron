@@ -22,14 +22,14 @@ class MacronBridge(IMacronBridge):
     self.context = context
 
     self.load_common_modules([
-      'Archive',
       '_ContextMenu',
+      'Archive',
       'CurrentWindow',
       # 'Dialog',
       'FS',
       # 'MessageBox',
       'System',
-      'Window'
+      'WindowManager'
     ])
 
     native_mods_root_path = (root_path + native_modules_path).replace("//", "\u005c")
@@ -55,11 +55,6 @@ class MacronBridge(IMacronBridge):
 
     for class_name in class_names:
       mod_name = class_name.lower()
-      if mod_name == 'window':
-        from common import window
-        self.window = window
-        generated_js_apis += self.window.Window().generate_js_api()
-        continue
       
       setattr(self, mod_name, __import__(mod_name))
 
