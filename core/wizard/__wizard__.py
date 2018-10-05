@@ -1,9 +1,9 @@
 import sys
 from os import path
 from tkinter import Tk, messagebox, filedialog, END, NORMAL, DISABLED, Label
-from json import load
+from json import load, loads
 from pygubu import Builder
-from urllib.request import urlretrieve, URLError
+from urllib.request import urlopen, urlretrieve, URLError
 import threading
 # from PIL import ImageTk, Image
 
@@ -21,9 +21,9 @@ class MacronSetupWizard:
     root.withdraw()
     root.title('Setup Wizard')
     root.geometry('500x360')
-    root.iconbitmap(RESOURCE_PATH + 'assets/icon.ico')
+    root.iconbitmap(RESOURCE_PATH + 'icon.ico')
 
-    # # Center window
+    # Center window
     root.update_idletasks()
     width = root.winfo_width()
     height = root.winfo_height()
@@ -38,17 +38,18 @@ class MacronSetupWizard:
       'app_name': 'MacronApp',
       'install_path': 'C:\Program Files', # TODO: Get default install path
       'create_shortcut': True,
-      'start_after_setup': True,
-      'release_src_url': 'https://github.com/bukharim96/pkg-availability/releases/download/v0.2-alpha/TestAppSetup.exe',
+      'start_after_setup': True
     }
 
-    # with open(RESOURCE_PATH + '.setupdata') as f:
-    #   self.settings['app_name'] = load(f)['name']
+    with open(RESOURCE_PATH + '.setupdata') as f:
+      setupData = load(f)
+      self.settings['app_name'] = setupData['app_name']
+      self.settings['app_repo_url'] = setupData['app_repo_url']
 
-    with open(RESOURCE_PATH + 'assets/LICENSE') as f:
+    with open(RESOURCE_PATH + 'LICENSE') as f:
       self.settings['app_license'] = f.read()
     
-    with open(RESOURCE_PATH + 'assets/views/intro-view.xml') as f:
+    with open(RESOURCE_PATH + 'intro-view.xml') as f:
       self.navigate(f.read())
     
     self.mainwindow = self.builder.get_object('Frame_0', root)
@@ -68,7 +69,7 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
     root.mainloop()
 
   def on_intro_next(self):
-    with open(RESOURCE_PATH + 'assets/views/license-view.xml') as f:
+    with open(RESOURCE_PATH + 'license-view.xml') as f:
       self.navigate(f.read())
     
     # self.set_image(
@@ -83,7 +84,7 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
     self.builder.get_object('Button_2').configure(state=DISABLED)
   
   def on_license_next(self):
-    with open(RESOURCE_PATH + 'assets/views/settings-view.xml') as f:
+    with open(RESOURCE_PATH + 'settings-view.xml') as f:
       self.navigate(f.read())
 
     # self.set_image(
@@ -100,7 +101,7 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
     self.settings['create_shortcut'] = self.builder.create_variable('boolean:create_shortcut').get()
     self.settings['start_after_setup'] = self.builder.create_variable('boolean:start_after_setup').get()
     
-    with open(RESOURCE_PATH + 'assets/views/download-view.xml') as f:
+    with open(RESOURCE_PATH + 'download-view.xml') as f:
       self.navigate(f.read())
 
     # self.set_image(
@@ -110,14 +111,15 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
     # )
     self.builder.get_object('FinishButton').config(state=DISABLED)
 
-    threading.Thread(target=self.download).start()
+    self.downloadThread = threading.Thread(target=self.download)
+    self.downloadThread.start()
 
   def on_license_back(self):
-    with open(RESOURCE_PATH + 'assets/views/intro-view.xml') as f:
+    with open(RESOURCE_PATH + 'intro-view.xml') as f:
       self.navigate(f.read())
   
   def on_settings_back(self):
-    with open(RESOURCE_PATH + 'assets/views/license-view.xml') as f:
+    with open(RESOURCE_PATH + 'license-view.xml') as f:
       self.navigate(f.read())
   
   def on_not_accept(self):
@@ -136,7 +138,24 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
     entry.insert(0, response)
   
   def download(self):
+    self.builder.get_object('DownloadStatusLabel').config(text="Obtaining latest release...")
+
+    try:
+      repoURL = urlopen(self.settings['app_repo_url'] + '/.setupdata')
+      data = repoURL.read()
+      encoding = repoURL.info().get_content_charset('utf-8')
+      latestSetupData = loads(data.decode(encoding))
+    except:
+      messagebox.showwarning(
+        title='{} Setup Wizard'.format(self.settings['app_name']),
+        message='An unexpected error occured. Setup wizard is unable to obtain additional files.'
+      )
+
+      return
+    
     def reporthook(blocknum, blocksize, totalsize):
+      self.builder.get_object('DownloadStatusLabel').config(text="Downloading...")
+      
       readsofar = blocknum * blocksize
       if totalsize > 0:
         percent = readsofar * 1e2 / totalsize
@@ -147,14 +166,14 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
         )
         
         if readsofar >= totalsize: # near the end
-          self.builder.get_object('DownloadRatio').config(text='...done')
+          self.builder.get_object('DownloadStatusLabel').config(text="Download complete")
       else: # total size is unknown
         pass
 
     try:
       urlretrieve(
-        self.settings['release_src_url'],
-        'C:/Users/bukharim96/Desktop/MacronApp.exe',
+        latestSetupData['latest_windows_dist_url'],
+        'C:/Users/bukharim96/Desktop/latest_windows_dist_url.exe',
         reporthook
       )
     except:
@@ -187,6 +206,7 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
     )
 
     if response == 'ok':
+      if self.downloadThread: self.downloadThread._Thread_stop()
       self.root.destroy()
 
   # Helpers

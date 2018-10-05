@@ -39,8 +39,8 @@ module.exports = function(cwd, appName) {
   // Macron configuration file
   if (existsSync(appConfigFilePath)) {
     process.stdout.write(
-      chalk.hex('#ffa500')('\n    This project is already a macron app.')
-      + '\n    Run: ' + chalk.cyan('macron start\n\n')
+      chalk.hex('#ffa500')('\n    This project is already a macron app.\n\n')
+      + '    Run: ' + chalk.cyan('macron start\n\n')
     )
     process.exit(0)
   }

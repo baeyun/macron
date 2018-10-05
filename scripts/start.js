@@ -6,11 +6,13 @@ module.exports = function(cwd, toStart) {
   const macronRootDir = normalize(__dirname + '/../')
   const appConfigFilePath = cwd + 'macron.config.js'
   
-  if (!existsSync(appConfigFilePath))
-    throw new Error('MACRON ERR: Application must include a macron.config.js config file.')
+  if (!existsSync(appConfigFilePath)) {
+    console.error(chalk.red('\n  MACRON ERR: Application must include a macron.config.js config file.\n'))
+    process.exit()
+  }
 
   const appConfig = require(appConfigFilePath)
-  const qualifiedAppName = appConfig.name.replace(/\s/g, '_')
+  const qualifiedAppName = appConfig.appName.replace(/\s/g, '_')
 
   if (toStart == 'build') {
     let cmd = `${cwd}build/${qualifiedAppName}/${qualifiedAppName}`

@@ -1,5 +1,5 @@
 const { existsSync, writeFileSync } = require('fs')
-const { sep: pathSeperator, normalize } = require('path')
+const { normalize } = require('path')
 const { exec } = require('child_process')
 const chalk = require('chalk')
 const ora = require('ora')
@@ -8,15 +8,19 @@ module.exports = function(cwd) {
   const appConfigFilePath = cwd + 'macron.config.js'
   const appConfig = require(appConfigFilePath)
   
-  if (!existsSync(appConfigFilePath))
-    throw new Error('MACRON ERR: Application must include a macron.config.js config file.')
-  
-  if (!appConfig.name)
-    throw new Error('MACRON ERR: macron.config.js must include a name property.')
-  
+  if (!existsSync(appConfigFilePath)) {
+    console.error(chalk.red('\n  MACRON ERR: Application must include a macron.config.js config file.\n'))
+    process.exit()
+  }
+
+  if (!appConfig.appName) {
+    console.error(chalk.red('\n  MACRON ERR: macron.config.js must include an appName property.\n'))
+    process.exit()
+  }
+
   appConfig.cwd = cwd
   
-  const qualifiedAppName = appConfig.name.replace(/\s/g, '_')
+  const qualifiedAppName = appConfig.appName.replace(/\s/g, '_')
   const spinner = ora('Starting build process...').start()
 
   writeFileSync(
@@ -73,11 +77,8 @@ module.exports = function(cwd) {
   })
 
   buildProcess.on('exit', function(data) {
-    spinner.stop()
-
-    process.stdout.write(
-      chalk.green('\n    Build process complete.\n')
-      + '\n    Run: ' + chalk.cyan('macron start build') + ' to execute your app.\n'
-    )
+    spinner.stopAndPersist({
+      text: chalk.green('Build process complete.\n') + `  Run: ${chalk.cyan('macron start build')} to execute your app.\n`
+    })
   })
 }

@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "start": "macron start"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bukharim96/macron.git"
   },
+  "scripts": {"start": "macron start"},
   "author": "bukharim96",
   "license": "MIT",
-  "devDependencies": {
-    "macron": "^0.1.0"
-  }
+  "devDependencies": {"macron": "^0.1.0"}
 }

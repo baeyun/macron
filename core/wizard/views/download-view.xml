@@ -107,7 +107,7 @@
                       <property name="sticky">w</property>
                     </layout>
                     <child>
-                      <object class="ttk.Label" id="Label_3">
+                      <object class="ttk.Label" id="DownloadStatusLabel">
                         <property name="background">#f8f8f8</property>
                         <property name="text" translatable="yes">Download</property>
                         <property name="wraplength">580</property>

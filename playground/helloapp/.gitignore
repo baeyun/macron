@@ -1,5 +1,2 @@
 # Macron ignores
-.builddata
-.setupdata
 /build
-/dist

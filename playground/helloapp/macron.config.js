@@ -13,19 +13,13 @@ const App = new Window({
   menu: require('./src/menubar'),
   // devServerURI: 'http://localhost:3000/', // only available during development
 })
-// .on('activate', function() {
-//   alert("Welcome to Macron\'s \'Hello, World!\' App")
-// })
-// .on('close', function() {
-//   alert('App is being closed.')
-// })
 
 module.exports = {
-  name: 'HelloApp',
+  appName: 'HelloApp',
   mainWindow: App,
   build: {
-    buildPath: './build',
-    distributionPath: './dist',
+    // buildPath: './build',
+    // distributionPath: './dist',
     autoGenerateIconSizes: true,
     debugMode: false
   }
