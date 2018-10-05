@@ -9,15 +9,12 @@ from System.Threading import Thread, ThreadStart, ApartmentState
 from System.Windows import Application, Window
 from System.Windows.Controls import DockPanel, Dock, Grid, ContextMenu
 
-# import tkinter
 from menubar import MacronMenubar
 from webview import MacronWebview
 
 class MacronWindow(Window):
 
   def __init__(self, config):
-    # Single hidden tkinter instance for app
-    # tkinter.Tk().withdraw()
 
     self.config = config
 

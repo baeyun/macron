@@ -8,11 +8,44 @@ module.exports = new Menubar([
         label: "New File",
         click: function() {
           console.log(
-            require('macron').Dialog.filePicker({
+            require('macron').Dialog.pickFile({
               title: 'Pick file', // title of 'Save File Dialog'
               read: true,
-              // allowMultiPick: true,
-              initialDirectoryPath: 'C:/Users/bukharim96/Desktop/macron_tests/', // initial save path
+              multiselect: true,
+              initialDirectory: 'C:/Users/bukharim96/Desktop/', // initial save path
+              filter: [ // 'Save As' types
+                ['All files', '.*'],
+                ['Text', '.txt'],
+                ['HTML', '.html'],
+                ['JavaScript', '.js'],
+                ['CSS', '.css'],
+                ['Markdown', '.md']
+              ]
+            })
+          );
+        }
+      }),
+      Menu.MenuItem({
+        label: "Open Folder",
+        click: function() {
+          console.log(
+            require('macron').Dialog.pickDirectory({
+              title: 'Pick folder', // title of 'Pick Folder Dialog'
+              initialDirectory: 'C:/Users/bukharim96/Desktop/macron_tests/' // initial save path
+            })
+          );
+        }
+      }),
+      Menu.MenuItem({
+        label: "Save File",
+        click: function() {
+          console.log(
+            require('macron').Dialog.saveFile({
+              title: 'Save this file as:', // title of 'Pick File Dialog'
+              // content: 'Some lorem...',
+              name: 'test_file_01', // default name
+              initialDirectory: 'C:/Users/bukharim96/Desktop/macron_tests/', // initial save path
+              defaultExtension: 'txt', // default extension
               fileTypes: [ // 'Save As' types
                 ['All files', '.*'],
                 ['Text', '.txt'],
@@ -20,6 +53,7 @@ module.exports = new Menubar([
                 ['JavaScript', '.js'],
                 ['CSS', '.css'],
                 ['Markdown', '.md']
+                // etc...
               ]
             })
           );

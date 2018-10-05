@@ -29,7 +29,7 @@ class MacronBridge(IMacronBridge):
       '_ContextMenu',
       'Archive',
       'CurrentWindow',
-      # 'Dialog',
+      'Dialog',
       'FS',
       # 'MessageBox',
       'System',

@@ -1,78 +1,50 @@
 from macron import *
+from sys import path
+from os import path as ospath
 
-import tkinter
+dirname = ospath.dirname(ospath.realpath(__file__))
+
+if system() == "Windows":
+  path.append(ospath.join(dirname, '../windows/'))
+elif system() == "Linux":
+  path.append(ospath.join(dirname, '../linux/'))
+
+import dialogs
 
 class Dialog(NativeBridge):
 
   @macronMethod
-  def fileSaver(self, config):
-    try:
-      file = tkinter.filedialog.asksaveasfile(
-        title = config['title'] if 'title' in config else 'Save file',
-        initialdir = config['initialDirectoryPath'] if 'initialDirectoryPath' in config else None,
-        initialfile = config['name'] if 'name' in config else None,
-        defaultextension = config['defaultExtension'] if 'defaultExtension' in config else None,
-        filetypes = config['fileTypes'] if 'fileTypes' in config else None,
-        mode = 'w'
-      )
-      self.current_window.focus()
+  def saveFile(self, config):
+    # dialogs.saveFile(config)
+    return dialogs.pickFile(config)
+    # try:
+    #   file = tkinter.filedialog.asksaveasfile(
+    #     title = config['title'] if 'title' in config else 'Save file',
+    #     initialdir = config['initialDirectoryPath'] if 'initialDirectoryPath' in config else None,
+    #     initialfile = config['name'] if 'name' in config else None,
+    #     defaultextension = config['defaultExtension'] if 'defaultExtension' in config else None,
+    #     filetypes = config['fileTypes'] if 'fileTypes' in config else None,
+    #     mode = 'w'
+    #   )
+    #   self.current_window.focus()
 
-      # dialog closed with 'cancel'
-      if not file: return False
+    #   # dialog closed with 'cancel'
+    #   if not file: return False
       
-      if "content" in config:
-        file.write(config['content'])
+    #   if "content" in config:
+    #     file.write(config['content'])
       
-      file_name = file.name
-      file.close()
+    #   file_name = file.name
+    #   file.close()
       
-      return file_name
-    except:
-      raise Exception('Unable to save file.')
+    #   return file_name
+    # except:
+    #   raise Exception('Unable to save file.')
 
   @macronMethod
-  def filePicker(self, config):
-    try:
-      config_opts = {
-        'title': config['title'] if 'title' in config else 'Save file',
-        'initialdir': config['initialDirectoryPath'] if 'initialDirectoryPath' in config else None,
-        'filetypes': config['fileTypes'] if 'fileTypes' in config else None
-      }
-      self.current_window.focus()
-
-      if 'allowMultiPick' in config and config['allowMultiPick']:
-        file_paths = tkinter.filedialog.askopenfilenames(**config_opts)
-        
-        # dialog closed with 'cancel'
-        if not file_paths: return False
-        
-        return file_paths
-      else:
-        file_path = tkinter.filedialog.askopenfilename(**config_opts)
-        
-        # dialog closed with 'cancel'
-        if not file_path: return False
-
-        if 'read' in config and config['read']:
-          with open(file_path, 'r') as f:
-            return f.read()
-        
-        return file_path
-    except:
-      raise Exception('Unable to select file.')
+  def pickFile(self, config):
+    return dialogs.pickFile(config)
 
   @macronMethod
-  def directoryPicker(self, config):
-    try:
-      dir_path = tkinter.filedialog.askdirectory(
-        title = config['title'] if 'title' in config else 'Save file',
-        initialdir = config['initialDirectoryPath'] if 'initialDirectoryPath' in config else None
-      )
-      self.current_window.focus()
-
-      # dialog closed with 'cancel'
-      if not dir_path: return False
-
-      return dir_path
-    except:
-      raise Exception('Unable to select directory.')
+  def pickDirectory(self, config):
+    dialogs.pickDirectory(config)
