@@ -1,30 +1,32 @@
+# TODO: Python modules do not return a corresponding JavaScript value for different data types
+
 from macron import *
 
 import platform
 
 class System(NativeBridge):
   @macronMethod
-  def platform(self):
+  def getPlatform(self):
     return platform.platform()
 
   @macronMethod
-  def system(self):
+  def getSystem(self):
     return platform.version()
   
   @macronMethod
-  def machine(self):
+  def getMachine(self):
     return platform.machine()
     
   @macronMethod
-  def node(self):
+  def getNetworkName(self):
     return platform.node()
   
   @macronMethod
-  def processor(self):
+  def getProcessor(self):
     return platform.processor()
   
   @macronMethod
-  def release(self):
+  def getRelease(self):
     return platform.release()
   
   # @macronMethod
@@ -37,12 +39,12 @@ class System(NativeBridge):
   
   # Java Platform
   @macronMethod
-  def javaVer(self):
+  def getJavaVersion(self):
     return str(platform.java_ver()) # @expect to return JavaScript array
   
   # Win32 Platform
   @macronMethod
-  def win32Ver(self):
+  def win32Version(self):
     return str(platform.win32_ver()) # @expect to return JavaScript array
   
   # Win95/98 Platform. Deprecated since version 3.3
@@ -59,15 +61,15 @@ class System(NativeBridge):
   #       }
   #     }
   @macronMethod
-  def macVer(self):
+  def macVersion(self):
     return str(platform.mac_ver()) # 
   
   # Unix Platforms
   # Deprecated since version 3.5, will be removed in version 3.7
   @macronMethod
-  def dist(self):
+  def getLinuxDistribution(self):
     return str(platform.dist()) # Alias for linux_distribution. @expect to return JavaScript array
   
   @macronMethod
-  def libcVer(self):
+  def libcVersion(self):
     return str(platform.libc_ver()) # @expect to return JavaScript array
