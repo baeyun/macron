@@ -23,7 +23,7 @@ from zipfile import (
 class Archive(NativeBridge):
   # @todo Resolve relative paths
   @macronMethod
-  def write_zip(self, zipname, files):
+  def writeZip(self, zipname, files):
     with ZipFile(zipname, 'w') as zipf:
       for f in files:
         # Could be existing files
@@ -31,7 +31,7 @@ class Archive(NativeBridge):
   
   # @todo Enhance compatibility with HTML (UTF-8)
   @macronMethod
-  def read_zip(self, zipname, file):
+  def readZip(self, zipname, file):
     with ZipFile(zipname) as zipf:
       with zipf.open(file) as f:
           return str(f.read())
@@ -39,17 +39,17 @@ class Archive(NativeBridge):
   # Warning: This should not be available for disclosure
   # @todo Convert str to bytes for pwd
   @macronMethod
-  def set_password(self, zipname, pwd=None):
+  def setPassword(self, zipname, pwd=None):
     ZipFile(zipname).setpassword(bytes(pwd))
     return
   
   @macronMethod
-  def extract_member(self, zipname, member=None, extraction_path="/"):
+  def extractMember(self, zipname, member=None, extraction_path="/"):
     ZipFile(zipname).extract(member, path=extraction_path)
     return
   
   @macronMethod
-  def extract_all(self, zipname, extraction_path="/"):
+  def extractAll(self, zipname, extraction_path="/"):
     ZipFile(zipname).extractall(extraction_path)
     return
   
@@ -62,9 +62,9 @@ class Archive(NativeBridge):
   
   # @todo Get zip size
   @macronMethod
-  def get_size(self, zipname):
+  def getSize(self, zipname):
     return ZipFile(zipname).file_size
   
   @macronMethod
-  def get_children(self, zipname):
+  def getChildren(self, zipname):
     return ZipFile(zipname).namelist().__str__()
