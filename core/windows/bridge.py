@@ -30,7 +30,7 @@ class MacronBridge(IMacronBridge):
       'Archive',
       'CurrentWindow',
       'Dialog',
-      'FS',
+      'FileSystem',
       # 'MessageBox',
       'System',
       'WindowManager'

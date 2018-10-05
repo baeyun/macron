@@ -12,17 +12,17 @@ import fnmatch
 from pathlib import Path
 from shutil import copyfile, rmtree
 
-class FS(NativeBridge): 
+class FileSystem(NativeBridge): 
   
   # Saves immediately without waiting for close
   # Ensures file is synced with latest changes
   @macronMethod
-  def sync_file_updates(self, file_stream):
+  def syncFileUpdates(self, file_stream):
     file_stream.flush()
     os.fsync(file_stream.fileno())
 
   @macronMethod
-  def write_file(self, file_path, file_contents):
+  def writeFile(self, file_path, file_contents):
     f = open(file_path, "x")
     f.write(file_contents)
     # Make sure latest updates of file are synced with main thread
@@ -37,19 +37,19 @@ class FS(NativeBridge):
     # return f
   
   @macronMethod
-  def read_file(self, file_path):
+  def readFile(self, file_path):
     with open(file_path, "r") as f:
       return f.read()
   
   @macronMethod
-  def append_file(self, file_path, file_contents):
+  def appendFile(self, file_path, file_contents):
     with open(file_path, "a") as f:
       f.write(file_contents)
       self.sync_file_updates(f)
       # return f.read()
   
   @macronMethod
-  def clear_file(self, file_path):    
+  def clearFile(self, file_path):    
     with open(file_path, "w") as f:
       try:
         f.truncate(0)
@@ -59,7 +59,7 @@ class FS(NativeBridge):
         return False
   
   @macronMethod
-  def copy_file(self, src, to):
+  def copyFile(self, src, to):
     # @note 'from' is a reserved keyword in Python
 
     """
@@ -71,11 +71,11 @@ class FS(NativeBridge):
     # return
   
   @macronMethod
-  def is_file(self, file_path):
+  def isFile(self, file_path):
     return Path(file_path).is_file()
   
   @macronMethod
-  def is_dir(self, file_path):
+  def isDir(self, file_path):
     return Path(file_path).is_dir()
   
   @macronMethod
@@ -134,14 +134,14 @@ class FS(NativeBridge):
   # @note os.rmdir() on Windows removes directory
   # symbolic link even if the target dir isn't empty
   @macronMethod
-  def rmdir_empty(self, path):
+  def rmdirEmpty(self, path):
     if self.is_dir(path):
       os.rmdir(path)
     return
   
   # @todo enhance accessability by creating types
   @macronMethod
-  def read_dir(self, file_path):
+  def readDir(self, file_path):
     if self.is_dir(file_path):
       # This is supposed to be a JavaScript array but the bridge has
       # issues with converting types. I might find a solution to this
@@ -155,7 +155,7 @@ class FS(NativeBridge):
   # @note unlike read_dir it returns a list with absolute
   # paths of files and dirs with Path(path)
   @macronMethod
-  def read_dir_glob(self, file_path, pattern):
+  def readDirGlob(self, file_path, pattern):
     ff = []
 
     if self.is_dir(file_path):

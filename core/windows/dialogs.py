@@ -36,6 +36,7 @@ def pickFile(config):
       else:
         return dialog.FileName
 
+# TODO FIXME
 def pickDirectory(config):
   dialog = FolderBrowserDialog()
   dialog.Title = config['title'] if 'title' in config else 'Pick folder'
