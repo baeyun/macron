@@ -37,12 +37,12 @@ class System(NativeBridge):
   
   # Java Platform
   @macronMethod
-  def java_ver(self):
+  def javaVer(self):
     return str(platform.java_ver()) # @expect to return JavaScript array
   
   # Win32 Platform
   @macronMethod
-  def win32_ver(self):
+  def win32Ver(self):
     return str(platform.win32_ver()) # @expect to return JavaScript array
   
   # Win95/98 Platform. Deprecated since version 3.3
@@ -59,7 +59,7 @@ class System(NativeBridge):
   #       }
   #     }
   @macronMethod
-  def mac_ver(self):
+  def macVer(self):
     return str(platform.mac_ver()) # 
   
   # Unix Platforms
@@ -69,5 +69,5 @@ class System(NativeBridge):
     return str(platform.dist()) # Alias for linux_distribution. @expect to return JavaScript array
   
   @macronMethod
-  def libc_ver(self):
+  def libcVer(self):
     return str(platform.libc_ver()) # @expect to return JavaScript array
