@@ -27,7 +27,6 @@ module.exports = function(cwd, toStart) {
   }
 
   appConfig.cwd = cwd
-  appConfig.mainWindow.nativeModulesPath = appConfig.nativeModulesPath.replace("./", "").replace(/[/|\\]/g, pathSeperator)
 
   const startProcess = spawn(
     process.platform !==  'linux' ? 'python' : 'python3', [

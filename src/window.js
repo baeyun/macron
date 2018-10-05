@@ -52,11 +52,10 @@ module.exports = function(config={}) {
   
   this.rootPath = cwd
   if (devServerURI) this.devServerURI = devServerURI
-  this.sourcePath = sourcePath.replace("./", "").replace(/[/|\\]/g, pathSeperator)
   this.nativeModules = nativeModules.map(
     path => path.replace("./", "").replace(/[/|\\]/g, pathSeperator)
   )
-  this.menu = menu
+  this.menu = menu || []
   this.nativeDependencies = nativeDependencies
 
   // Window events

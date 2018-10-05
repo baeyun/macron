@@ -49,7 +49,7 @@ module.exports = function(cwd) {
     // `--hiddenimport=json`,
     `--add-data=${cwd}/.setupdata;.`,
     `--add-data=${normalize(__dirname + '/../')}core/wizard/views;assets/views`,
-    `--add-data=${cwd}public/assets/icon.ico;assets`,
+    `--add-data=${cwd}public/;assets/public`,
     `--add-data=${cwd}LICENSE;assets`,
     // '--log-level DEBUG',
     // '-c',

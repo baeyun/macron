@@ -9,15 +9,19 @@ from macron import NativeBridge
 dirname = path.dirname(path.realpath(__file__))
 
 sys.path.append(path.normpath(path.join(dirname, '../common/')))
-sys.path.append(path.join(dirname, 'assemblies'))
-clr.AddReference("MacronWebviewInterop")
+
+if hasattr(sys, '_MEIPASS'):
+  clr.AddReference("macron/assemblies/MacronWebviewInterop")
+else:
+  sys.path.append(path.join(dirname, 'assemblies'))
+  clr.AddReference("MacronWebviewInterop")
 
 from MacronWebviewInterop import IMacronBridge
 
 class MacronBridge(IMacronBridge):
   __namespace__ = 'MacronBridge'
 
-  def initialize(self, current_window, context, root_path, native_modules_path, native_modules):
+  def initialize(self, current_window, context, root_path, native_modules):
     self.current_window = current_window
     self.context = context
 
@@ -32,30 +36,29 @@ class MacronBridge(IMacronBridge):
       'WindowManager'
     ])
 
-    native_mods_root_path = (root_path + native_modules_path).replace("//", "\u005c")
-    generated_js_apis = ''
-
-    for class_name in native_modules:
-      modname = class_name.lower()
-      spec = importlib.util.spec_from_file_location(modname, native_mods_root_path + modname + ".py")
-      setattr(self, modname, importlib.util.module_from_spec(spec))
-      module = getattr(self, modname)
-      spec.loader.exec_module(module)
-
-      generated_js_apis += getattr(module, class_name)().generate_js_api()
-
-    self.context.evaluate_script(
-      generated_js_apis
-    )
-
     self.context.ObjectForScripting = self
+
+    # # TODO Add support in later version
+    # native_mods_root_path = (root_path + native_modules_path).replace("//", "\u005c")
+    # generated_js_apis = ''
+    # for class_name in native_modules:
+    #   modname = class_name.lower()
+    #   spec = importlib.util.spec_from_file_location(modname, native_mods_root_path + modname + ".py")
+    #   setattr(self, modname, importlib.util.module_from_spec(spec))
+    #   module = getattr(self, modname)
+    #   spec.loader.exec_module(module)
+
+    #   generated_js_apis += getattr(module, class_name)().generate_js_api()
+
+    # self.context.evaluate_script(
+    #   generated_js_apis
+    # )
 
   def load_common_modules(self, class_names):
     generated_js_apis = ''
 
     for class_name in class_names:
       mod_name = class_name.lower()
-      
       setattr(self, mod_name, __import__(mod_name))
 
       generated_js_apis += getattr(getattr(self, mod_name), class_name)().generate_js_api()

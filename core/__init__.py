@@ -22,7 +22,7 @@ class MacronApp:
     except IndexError:
       RESOURCE_PATH = path.join(sys._MEIPASS, '')
 
-      with open(RESOURCE_PATH + '.builddata') as f:
+      with open(RESOURCE_PATH + 'macron/.builddata') as f:
         app_config = load(f)
     
     # @todo handle err

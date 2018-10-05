@@ -15,7 +15,6 @@ module.exports = function(cwd) {
     throw new Error('MACRON ERR: macron.config.js must include a name property.')
   
   appConfig.cwd = cwd
-  appConfig.mainWindow.nativeModulesPath = appConfig.nativeModulesPath.replace("./", "").replace(/[/|\\]/g, pathSeperator)
   
   const qualifiedAppName = appConfig.name.replace(/\s/g, '_')
   const spinner = ora('Starting build process...').start()
@@ -25,35 +24,37 @@ module.exports = function(cwd) {
     JSON.stringify(appConfig),
     'utf8'
   )
+  
+  const buildCmd = ['pyinstaller']
+  buildCmd.push(`--name=${qualifiedAppName}`)
+  buildCmd.push(`--icon=${cwd}public/icons/icon.ico`)
+  buildCmd.push('--workpath=' + normalize(__dirname + '/../cache'))
+  buildCmd.push(`--distpath=${cwd}build`)
+  buildCmd.push('--specpath=' + normalize(__dirname + '/../cache'))
+  buildCmd.push('--hiddenimport=clr')
+  buildCmd.push('--hiddenimport=pathlib')
+  buildCmd.push('--hiddenimport=json')
+  if (appConfig.build.nativeModulesPath) buildCmd.push('--distpath=' + normalize(cwd + appConfig.build.nativeModulesPath))
+  buildCmd.push(`--paths=${normalize(__dirname + '/../core')};${normalize(__dirname + '/../core/common')};${normalize(__dirname + '/../core/windows')}`)
+  buildCmd.push('--hiddenimport=_contextmenu')
+  buildCmd.push('--hiddenimport=archive')
+  buildCmd.push('--hiddenimport=currentwindow')
+  buildCmd.push('--hiddenimport=windowmanager')
+  buildCmd.push('--hiddenimport=fs')
+  buildCmd.push('--hiddenimport=system')
+  buildCmd.push(`--add-data=${normalize(__dirname + '/../core/windows/assemblies/MacronWebviewInterop.dll')};macron/assemblies`) // Windows specific
+  buildCmd.push(`--add-data=${cwd}/.builddata;macron`)
+  buildCmd.push(`--add-data=${cwd}public/;macron/app`)
+  buildCmd.push(`--add-data=${normalize(__dirname + '/../src')};macron/core`)
+  if (appConfig.build.debugMode) {
+    buildCmd.push('--log-level DEBUG')
+    buildCmd.push('-c') // console
+  }
+  buildCmd.push('-w')
+  buildCmd.push('-y')
+  buildCmd.push(normalize(__dirname + '/../core/') + '__init__.py')
 
-  const buildProcess = exec([
-    'pyinstaller',
-    `--name=${qualifiedAppName}`,
-    `--icon=${cwd}public/assets/icon.ico`,
-    `--workpath=` + normalize(__dirname + '/../cache'),
-    `--distpath=${cwd}build`,
-    `--specpath=` + normalize(__dirname + '/../core'),
-    `--hiddenimport=clr`,
-    `--hiddenimport=pathlib`,
-    `--hiddenimport=json`,
-    `--paths=${normalize(__dirname + '/../core')};${normalize(__dirname + '/../core/common')};${normalize(__dirname + '/../core/windows')}`,
-    `--hiddenimport=_contextmenu`,
-    `--hiddenimport=archive`,
-    `--hiddenimport=currentwindow`,
-    `--hiddenimport=windowmanager`,
-    `--hiddenimport=fs`,
-    `--hiddenimport=system`,
-    // `--add-binary=` + normalize(__dirname + '/../core/windows/assemblies/MacronWebviewInterop.dll'), // Windows specific
-    `--add-data=${normalize(__dirname + '/../core/windows/assemblies/MacronWebviewInterop.dll')};assemblies`, // Windows specific
-    `--add-data=${cwd}/.builddata;.`,
-    `--add-data=${cwd}public/assets/icon.ico;assets`,
-    `--add-data=${normalize(__dirname + '/../src')};macron`,
-    '--log-level DEBUG',
-    '-c',
-    // '-w',
-    '-y',
-    normalize(__dirname + '/../core/') + '__init__.py'
-  ].join(' '), (err, stdout, stderr) => {
+  const buildProcess = exec(buildCmd.join(' '), (err, stdout, stderr) => {
     if (err) {
       console.error(err)
       return

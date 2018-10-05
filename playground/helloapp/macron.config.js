@@ -4,20 +4,14 @@
 const { Window } = require('../../index') // @todo require('macron')
 
 const App = new Window({
-  title: "MacLine",
+  title: 'Macron HelloWorld App',
   width: 1200,
   height: 960,
   minHeight: 500,
   minWidth: 500,
   startupFromCenter: true,
-  // frameless: true,
-  // startupState: "maximized",
-  // devServerURI: 'http://localhost:3000/',
-  sourcePath: './public/index.html',
-  // nativeModules: ['Dialog'],
   menu: require('./src/menubar'),
-  // accelerators: require('./src/keybindings'),
-  // nativeDependencies: ['numpy.py', 'ffmpeg.py']
+  // devServerURI: 'http://localhost:3000/', // only available during development
 })
 // .on('activate', function() {
 //   alert("Welcome to Macron\'s \'Hello, World!\' App")
@@ -27,15 +21,12 @@ const App = new Window({
 // })
 
 module.exports = {
-  name: 'TestApp',
+  name: 'HelloApp',
   mainWindow: App,
-  nativeModulesPath: './native/', // remove
   build: {
-    assetsDirectory: './public',
-    outputDirectory: './build',
-    distDirectory: './dist',
-    iconPath: './src/img/icon.png',
+    buildPath: './build',
+    distributionPath: './dist',
     autoGenerateIconSizes: true,
-    // binaries: []
+    debugMode: false
   }
 }

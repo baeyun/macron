@@ -8,7 +8,6 @@ sys.path.append(path.join(dirname, '../'))
 
 from System import Object
 from System.Windows.Controls import WebBrowser
-from System.IO import StreamReader
 from System.Windows.Navigation import LoadCompletedEventHandler
 from System.Windows import MessageBox
 
@@ -20,69 +19,62 @@ from utils import get_resource_path
 class MacronWebview(WebBrowser):
 
   def __init__(self, current_window, config):
-    if "devServerURI" in config:
+    if "devServerURI" in config and not hasattr(sys, '_MEIPASS'):
       self.Navigate(config["devServerURI"])
-    elif "sourcePath" in config:
-      sourcePath = (config["rootPath"] + config["sourcePath"]).replace("//", "\u005c")
-
-      self.NavigateToStream(
-        StreamReader(sourcePath).BaseStream
+    else:
+      self.Navigate(
+        get_resource_path(
+          'macron/app/index.html',
+          path.realpath(path.join(config["rootPath"], 'public/index.html'))
+        )
       )
 
-      # # File to string solution
-      # sourcePath = (config["rootPath"] + config["sourcePath"]).replace("//", "\u005c")
-      
-      # with open (sourcePath, "r") as source:
-      #   self.Navigate("about:blank")
-      #   self.Document.OpenNew(True).Write("source.read()")
-      #   self.Dock = DockStyle.Fill
-    # else:
-    #   # handle error
-
     # Load main macron JavaScript APIs
-    self.evaluate_script(r'var macron = {};')
+    init_scripts = r'var macron = {};'
     
     with open(
       get_resource_path(
-        'macron/polyfills/require.js',
+        'macron/core/polyfills/require.js',
         dirname + '/../../src/polyfills/require.js'
       )
-    ) as f: self.evaluate_script(f.read())
+    ) as f: init_scripts += f.read()
 
     with open(
       get_resource_path(
-        'macron/init.js',
+        'macron/core/init.js',
         dirname + '/../../src/init.js'
       )
-    ) as f: self.evaluate_script(f.read())
+    ) as f: init_scripts += f.read()
 
     with open(
       get_resource_path(
-        'macron/menu.js',
+        'macron/core/menu.js',
         dirname + '/../../src/menu.js'
       )
-    ) as f: self.evaluate_script(f.read())
+    ) as f: init_scripts += f.read()
 
     with open(
       get_resource_path(
-        'macron/contextmenu.js',
+        'macron/core/contextmenu.js',
         dirname + '/../../src/contextmenu.js'
       )
-    ) as f: self.evaluate_script(f.read())
+    ) as f: init_scripts += f.read()
 
     # with open(
     #   get_resource_path(
-    #     'macron/accelerator.js',
+    #     'macron/core/accelerator.js',
     #     dirname + '/../../src/accelerator.js'
     #   )
-    # ) as f: self.evaluate_script(f.read())
+    # ) as f: init_scripts += f.read()
+
+    # execute init_scripts in current context
+    self.evaluate_script(init_scripts)
 
     # Bridge
     MacronBridge().initialize(
       current_window=current_window,
       context=self,
       root_path=config["rootPath"],
-      native_modules_path=config["nativeModulesPath"],
       native_modules=config["nativeModules"]
     )
 
