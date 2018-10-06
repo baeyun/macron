@@ -49,8 +49,8 @@ module.exports = function(cwd) {
   
   const qualifiedAppName = appConfig.appName.replace(/\s/g, '_')
   const setupInfo = !existsSync(cwd+'.setupdata')
-                  ? JSON.parse(readFileSync(cwd+'.setupdata'))
-                  : {'app_name': appConfig.appName}
+                  ? {'app_name': appConfig.appName}
+                  : JSON.parse(readFileSync(cwd+'.setupdata'))
   setupInfo['app_repo_url'] = pkgRepoURL
   
   // Archive build
