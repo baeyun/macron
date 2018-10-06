@@ -169,7 +169,7 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
         pass
 
     try:
-      repoURL = urlopen(self.settings['app_repo_url'] + '.setupdata')
+      repoURL = urlopen(self.settings['app_repo_url'] + '/.setupdata')
       data = repoURL.read()
       encoding = repoURL.info().get_content_charset('utf-8')
       latestSetupData = loads(data.decode(encoding))

@@ -144,10 +144,10 @@ module.exports = function(cwd) {
   buildCmd.push(`--add-data=${cwd}LICENSE;.`)
   // buildCmd.push('-m ' + normalize(__dirname + '/../cache/') + qualifiedAppName + 'Setup.exe.manifest')
   buildCmd.push('--uac-admin') // request elevation upon application restart
-  buildCmd.push('--log-level DEBUG')
-  buildCmd.push('-c')
+  // buildCmd.push('--log-level DEBUG')
+  // buildCmd.push('-c')
   buildCmd.push('-F')
-  // buildCmd.push('-w')
+  buildCmd.push('-w')
   buildCmd.push('-y')
   buildCmd.push(normalize(__dirname + '/../core/wizard/') + '__wizard__.py')
 
