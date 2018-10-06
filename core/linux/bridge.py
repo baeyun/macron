@@ -15,36 +15,37 @@ sys.path.append(path.normpath(path.join(dirname, '../common/')))
 
 class MacronBridge:
   
-  def initialize(self, current_window, context, root_path, native_modules_path, native_modules):
+  def initialize(self, current_window, context, root_path, native_modules):
     self.current_window = current_window
     self.context = context
 
     self.load_common_modules([
-      'Archive',
       '_ContextMenu',
+      'Archive',
       'CurrentWindow',
       'Dialog',
-      'FS',
+      'FileSystem',
       # 'MessageBox',
       'System',
-      'Window'
+      'WindowManager'
     ])
 
-    native_mods_root_path = (root_path + native_modules_path).replace("//", "\u005c")
-    generated_js_apis = ''
+    # # TODO Add support in later version
+    # native_mods_root_path = (root_path + native_modules_path).replace("//", "\u005c")
+    # generated_js_apis = ''
 
-    for class_name in native_modules:
-      modname = class_name.lower()
-      spec = importlib.util.spec_from_file_location(modname, native_mods_root_path + modname + ".py")
-      setattr(self, modname, importlib.util.module_from_spec(spec))
-      module = getattr(self, modname)
-      spec.loader.exec_module(module)
+    # for class_name in native_modules:
+    #   modname = class_name.lower()
+    #   spec = importlib.util.spec_from_file_location(modname, native_mods_root_path + modname + ".py")
+    #   setattr(self, modname, importlib.util.module_from_spec(spec))
+    #   module = getattr(self, modname)
+    #   spec.loader.exec_module(module)
 
-      generated_js_apis += getattr(module, class_name)().generate_js_api()
+    #   generated_js_apis += getattr(module, class_name)().generate_js_api()
 
-    self.context.evaluate_script(
-      generated_js_apis
-    )
+    # self.context.evaluate_script(
+    #   generated_js_apis
+    # )
 
     self.context.connect('script-dialog', self.on_js_call)
 

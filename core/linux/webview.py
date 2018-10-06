@@ -1,52 +1,80 @@
 import gi
 import sys
 import threading
+from os import path
 
 gi.require_version("Gtk", "3.0")
 gi.require_version('WebKit2', '4.0')
 
 from gi.repository import Gtk, Gdk, WebKit2
 
+dirname = path.dirname(path.realpath(__file__))
+
 from json import dumps
 from bridge import MacronBridge
+
+from utils import get_resource_path
 
 class MacronWebview(WebKit2.WebView):
   def __init__(self, current_window, config):
     super(WebKit2.WebView, self).__init__()
 
-    if "devServerURI" in config:
+    if "devServerURI" in config and not hasattr(sys, '_MEIPASS'):
       self.load(config["devServerURI"])
-    elif "sourcePath" in config:
-      sourcePath = 'file://' + (config["rootPath"] + config["sourcePath"]).replace("//", "\u005c")
-
+    else:
       self.load(
-        sourcePath
+        get_resource_path(
+          'macron/app/index.html',
+          'file://' + config["rootPath"] + '/public/index.html'
+        )
       )
 
     # Load main macron JavaScript APIs
-    self.evaluate_script(r'var macron = {};')
+    init_scripts = r'var macron = {};'
     
-    with open('../../src/init.js') as f:
-      self.evaluate_script(f.read())
+    with open(
+      get_resource_path(
+        'macron/core/polyfills/require.js',
+        dirname + '/../../src/polyfills/require.js'
+      )
+    ) as f: init_scripts += f.read()
 
-    with open('../../src/polyfills/require.js') as f:
-      self.evaluate_script(f.read())
+    with open(
+      get_resource_path(
+        'macron/core/init.js',
+        dirname + '/../../src/init.js'
+      )
+    ) as f: init_scripts += f.read()
 
-    with open('../../src/menu.js') as f:
-      self.evaluate_script(f.read())
+    with open(
+      get_resource_path(
+        'macron/core/menu.js',
+        dirname + '/../../src/menu.js'
+      )
+    ) as f: init_scripts += f.read()
 
-    with open('../../src/contextmenu.js') as f:
-      self.evaluate_script(f.read())
+    with open(
+      get_resource_path(
+        'macron/core/contextmenu.js',
+        dirname + '/../../src/contextmenu.js'
+      )
+    ) as f: init_scripts += f.read()
 
-    # with open('../../src/accelerator.js') as f:
-    #   self.evaluate_script(f.read())
+    # with open(
+    #   get_resource_path(
+    #     'macron/core/accelerator.js',
+    #     dirname + '/../../src/accelerator.js'
+    #   )
+    # ) as f: init_scripts += f.read()
+
+    # execute init_scripts in current context
+    self.evaluate_script(init_scripts)
 
     # Bridge
     MacronBridge().initialize(
       current_window=current_window,
       context=self,
       root_path=config["rootPath"],
-      native_modules_path=config["nativeModulesPath"],
       native_modules=config["nativeModules"]
     )
 
