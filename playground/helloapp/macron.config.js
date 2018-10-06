@@ -18,9 +18,6 @@ module.exports = {
   appName: 'HelloApp',
   mainWindow: App,
   build: {
-    // buildPath: './build',
-    // distributionPath: './dist',
-    autoGenerateIconSizes: true,
     debugMode: false
   }
 }

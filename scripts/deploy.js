@@ -34,7 +34,7 @@ module.exports = function(cwd) {
   let pkgRepoURL = ''
     
   try {
-    pkgRepoURL = pkgDotJSON.repository.url.replace(/git\+|\.git/gi, '')
+    pkgRepoURL = pkgDotJSON.repository.url.replace(/git\+|\.git/gi, '') + '/raw/master'
   } catch (error) {
     console.error(chalk.red('\n  MACRON ERR: package.json must include a GIT repository.url property.\n  Only GitHub repos are currently supported.\n'))
     process.exit()
@@ -44,7 +44,7 @@ module.exports = function(cwd) {
   const setupInfo = !existsSync(cwd+'.setupdata')
                   ? JSON.parse(readFileSync(cwd+'.setupdata'))
                   : {'app_name': appConfig.appName}
-  setupInfo['app_repo_url'] = pkgRepoURL + '/raw/master/'
+  setupInfo['app_repo_url'] = pkgRepoURL
   
   // Archive build
   if (!existsSync(cwd+'build') || !existsSync(cwd+'build/' + qualifiedAppName)) {
@@ -72,15 +72,15 @@ module.exports = function(cwd) {
     
     switch (process.platform) {
       case 'win32':
-        setupInfo['latest_windows_dist_url'] = `${pkgRepoURL}/dist/windows/${qualifiedAppName}_${pkgDotJSON['version']}.zip`
+        setupInfo['latest_windows_dist_url'] = `/dist/windows/${qualifiedAppName}_${pkgDotJSON['version']}.zip`
         break
 
       case 'darwin':
-        setupInfo['latest_mac_dist_url'] = `${pkgRepoURL}/dist/mac/${qualifiedAppName}_${pkgDotJSON['version']}.zip`
+        setupInfo['latest_mac_dist_url'] = `/dist/mac/${qualifiedAppName}_${pkgDotJSON['version']}.zip`
         break
 
       case 'linux':
-        setupInfo['latest_linux_dist_url'] = `${pkgRepoURL}/dist/linux/${qualifiedAppName}_${pkgDotJSON['version']}.zip`
+        setupInfo['latest_linux_dist_url'] = `/dist/linux/${qualifiedAppName}_${pkgDotJSON['version']}.zip`
         break
     }
     
@@ -142,7 +142,7 @@ module.exports = function(cwd) {
   buildCmd.push(`--add-data=${normalize(__dirname + '/../')}core/wizard/views;.`)
   buildCmd.push(`--add-data=${cwd}public/icons/icon.ico;.`)
   buildCmd.push(`--add-data=${cwd}LICENSE;.`)
-  buildCmd.push('-m ' + normalize(__dirname + '/../cache/') + qualifiedAppName + 'Setup.exe.manifest')
+  // buildCmd.push('-m ' + normalize(__dirname + '/../cache/') + qualifiedAppName + 'Setup.exe.manifest')
   buildCmd.push('--uac-admin') // request elevation upon application restart
   buildCmd.push('--log-level DEBUG')
   buildCmd.push('-c')

@@ -9,7 +9,14 @@ from pythoncom import CoInitialize
 from win32com.client import Dispatch
 from winshell import desktop
 import threading
+import ctypes
 # from PIL import ImageTk, Image
+
+def is_admin():
+  try:
+    return ctypes.windll.shell32.IsUserAnAdmin()
+  except:
+    return False
 
 # Get current dir for loading core components
 try:
@@ -113,10 +120,9 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
     #   self.settings['setup_logo'],
     #   self.builder.get_object('SetupLogo')
     # )
-    # self.builder.get_object('FinishButton').config(state=DISABLED)
-
-    # self.downloadThread = threading.Thread(target=self.download)
-    # self.downloadThread.start()
+    self.builder.get_object('FinishButton').config(state=DISABLED)
+    self.downloadThread = threading.Thread(target=self.download)
+    self.downloadThread.start()
 
   def on_license_back(self):
     with open(RESOURCE_PATH + 'intro-view.xml') as f:
@@ -142,20 +148,7 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
     entry.insert(0, response)
   
   def download(self):
-    # self.builder.get_object('DownloadStatusLabel').config(text="Obtaining latest release...")
-
-    # try:
-    #   repoURL = urlopen(self.settings['app_repo_url'] + '.setupdata')
-    #   data = repoURL.read()
-    #   encoding = repoURL.info().get_content_charset('utf-8')
-    #   latestSetupData = loads(data.decode(encoding))
-    # except:
-    #   messagebox.showwarning(
-    #     title='{} Setup Wizard'.format(self.settings['app_name']),
-    #     message='An unexpected error occured. Setup wizard is unable to obtain additional files.'
-    #   )
-
-    #   return
+    self.builder.get_object('DownloadStatusLabel').config(text="Obtaining latest release...")
     
     def reporthook(blocknum, blocksize, totalsize):
       self.builder.get_object('DownloadStatusLabel').config(text="Downloading...")
@@ -175,37 +168,47 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
       else: # total size is unknown
         pass
 
-    # try: # download
-    filehandle, _ = urlretrieve(
-      # latestSetupData['latest_windows_dist_url'],
-      url='https://github.com/bukharim96/macron/raw/master/playground/helloapp/dist/windows/HelloApp_0.1.0.zip',
-      reporthook=reporthook
-    )
+    try:
+      repoURL = urlopen(self.settings['app_repo_url'] + '.setupdata')
+      data = repoURL.read()
+      encoding = repoURL.info().get_content_charset('utf-8')
+      latestSetupData = loads(data.decode(encoding))
 
-    # try: # install
-    self.builder.get_object('InstallStatusLabel').config(text="Installing...")
-    ZipFile(filehandle).extractall(self.settings['install_path'])
-    if self.settings['create_shortcut']:
-      CoInitialize()
-      appPath = '{}\\{}\\{}.exe'.format(self.settings['install_path'], self.settings['app_name'], self.settings['app_name'])
-      self.createShortcut(
-        path=os.path.join(desktop(), self.settings['app_name'].replace('_', ' ') + '.lnk'),
-        target=appPath,
-        wDir='{}\\{}'.format(self.settings['install_path'], self.settings['app_name']),
-        icon=appPath
+      try: # download
+        filehandle, _ = urlretrieve(
+          url=latestSetupData['app_repo_url'] + latestSetupData['latest_windows_dist_url'],
+          reporthook=reporthook
+        )
+
+        try: # install
+          self.builder.get_object('InstallStatusLabel').config(text="Installing...")
+          ZipFile(filehandle).extractall(self.settings['install_path'])
+          if self.settings['create_shortcut']:
+            CoInitialize()
+            appPath = '{}\\{}\\{}.exe'.format(self.settings['install_path'], self.settings['app_name'], self.settings['app_name'])
+            self.createShortcut(
+              path=os.path.join(desktop(), self.settings['app_name'].replace('_', ' ') + '.lnk'),
+              target=appPath,
+              wDir='{}\\{}'.format(self.settings['install_path'], self.settings['app_name']),
+              icon=appPath
+            )
+          self.builder.get_object('InstallStatusLabel').config(text="Installation complete!")
+          self.builder.get_object('FinishButton').config(state=NORMAL)
+        except:
+          messagebox.showwarning(
+            title='{} Setup Wizard'.format(self.settings['app_name']),
+            message='Setup is unable to install additional files. Please try again.'
+          )
+      except:
+        messagebox.showwarning(
+          title='{} Setup Wizard'.format(self.settings['app_name']),
+          message='Setup is unable to download additional files. Please make sure that you have an internet connection, then click Retry.'
+        )
+    except:
+      messagebox.showwarning(
+        title='{} Setup Wizard'.format(self.settings['app_name']),
+        message='An unexpected error occured. Setup wizard is unable to obtain additional files. Click Retry.'
       )
-    self.builder.get_object('InstallStatusLabel').config(text="Installation complete!")
-    self.builder.get_object('FinishButton').config(state=NORMAL)
-      # except:
-      #   messagebox.showwarning(
-      #     title='{} Setup Wizard'.format(self.settings['app_name']),
-      #     message='Setup is unable to install additional files.'
-      #   )
-    # except:
-    #   messagebox.showwarning(
-    #     title='{} Setup Wizard'.format(self.settings['app_name']),
-    #     message='Setup is unable to download additional files. Please make sure that you have an internet connection, then click Retry.'
-    #   )
   
   def on_finish(self):
     if self.settings['start_after_setup']:
@@ -221,7 +224,8 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
     )
 
     if response == 'yes':
-      self.root.destroy()
+      self.downloadThread = threading.Thread(target=self.download)
+      self.downloadThread.start()
   
   def on_cancel(self):
     response = messagebox.showwarning(
@@ -275,4 +279,7 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
   #   pass
 
 if __name__ == '__main__':
-  MacronSetupWizard()
+  if is_admin():
+    MacronSetupWizard()
+  else: # Re-run with admin privileges
+    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
