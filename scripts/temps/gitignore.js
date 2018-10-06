@@ -2,8 +2,8 @@ module.exports = `#######################################
 # Macron ignores
 #######################################
 
-# debug log file
-macron-debug.log
+# app build folder
+build/
 
 #######################################
 # Node ignores
@@ -84,7 +84,6 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/

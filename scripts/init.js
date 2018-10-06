@@ -1,21 +1,17 @@
 const {
   basename,
-  sep: pathSeperator
+  sep: pathSeperator,
+  normalize
 } = require('path')
 const {
   mkdirSync,
   existsSync,
-  writeFileSync
+  writeFileSync,
+  createReadStream,
+  createWriteStream
 } = require('fs')
+const { execSync } = require('child_process')
 const chalk = require('chalk')
-
-/**
- * @todo:
- *     - add .gitignore file
- *     - add .npmignore file
- *     - add package.json file
- *     - add app.bundle.js file
- */
 
 module.exports = function(cwd, appName) {
   if (appName) {
@@ -23,18 +19,23 @@ module.exports = function(cwd, appName) {
 
     try {
       mkdirSync(cwd)
+      execSync('cd ' + cwd)
+      execSync('npm link macron')
     } catch (err) {
       if (err.code !== 'EEXIST') throw err
     }
   } else {
     appName = basename(cwd)
+    // cwd = cwd + appName + pathSeperator
+    execSync('npm link macron')
   }
 
   const appConfigFilePath = cwd + 'macron.config.js'
   const indexHTMLFilePath = cwd + 'public/index.html'
-  const gitIgnoreFilePath = cwd + '.gitignore'
-  // const npmIgnoreFilePath = cwd + '.npmignore' // @todo - necessary?
   const packageJsonFilePath = cwd + 'package.json'
+  const licenseFilePath = cwd + 'LICENSE'
+  const gitIgnoreFilePath = cwd + '.gitignore'
+  const npmIgnoreFilePath = cwd + '.npmignore'
 
   // Macron configuration file
   if (existsSync(appConfigFilePath)) {
@@ -50,16 +51,24 @@ module.exports = function(cwd, appName) {
     require('./temps/macron-config')(appName)
   )
 
-  // App root HTML file
   if (!existsSync(cwd + 'public')) {
     mkdirSync(cwd + 'public')
     
-    if (!existsSync(indexHTMLFilePath))
-      writeFileSync(
-        indexHTMLFilePath,
-        require('./temps/index-html')
-      )
+    if (!existsSync(cwd + 'public/icons'))
+      mkdirSync(cwd + 'public/icons')
   }
+  
+  // App root HTML file
+  if (!existsSync(indexHTMLFilePath))
+    writeFileSync(
+      indexHTMLFilePath,
+      require('./temps/index-html')
+    )
+
+  // Copy icon.ico to project
+  createReadStream(normalize(__dirname + '/temps/icon.ico')).pipe(
+    createWriteStream(cwd + 'public/icons/icon.ico')
+  )
   
   // package.json file
   if (!existsSync(packageJsonFilePath))
@@ -68,10 +77,24 @@ module.exports = function(cwd, appName) {
       require('./temps/package-json')(appName)
     )
 
+  // package.json file
+  if (!existsSync(licenseFilePath))
+    writeFileSync(
+      licenseFilePath,
+      require('./temps/package-json')(appName)
+    )
+
   // gitignore file
   if (!existsSync(gitIgnoreFilePath))
     writeFileSync(
       gitIgnoreFilePath,
+      require('./temps/gitignore')
+    )
+
+  // gitignore file
+  if (!existsSync(npmIgnoreFilePath))
+    writeFileSync(
+      npmIgnoreFilePath,
       require('./temps/gitignore')
     )
 
