@@ -36,7 +36,14 @@ module.exports = function(cwd) {
   try {
     pkgRepoURL = pkgDotJSON.repository.url.replace(/git\+|\.git/gi, '') + '/raw/master'
   } catch (error) {
-    console.error(chalk.red('\n  MACRON ERR: package.json must include a GIT repository.url property.\n  Only GitHub repos are currently supported.\n'))
+    console.error(
+      chalk.red(
+        '\n  MACRON ERR: package.json must include a GIT repository.url property.'
+        + '\n  To turn this project to a GitHub repository, run: git init'
+        + '\n  To simply inlcude the repository.url property to your package.json, run: npm init'
+        + '\n  Only GitHub repos are currently supported for deployment.\n'
+      )
+    )
     process.exit()
   }
   
