@@ -44,11 +44,11 @@ module.exports = function(cwd) {
   const setupInfo = !existsSync(cwd+'.setupdata')
                   ? JSON.parse(readFileSync(cwd+'.setupdata'))
                   : {'app_name': appConfig.appName}
-  setupInfo['app_repo_url'] = pkgRepoURL + '/'
+  setupInfo['app_repo_url'] = pkgRepoURL + '/raw/master/'
   
   // Archive build
-  if (!existsSync('./build') || !existsSync('./build/' + qualifiedAppName)) {
-    console.error(chalk.red('\n  MACRON ERR: A build is required before the deployment step.\n\n Run: macron build\n'))
+  if (!existsSync(cwd+'build') || !existsSync(cwd+'build/' + qualifiedAppName)) {
+    console.error(chalk.red('\n  MACRON ERR: A build is required before the deployment step.\n  Run: macron build\n'))
     process.exit()
   }
     
@@ -60,7 +60,12 @@ module.exports = function(cwd) {
                  : process.platform == 'darwin' ? 'mac' : 'linux'
   const platformDistDir = normalize(`${cwd}dist/${platform}/`)
   const buildArchivePath = `${platformDistDir + qualifiedAppName}_${pkgDotJSON['version']}.zip`
-  if (!existsSync(platformDistDir)) mkdirSync(platformDistDir)
+  if (!existsSync(cwd+'dist')) {
+    mkdirSync(cwd+'dist')
+    if (!existsSync(cwd+'dist/'+platform)) {
+      mkdirSync(cwd+'dist/'+platform)
+    }
+  }
   
   const buildArchiveOutputStream = createWriteStream(buildArchivePath)
   buildArchiveOutputStream.on('close', () => {
@@ -104,6 +109,15 @@ module.exports = function(cwd) {
   spinner.stopAndPersist({
     text: `Building setup wizard...`
   }).start()
+  
+  // Create {APPNAME}Setup.exe.manifest for --uac-admin to
+  // work for -F
+  if (!existsSync(__dirname + '/../cache')) mkdirSync(__dirname + '/../cache')
+  writeFileSync(
+    `${__dirname}/../cache/${qualifiedAppName}Setup.exe.manifest`,
+    require('./temps/setupwizard-manifest')(qualifiedAppName),
+    'utf8'
+  )
 
   const buildCmd = ['pyinstaller']
   buildCmd.push(`--name=${qualifiedAppName}Setup`)
@@ -120,6 +134,7 @@ module.exports = function(cwd) {
   buildCmd.push('--hiddenimport=urllib.request')
   buildCmd.push('--hiddenimport=pygubu')
   buildCmd.push('--hiddenimport=pygubu.builder.ttkstdwidgets')
+  buildCmd.push('--hiddenimport=winshell')
   // buildCmd.push('--hiddenimport=PIL.ImageTk')
   // buildCmd.push('--hiddenimport=PIL.Image')
   // buildCmd.push('--hiddenimport=json')
@@ -127,10 +142,12 @@ module.exports = function(cwd) {
   buildCmd.push(`--add-data=${normalize(__dirname + '/../')}core/wizard/views;.`)
   buildCmd.push(`--add-data=${cwd}public/icons/icon.ico;.`)
   buildCmd.push(`--add-data=${cwd}LICENSE;.`)
-  // buildCmd.push('--log-level DEBUG')
-  // buildCmd.push('-c')
+  buildCmd.push('-m ' + normalize(__dirname + '/../cache/') + qualifiedAppName + 'Setup.exe.manifest')
+  buildCmd.push('--uac-admin') // request elevation upon application restart
+  buildCmd.push('--log-level DEBUG')
+  buildCmd.push('-c')
   buildCmd.push('-F')
-  buildCmd.push('-w')
+  // buildCmd.push('-w')
   buildCmd.push('-y')
   buildCmd.push(normalize(__dirname + '/../core/wizard/') + '__wizard__.py')
 

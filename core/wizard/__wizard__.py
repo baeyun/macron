@@ -1,9 +1,13 @@
 import sys
-from os import path
+from os import path, startfile
 from tkinter import Tk, messagebox, filedialog, END, NORMAL, DISABLED, Label
 from json import load, loads
 from pygubu import Builder
 from urllib.request import urlopen, urlretrieve, URLError
+from zipfile import ZipFile
+from pythoncom import CoInitialize
+from win32com.client import Dispatch
+from winshell import desktop
 import threading
 # from PIL import ImageTk, Image
 
@@ -109,10 +113,10 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
     #   self.settings['setup_logo'],
     #   self.builder.get_object('SetupLogo')
     # )
-    self.builder.get_object('FinishButton').config(state=DISABLED)
+    # self.builder.get_object('FinishButton').config(state=DISABLED)
 
-    self.downloadThread = threading.Thread(target=self.download)
-    self.downloadThread.start()
+    # self.downloadThread = threading.Thread(target=self.download)
+    # self.downloadThread.start()
 
   def on_license_back(self):
     with open(RESOURCE_PATH + 'intro-view.xml') as f:
@@ -138,20 +142,20 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
     entry.insert(0, response)
   
   def download(self):
-    self.builder.get_object('DownloadStatusLabel').config(text="Obtaining latest release...")
+    # self.builder.get_object('DownloadStatusLabel').config(text="Obtaining latest release...")
 
-    try:
-      repoURL = urlopen(self.settings['app_repo_url'] + '/.setupdata')
-      data = repoURL.read()
-      encoding = repoURL.info().get_content_charset('utf-8')
-      latestSetupData = loads(data.decode(encoding))
-    except:
-      messagebox.showwarning(
-        title='{} Setup Wizard'.format(self.settings['app_name']),
-        message='An unexpected error occured. Setup wizard is unable to obtain additional files.'
-      )
+    # try:
+    #   repoURL = urlopen(self.settings['app_repo_url'] + '.setupdata')
+    #   data = repoURL.read()
+    #   encoding = repoURL.info().get_content_charset('utf-8')
+    #   latestSetupData = loads(data.decode(encoding))
+    # except:
+    #   messagebox.showwarning(
+    #     title='{} Setup Wizard'.format(self.settings['app_name']),
+    #     message='An unexpected error occured. Setup wizard is unable to obtain additional files.'
+    #   )
 
-      return
+    #   return
     
     def reporthook(blocknum, blocksize, totalsize):
       self.builder.get_object('DownloadStatusLabel').config(text="Downloading...")
@@ -161,31 +165,52 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
         percent = readsofar * 1e2 / totalsize
         self.builder.create_variable('double:download_progress').set(percent)
         self.builder.get_object('DownloadRatio').config(
-          text='{:.1} %'.format(percent)
-          # text="\r%5.1f%% %*d / %d".format(percent, len(str(totalsize)), readsofar, totalsize)
+          # text='{:.1} %'.format(percent)
+          text="{:.1f} / {:.1f} MB".format(readsofar / 1048576, totalsize / 1048576)
         )
         
         if readsofar >= totalsize: # near the end
           self.builder.get_object('DownloadStatusLabel').config(text="Download complete")
+          self.builder.get_object('RetryButton').config(state=DISABLED)
       else: # total size is unknown
         pass
 
-    try:
-      urlretrieve(
-        latestSetupData['latest_windows_dist_url'],
-        'C:/Users/bukharim96/Desktop/latest_windows_dist_url.exe',
-        reporthook
+    # try: # download
+    filehandle, _ = urlretrieve(
+      # latestSetupData['latest_windows_dist_url'],
+      url='https://github.com/bukharim96/macron/raw/master/playground/helloapp/dist/windows/HelloApp_0.1.0.zip',
+      reporthook=reporthook
+    )
+
+    # try: # install
+    self.builder.get_object('InstallStatusLabel').config(text="Installing...")
+    ZipFile(filehandle).extractall(self.settings['install_path'])
+    if self.settings['create_shortcut']:
+      CoInitialize()
+      appPath = '{}\\{}\\{}.exe'.format(self.settings['install_path'], self.settings['app_name'], self.settings['app_name'])
+      self.createShortcut(
+        path=os.path.join(desktop(), self.settings['app_name'].replace('_', ' ') + '.lnk'),
+        target=appPath,
+        wDir='{}\\{}'.format(self.settings['install_path'], self.settings['app_name']),
+        icon=appPath
       )
-    except:
-      messagebox.showwarning(
-        title='{} Setup Wizard'.format(self.settings['app_name']),
-        message='Setup is unable to download additional files. Please make sure that you have an internet connection, then click Retry.'
-      )
+    self.builder.get_object('InstallStatusLabel').config(text="Installation complete!")
+    self.builder.get_object('FinishButton').config(state=NORMAL)
+      # except:
+      #   messagebox.showwarning(
+      #     title='{} Setup Wizard'.format(self.settings['app_name']),
+      #     message='Setup is unable to install additional files.'
+      #   )
+    # except:
+    #   messagebox.showwarning(
+    #     title='{} Setup Wizard'.format(self.settings['app_name']),
+    #     message='Setup is unable to download additional files. Please make sure that you have an internet connection, then click Retry.'
+    #   )
   
   def on_finish(self):
-    print('install_path: ' + self.settings['install_path'])
-    print('create_shortcut: ' + str(self.settings['create_shortcut']))
-    print('start_after_setup: ' + str(self.settings['start_after_setup']))
+    if self.settings['start_after_setup']:
+      startfile('{}\\{}\\{}.exe'.format(self.settings['install_path'], self.settings['app_name'], self.settings['app_name']))
+    
     self.root.destroy()
   
   def on_retry_download(self):
@@ -206,7 +231,7 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
     )
 
     if response == 'ok':
-      if self.downloadThread: self.downloadThread._Thread_stop()
+      # if self.downloadThread: self.downloadThread._Thread_stop()
       self.root.destroy()
 
   # Helpers
@@ -215,6 +240,31 @@ Click Next to continue, or Cancel to exit Setup.'''.format(self.settings['app_na
     self.builder.add_from_string(next_view_ui)
     self.mainwindow = self.builder.get_object('Frame_0', self.root)
     self.builder.connect_callbacks(self)
+
+  # convert bytes to MB.... GB... etc...
+  def human_bytes(self, num):
+    step_unit = 1000.0 #1024 bad the size
+    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+      if num < step_unit: return "%3.1f %s" % (num, x)
+      num /= step_unit
+
+  def createShortcut(self, path, target='', wDir='', icon=''):    
+    ext = path[-3:]
+    if ext == 'url':
+      shortcut = file(path, 'w')
+      shortcut.write('[InternetShortcut]\n')
+      shortcut.write('URL=%s' % target)
+      shortcut.close()
+    else:
+      shell = Dispatch('WScript.Shell')
+      shortcut = shell.CreateShortCut(path)
+      shortcut.Targetpath = target
+      shortcut.WorkingDirectory = wDir
+      if icon == '':
+        pass
+      else:
+        shortcut.IconLocation = icon
+      shortcut.save()
   
   # def set_image(self, dimensions, img_path, frame):
   #   img = Image.open(img_path)

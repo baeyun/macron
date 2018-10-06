@@ -66,7 +66,7 @@ The rest of the commands can be found on the official site.
 
 We are seeking support from community members like you to fund and support the Macron project, it's development and future. A custom domain is needed for the site as well. You can become a patreon here:
 
-<a href="https://patreon.com/macron">
+<a href="https://patreon.com/user?u=13990115">
   <img width="200px" src="https://raw.githubusercontent.com/bukharim96/macron/master/resources/become_a_patron_button@2x.png" alt="Patreon">
 </a>
 

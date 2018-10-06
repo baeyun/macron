@@ -78,7 +78,7 @@ module.exports = function(cwd) {
 
   buildProcess.on('exit', function(data) {
     spinner.stopAndPersist({
-      text: chalk.green('Build process complete.\n') + `  Run: ${chalk.cyan('macron start build')} to execute your app.\n`
+      text: chalk.green('\n  Build process complete.\n') + `  Run: ${chalk.cyan('macron start build')} to execute your app.`
     })
   })
 }
