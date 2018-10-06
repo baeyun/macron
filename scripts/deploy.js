@@ -177,7 +177,9 @@ module.exports = function(cwd) {
 
   buildWizardProcess.on('exit', function(data) {
     spinner.stopAndPersist({
-      text: `Setup wizard built successfully.\n  Run: ${chalk.hex('#ffa500')('macron start wizard')} to test your app\'s setup wizard.`
+      text: `Setup wizard built successfully.\n  Push changes (especially the ${chalk.hex('#ffa500')('.setupdata')} file and the ${chalk.hex('#ffa500')('dist/')} directory) to GitHub.\n  Run: ${
+        chalk.hex('#ffa500')('macron start wizard')
+      } to test your app\'s setup wizard.`
     })
   })
 }
