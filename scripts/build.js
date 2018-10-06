@@ -39,7 +39,6 @@ module.exports = function(cwd) {
   buildCmd.push('--hiddenimport=pathlib')
   buildCmd.push('--hiddenimport=json')
   if (appConfig.build.nativeModulesPath) buildCmd.push('--distpath=' + normalize(cwd + appConfig.build.nativeModulesPath))
-  buildCmd.push(`--paths=${normalize(__dirname + '/../core')};${normalize(__dirname + '/../core/common')};${normalize(__dirname + '/../core/windows')}`)
   buildCmd.push('--hiddenimport=_contextmenu')
   buildCmd.push('--hiddenimport=archive')
   buildCmd.push('--hiddenimport=currentwindow')
@@ -47,10 +46,13 @@ module.exports = function(cwd) {
   buildCmd.push('--hiddenimport=windowmanager')
   buildCmd.push('--hiddenimport=filesystem')
   buildCmd.push('--hiddenimport=system')
-  buildCmd.push(`--add-data=${normalize(__dirname + '/../core/windows/assemblies/MacronWebviewInterop.dll')};macron/assemblies`) // Windows specific
-  buildCmd.push(`--add-data=${cwd}/.builddata;macron`)
-  buildCmd.push(`--add-data=${cwd}public/;macron/app`)
-  buildCmd.push(`--add-data=${normalize(__dirname + '/../src')};macron/core`)
+  if (process.platform == 'win32') {
+    buildCmd.push(`--paths=${normalize(__dirname + '/../core')};${normalize(__dirname + '/../core/common')};${normalize(__dirname + '/../core/windows')}`)
+    buildCmd.push(`--add-data=${cwd}/.builddata;macron`)
+    buildCmd.push(`--add-data=${normalize(__dirname + '/../core/windows/assemblies/MacronWebviewInterop.dll')};macron/assemblies`) // Windows specific
+    buildCmd.push(`--add-data=${cwd}public/;macron/app`)
+    buildCmd.push(`--add-data=${normalize(__dirname + '/../src')};macron/core`)
+  }
   if (appConfig.build.debugMode) {
     buildCmd.push('--log-level DEBUG')
     buildCmd.push('-c') // console

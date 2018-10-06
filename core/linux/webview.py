@@ -25,7 +25,7 @@ class MacronWebview(WebKit2.WebView):
       self.load(
         get_resource_path(
           'macron/app/index.html',
-          'file://' + config["rootPath"] + '/public/index.html'
+          'file://' + config["rootPath"] + 'public/index.html'
         )
       )
 
