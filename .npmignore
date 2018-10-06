@@ -1,0 +1,9 @@
+#######################################
+# Macron ignores
+#######################################
+
+# app cache folder
+cache/
+
+# macron testing environment
+playground/
