@@ -81,7 +81,7 @@ module.exports = function(cwd, appName) {
   if (!existsSync(licenseFilePath))
     writeFileSync(
       licenseFilePath,
-      require('./temps/package-json')(appName)
+      require('./temps/license')(appName)
     )
 
   // gitignore file
