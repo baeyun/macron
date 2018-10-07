@@ -19,7 +19,7 @@ from utils import get_resource_path
 class MacronWebview(WebBrowser):
 
   def __init__(self, current_window, config):
-    if "devServerURI" in config and not hasattr(sys, '_MEIPASS'):
+    if "devServerURI" in config:
       self.Navigate(config["devServerURI"])
     else:
       self.Navigate(
