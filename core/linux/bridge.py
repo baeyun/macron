@@ -1,6 +1,6 @@
 import sys
 from os import path
-import importlib.util
+# import importlib.util
 from json import loads, dumps
 
 import gi
@@ -24,7 +24,7 @@ class MacronBridge:
       'Archive',
       'CurrentWindow',
       'Dialog',
-      'FileSystem',
+      # 'FileSystem',
       # 'MessageBox',
       'System',
       'WindowManager'
@@ -36,8 +36,8 @@ class MacronBridge:
 
     # for class_name in native_modules:
     #   modname = class_name.lower()
-    #   spec = importlib.util.spec_from_file_location(modname, native_mods_root_path + modname + ".py")
-    #   setattr(self, modname, importlib.util.module_from_spec(spec))
+      # spec = importlib.util.spec_from_file_location(modname, native_mods_root_path + modname + ".py")
+      # setattr(self, modname, importlib.util.module_from_spec(spec))
     #   module = getattr(self, modname)
     #   spec.loader.exec_module(module)
 

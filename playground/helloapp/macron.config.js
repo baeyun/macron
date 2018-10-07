@@ -18,6 +18,6 @@ module.exports = {
   appName: 'HelloApp',
   mainWindow: App,
   build: {
-    debugMode: false
+    debugMode: true
   }
 }

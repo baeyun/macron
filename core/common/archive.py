@@ -7,18 +7,7 @@ crypto module.
 
 from macron import *
 
-from zipfile import (
-  ZipFile,
-  ZIP64_LIMIT,
-  ZIP64_VERSION,
-  ZIP_FILECOUNT_LIMIT,
-  ZIP_FILECOUNT_LIMIT,
-  ZIP_BZIP2,
-  ZIP_DEFLATED,
-  ZIP_LZMA,
-  ZIP_MAX_COMMENT,
-  ZIP_STORED
-)
+from zipfile import ZipFile
 
 class Archive(NativeBridge):
   # @todo Resolve relative paths

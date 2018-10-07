@@ -8,11 +8,9 @@ dirname = path.dirname(path.realpath(__file__))
 sys.path.append(dirname)
 
 if platform.system() == "Windows":
-  sys.path.append(path.join(dirname, 'windows'))
+  from windows.window import create_window
 elif platform.system() == "Linux":
-  sys.path.append(path.join(dirname, 'linux'))
-
-from window import create_window
+  from linux.window import create_window
 
 class MacronApp:
   def __init__(self, argv):

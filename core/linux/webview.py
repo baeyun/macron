@@ -9,6 +9,8 @@ gi.require_version('WebKit2', '4.0')
 from gi.repository import Gtk, Gdk, WebKit2
 
 dirname = path.dirname(path.realpath(__file__))
+sys.path.append(dirname)
+sys.path.append(path.join(dirname, '../'))
 
 from json import dumps
 from bridge import MacronBridge
@@ -23,9 +25,9 @@ class MacronWebview(WebKit2.WebView):
       self.load(config["devServerURI"])
     else:
       self.load(
-        get_resource_path(
+        'file://' + get_resource_path(
           'macron/app/index.html',
-          'file://' + config["rootPath"] + 'public/index.html'
+          config["rootPath"] + 'public/index.html'
         )
       )
 

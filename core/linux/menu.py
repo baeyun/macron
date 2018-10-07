@@ -34,7 +34,7 @@ def create_menu(menu_instance, src, eval_script, parent=None):
     def click_handler(menuitem, menuitem_config):
       if type(menuitem) == Gtk.CheckMenuItem:
         menuitem_config['checked'] = menuitem.get_active()
-      
+
       if 'callbackID' in menuitem_config:
         eval_script(
           script='_macron.{}[{}].call(null, {})'.format(
@@ -44,7 +44,7 @@ def create_menu(menu_instance, src, eval_script, parent=None):
           )
         )
 
-    if m["isCheckable"] == True and m['submenu'] == None:
+    if m['isCheckable'] == True and m['submenu'] == None:
       menuitem = Gtk.CheckMenuItem(m['label'])
 
       if "checked" in m:

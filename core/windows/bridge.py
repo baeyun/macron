@@ -1,7 +1,7 @@
 import sys
 import clr
 from os import path
-import importlib.util
+# import importlib.util
 from json import loads, dumps
 
 from macron import NativeBridge
@@ -43,8 +43,8 @@ class MacronBridge(IMacronBridge):
     # generated_js_apis = ''
     # for class_name in native_modules:
     #   modname = class_name.lower()
-    #   spec = importlib.util.spec_from_file_location(modname, native_mods_root_path + modname + ".py")
-    #   setattr(self, modname, importlib.util.module_from_spec(spec))
+      # spec = importlib.util.spec_from_file_location(modname, native_mods_root_path + modname + ".py")
+      # setattr(self, modname, importlib.util.module_from_spec(spec))
     #   module = getattr(self, modname)
     #   spec.loader.exec_module(module)
 

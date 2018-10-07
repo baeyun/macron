@@ -6,17 +6,12 @@ gi.require_version("Gtk", "3.0")
 
 from gi.repository import Gtk, Gdk
 
-# import tkinter
-from tkinter import Tk
-from webview import MacronWebview
+from linux.webview import MacronWebview
 from menubar import MacronMenubar
 
 class MacronWindow(Gtk.Window):
   
   def __init__(self, config):
-    # Single hidden tkinter instance for app
-    Tk().withdraw()
-
     self.config = config
 
     # Initialize main window

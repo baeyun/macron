@@ -1,5 +1,5 @@
 from macron import *
-from common import windowmanager
+import windowmanager
 
 class CurrentWindow(NativeBridge):
 

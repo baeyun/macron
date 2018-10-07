@@ -20,8 +20,9 @@ module.exports = function(cwd) {
 
   appConfig.cwd = cwd
   
-  const qualifiedAppName = appConfig.appName.replace(/\s/g, '_')
   const spinner = ora('Starting build process...').start()
+  const qualifiedAppName = appConfig.appName.replace(/\s/g, '_')
+  const cmdSeperator = (process.platform == 'win32') ? ';' : ':'
 
   writeFileSync(
     `${cwd}/.builddata`,
@@ -31,14 +32,13 @@ module.exports = function(cwd) {
   
   const buildCmd = ['pyinstaller']
   buildCmd.push(`--name=${qualifiedAppName}`)
-  buildCmd.push(`--icon=${cwd}public/icons/icon.ico`)
   buildCmd.push('--workpath=' + normalize(__dirname + '/../cache'))
   buildCmd.push(`--distpath=${cwd}build`)
   buildCmd.push('--specpath=' + normalize(__dirname + '/../cache'))
-  buildCmd.push('--hiddenimport=clr')
   buildCmd.push('--hiddenimport=pathlib')
   buildCmd.push('--hiddenimport=json')
-  if (appConfig.build.nativeModulesPath) buildCmd.push('--distpath=' + normalize(cwd + appConfig.build.nativeModulesPath))
+  if (appConfig.build.nativeModulesPath)
+  buildCmd.push('--distpath=' + normalize(cwd + appConfig.build.nativeModulesPath))
   buildCmd.push('--hiddenimport=_contextmenu')
   buildCmd.push('--hiddenimport=archive')
   buildCmd.push('--hiddenimport=currentwindow')
@@ -46,12 +46,21 @@ module.exports = function(cwd) {
   buildCmd.push('--hiddenimport=windowmanager')
   buildCmd.push('--hiddenimport=filesystem')
   buildCmd.push('--hiddenimport=system')
-  if (process.platform == 'win32') {
-    buildCmd.push(`--paths=${normalize(__dirname + '/../core')};${normalize(__dirname + '/../core/common')};${normalize(__dirname + '/../core/windows')}`)
-    buildCmd.push(`--add-data=${cwd}/.builddata;macron`)
-    buildCmd.push(`--add-data=${normalize(__dirname + '/../core/windows/assemblies/MacronWebviewInterop.dll')};macron/assemblies`) // Windows specific
-    buildCmd.push(`--add-data=${cwd}public/;macron/app`)
-    buildCmd.push(`--add-data=${normalize(__dirname + '/../src')};macron/core`)
+  buildCmd.push(`-p ${
+    normalize(__dirname + '/../core') + cmdSeperator +
+    normalize(__dirname + '/../core/common') + cmdSeperator +
+    // normalize(__dirname + '/../core/windows') + cmdSeperator +
+    normalize(__dirname + '/../core/linux')
+  }`)
+  buildCmd.push(`--add-data=${cwd}/.builddata${cmdSeperator}macron`)
+  buildCmd.push(`--add-data=${cwd}public/${cmdSeperator}macron/app`)
+  buildCmd.push(`--add-data=${normalize(__dirname + '/../src') + cmdSeperator}macron/core`)
+  if (process.platform == 'win32') {  // Windows specific
+    buildCmd.push(`--icon=${cwd}public/icons/icon.ico`)
+    buildCmd.push('--hiddenimport=clr')
+    buildCmd.push(`--add-data=${normalize(__dirname + '/../core/windows/assemblies/MacronWebviewInterop.dll')};macron/assemblies`)
+  } else if (process.platform == 'linux') {
+    // buildCmd.push('--hiddenimport=GdkPixbuf')
   }
   if (appConfig.build.debugMode) {
     buildCmd.push('--log-level DEBUG')
