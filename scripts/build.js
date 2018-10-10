@@ -48,19 +48,18 @@ module.exports = function(cwd) {
   buildCmd.push('--hiddenimport=system')
   buildCmd.push(`-p ${
     normalize(__dirname + '/../core') + cmdSeperator +
-    normalize(__dirname + '/../core/common') + cmdSeperator +
-    // normalize(__dirname + '/../core/windows') + cmdSeperator +
-    normalize(__dirname + '/../core/linux')
+    normalize(__dirname + '/../core/common')
   }`)
   buildCmd.push(`--add-data=${cwd}/.builddata${cmdSeperator}macron`)
   buildCmd.push(`--add-data=${cwd}public/${cmdSeperator}macron/app`)
   buildCmd.push(`--add-data=${normalize(__dirname + '/../src') + cmdSeperator}macron/core`)
-  if (process.platform == 'win32') {  // Windows specific
+  if (process.platform == 'win32') { // Windows specific
     buildCmd.push(`--icon=${cwd}public/icons/icon.ico`)
     buildCmd.push('--hiddenimport=clr')
     buildCmd.push(`--add-data=${normalize(__dirname + '/../core/windows/assemblies/MacronWebviewInterop.dll')};macron/assemblies`)
-  } else if (process.platform == 'linux') {
-    // buildCmd.push('--hiddenimport=GdkPixbuf')
+    buildCmd.push(`-p ${normalize(__dirname + '/../core/windows')}`)
+  } else if (process.platform == 'linux') { // Linux specific
+    buildCmd.push(`-p ${normalize(__dirname + '/../core/linux')}`)
   }
   if (appConfig.build.debugMode) {
     buildCmd.push('--log-level DEBUG')

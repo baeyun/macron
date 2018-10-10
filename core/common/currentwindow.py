@@ -1,5 +1,5 @@
 from macron import *
-import windowmanager
+from windowmanager import WindowManager
 
 class CurrentWindow(NativeBridge):
 
@@ -189,4 +189,4 @@ class CurrentWindow(NativeBridge):
   # instance.
   @macronMethod
   def clone(self):
-    windowmanager.WindowManager().create(self.current_window.config)
+    WindowManager().create(self.current_window.config)

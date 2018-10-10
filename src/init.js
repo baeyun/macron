@@ -27,3 +27,5 @@ _macron.menubarCallbacks = []
 
 // ContextMenu events
 _macron.contextmenuCallbacks = []
+
+_macron.commonAPIResponses = {}

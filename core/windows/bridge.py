@@ -150,8 +150,6 @@ class MacronBridge(IMacronBridge):
 
     if NativeBridge not in class_ref.__bases__:
       raise Exception("The specified class must extend macron.NativeBridge")
-      
-    # print(dir(class_ref))
 
     output = eval("""getattr(
       class_ref(current_window=self.current_window, context=self.context),

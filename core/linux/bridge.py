@@ -54,7 +54,14 @@ class MacronBridge:
     
     if '_macronBridgeCall' in args and dialog.get_dialog_type() == WebKit2.ScriptDialogType.ALERT:
       web_view.evaluate_script(
-        'console.log("{}")'.format(
+        '''
+        var response = window._macron.commonAPIResponses['{}'] || null
+        if (response) {{
+          response.data = "{}"
+          response.transmitted = true
+        }}
+        '''.format(
+          args[0],
           self.call_module_classmethod(
             module_name=args[1],
             class_name=args[2],
@@ -63,7 +70,7 @@ class MacronBridge:
           )
         )
       )
-    
+
       return True
 
   def load_common_modules(self, class_names):
@@ -71,12 +78,6 @@ class MacronBridge:
 
     for class_name in class_names:
       mod_name = class_name.lower()
-      if mod_name == 'window':
-        from common import window
-        self.window = window
-        generated_js_apis += self.window.Window().generate_js_api()
-        continue
-      
       setattr(self, mod_name, __import__(mod_name))
 
       generated_js_apis += getattr(getattr(self, mod_name), class_name)().generate_js_api()
@@ -103,8 +104,6 @@ class MacronBridge:
 
     if NativeBridge not in class_ref.__bases__:
       raise Exception("The specified class must extend macron.NativeBridge")
-      
-    # print(dir(class_ref))
 
     output = eval("""getattr(
       class_ref(current_window=self.current_window, context=self.context),

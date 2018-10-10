@@ -70,16 +70,38 @@ class NativeBridge:
         '''.format(member, self.get_modulename(), class_name, member)
       else:
         members_api += '''{}: function() {{
-          var output = alert(JSON.stringify(["_macronBridgeCall", "{}", "{}", "{}", arguments]))
+          let apiID = '{}',
+              response = window._macron.commonAPIResponses[apiID] = {{
+                transmitted: false,
+                data: undefined
+              }}
           
-          try {{
-            return JSON.parse(output);
-          }} catch(e) {{
-            return output
-          }}
-        }},
-        '''.format(member, self.get_modulename(), class_name, member)
+          alert(JSON.stringify([apiID, "{}", "{}", "{}", arguments, '_macronBridgeCall']))
 
-    js_api = 'macron.'+class_name+' = {'+members_api+'};'
+          return new Promise((resolve, reject) => {{
+            const responseWatch = setInterval(() => {{
+              if (response.transmitted) {{
+                response.transmitted = false
+                
+                try {{
+                  resolve(JSON.parse(response.data))
+                }} catch(e) {{
+                  resolve(response.data)
+                }}
+
+                clearInterval(responseWatch)
+              }}
+            }}, 100)
+          }})
+        }},
+        '''.format(
+          member,
+          class_name + '_' + member,
+          self.get_modulename(),
+          class_name,
+          member
+        )
+
+    js_api = 'macron.{} = {{{}}};'.format(class_name, members_api)
 
     return js_api
