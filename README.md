@@ -3,6 +3,7 @@
 </p>
 
 <h1 align="center">Macron</h1>
+<p align="center">-- TEMPORARILY DISCONTINUED IN FAVOR OF NEW IDEAS --</p>
 
 Macron is a framework that builds cutting-edge cross-platform desktop apps using plain HTML, CSS and JavaScript! Check the official site to <a href="https://macron.netlify.com">learn more</a>.
 
