@@ -20,6 +20,14 @@ Macron uses existing software on the platform to draw windows alongside the syst
 * **Native extensions** - All common runtime modules are bundled with your app, including file-related functionalities, system and process activities amongst others.
 * **Easy and simple** - Creating Macron apps that don't utilize any extra modules is dead easy. In fact, a single config file runs your entire app.
 
+## Sample calculator app built with Macron
+
+<p align="center">
+  <img src="https://github.com/bukharim96/pie/raw/master/resources/preview.PNG">
+</p>
+
+Pie is a simple calculator desktop app built with Macron. You may find and download this starter-pack sample app at <a href="https://github.com/bukharim96/pie">this repo</a>.
+
 ## Prerequisites
 
 You must be running on the Windows platform to proceed. The Linux platform is currently under active development while MacOS isn't currently supported. 
@@ -62,18 +70,6 @@ $ macron start build
 
 The rest of the commands can be found on the official site.
 
-## Contribution & Support
-
-We are seeking support from community members like you to fund and support the Macron project, it's development and future. A custom domain is needed for the site as well. You can become a patreon here:
-
-<a href="https://patreon.com/user?u=13990115">
-  <img width="200px" src="https://raw.githubusercontent.com/bukharim96/macron/master/resources/become_a_patron_button@2x.png" alt="Patreon">
-</a>
-
-As a result, we'll add your logo to our *README.md* page and also a big banner at the bottom of our site.
-
-You can find the complete contribution guide <a href="https://macron.netlify.com/contributing">right here</a>. We are actively searching for users who can test out the latest version of Macron on Windows 7 and kindly report any perceived differences regarding general performance or RAM usage.
-
 ## Releases
 
 The complete release notes can be found at <a href="https://macron.netlify.com/releases">this link</a>.
@@ -83,6 +79,13 @@ The complete release notes can be found at <a href="https://macron.netlify.com/r
 * <a href="https://macron.netlify.com/getting-started">Getting Started</a>
 * <a href="https://macron.netlify.com/advanced">Advanced Guide</a>
 * <a href="https://macron.netlify.com/api">API Reference</a>
+
+
+## Contribution & Support
+
+Even though this project is temporarily discontinued, you may pick it up and continue it, and if you are interested in contributing, feel free to contact us.
+
+You can find the complete contribution guide <a href="https://macron.netlify.com/contributing">right here</a>. We are actively searching for users who can test out the latest version of Macron on Windows 7 and kindly report any perceived differences regarding general performance or RAM usage.
 
 ## Contact
 
